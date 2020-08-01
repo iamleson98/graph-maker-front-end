@@ -20,6 +20,7 @@ module.exports = {
         transform: ['group-hover'],
         translate: ['group-hover'],
         borderWidth: ['responsive', 'hover'],
+        // backgroundColor: ['active'],
     },
     plugins: [],
     corePlugins: {
