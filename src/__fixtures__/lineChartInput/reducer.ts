@@ -1,9 +1,12 @@
+import { isRealNumber } from "../constants"
+
 export interface LineChartState {
     chartTitle: string;
     xData: string[];
     yData: {
         name: string;
         data: string[];
+        error?: string;
     }[]
 }
 
@@ -65,7 +68,8 @@ export function lineChartReducer(state: LineChartState, action: LineChartAction)
         case typeChange.addLine:
             yData = yData.concat({
                 name: "",
-                data: [...(new Array(xData.length))].map(() => "")
+                data: [...(new Array(xData.length))].map(() => ""),
+                error: undefined
             })
             newState = { ...newState, yData }
             break
@@ -82,6 +86,8 @@ export function lineChartReducer(state: LineChartState, action: LineChartAction)
         case typeChange.yFieldChange:
             // value is index of line, options.index is index of field, options.value is value for it
             yData[value].data[options?.index] = options?.value
+            let error = yData[value].data.some(val => !isRealNumber.test(val)) ? "values must be numbers" : undefined
+            yData[value].error = error
             newState = { ...newState, yData }
             break
         case typeChange.lineNameChange:

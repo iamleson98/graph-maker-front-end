@@ -29,7 +29,7 @@ function Auth() {
     const socialButtons = useMemo(() => {
         return [
             { name: "Facebook", icon: Facebook, bgClass: "bg-blue-700" },
-            { name: "Google", icon: Google, bgClass: "bg-gray-700" },
+            { name: "Google", icon: Google, bgClass: "bg-red-600" },
             { name: "Twitter", icon: Twitter, bgClass: "bg-blue-500" },
         ]
     }, [])

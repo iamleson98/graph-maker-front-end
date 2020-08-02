@@ -1,4 +1,4 @@
-// import { isRealNumber } from '../constants'
+import { isRealNumber } from '../constants'
 
 export enum typeChange {
     addPie,
@@ -15,6 +15,7 @@ export interface PieChartState {
     pies: {
         name: string;
         value: string;
+        error?: string;
     }[][]
 }
 
@@ -22,6 +23,7 @@ export interface PieChartAction {
     type: typeChange;
     value?: any;
     options?: {
+        index?: any;
         value?: any;
     };
 }
@@ -38,7 +40,7 @@ export function pieChartReducer(state: PieChartState, action: PieChartAction): P
         case typeChange.addPie:
             if (pieChartReducer.length < MAX_PIE) {
                 const newPie = pies[0].map(pie => {
-                    return { ...pie, value: "" }
+                    return { ...pie, value: "", error: undefined }
                 })
                 pies.push(newPie)
                 newState = { ...newState, pies }
@@ -57,7 +59,8 @@ export function pieChartReducer(state: PieChartState, action: PieChartAction): P
                 pies = pies.map(pie => {
                     return pie.concat({
                         name: "",
-                        value: ""
+                        value: "",
+                        error: undefined
                     })
                 })
                 newState = { ...newState, pies }
@@ -84,16 +87,14 @@ export function pieChartReducer(state: PieChartState, action: PieChartAction): P
             newState = { ...state, pies }
             break
         case typeChange.sliceValueChange:
-            // value is index of slice to update, options.value is value for that field
+            // value is index of pie to update, options.index is index of that slice, options.value is value for that field
             // check if the input value is a real number:
-            pies = pies.map(pie => {
-                return pie.map((slice, idx) => {
-                    return {
-                        ...slice,
-                        value: idx === value ? options?.value : slice.value
-                    }
-                })
-            })
+            let error = isRealNumber.test(options?.value) ? undefined : "value must be a number"
+            pies[value][options?.index] = {
+                ...pies[value][options?.index],
+                error,
+                value: options?.value
+            }
             newState = { ...newState, pies }
             break
 

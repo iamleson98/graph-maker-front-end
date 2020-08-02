@@ -1,4 +1,4 @@
-import React, { memo, useReducer } from 'react'
+import React, { memo, useReducer, useEffect } from 'react'
 import DelayInput from '../../components/delayinput'
 import { Add, Remove } from '@material-ui/icons'
 import Tooltip from '@material-ui/core/Tooltip'
@@ -10,7 +10,11 @@ import {
 } from './reducer'
 
 
-function LineChart() {
+interface LineCharParam {
+    giveState: (value: LineChartState) => void;
+}
+
+function LineChart({ giveState }: LineCharParam): JSX.Element {
 
     // component state
     const [state, dispatch] = useReducer<React.Reducer<LineChartState, LineChartAction>>(lineChartReducer, {
@@ -24,6 +28,11 @@ function LineChart() {
         ]
     })
     const { chartTitle, xData, yData } = state
+
+    // give state to parent component every time this component re-render
+    useEffect(() => {
+        giveState(state)
+    })
 
     return (
         <div className="rounded bg-white p-2 text-gray-700 max-w-xs">
@@ -109,7 +118,7 @@ function LineChart() {
                                         }
                                     })}
                                     defaultValue={item.name}
-                                    placeholder="name"
+                                    placeholder={`line ${index + 1} name`}
                                 />
                             </legend>
                             {item.data.map((field, idx) => (
@@ -121,7 +130,7 @@ function LineChart() {
                                     <DelayInput
                                         type="text"
                                         placeholder="value"
-                                        className="rounded bg-gray-200 px-2 mr-2"
+                                        className={`rounded ${item.error ? "bg-red-300" : "bg-gray-200"} px-2 mr-2`}
                                         giveValue={(value: string) => dispatch({
                                             type: typeChange.yFieldChange,
                                             value: index,
@@ -132,33 +141,28 @@ function LineChart() {
                                         })}
                                         defaultValue={field}
                                     />
-
                                 </div>
                             ))}
+                            {!!item.error && <small className="text-red-600 mb-2">{item.error}</small>}
                             {!!index && (
-                                <Tooltip
-                                    title={`Delete line ${index}`}
-                                    placement="top"
-                                >
-                                    <div>
-                                        <Button
-                                            size="small"
-                                            variant="contained"
-                                            color="secondary"
-                                            className="focus:outline-none mb-2"
-                                            disableElevation={true}
-                                            fullWidth={true}
-                                            onClick={() => {
-                                                dispatch({
-                                                    type: typeChange.deleteLine,
-                                                    value: index
-                                                })
-                                            }}
-                                        >
-                                            delete {!!item.name ? item.name : `line ${index}`}
-                                        </Button>
-                                    </div>
-                                </Tooltip>
+                                <div>
+                                    <Button
+                                        size="small"
+                                        variant="contained"
+                                        color="secondary"
+                                        className="focus:outline-none mb-2"
+                                        disableElevation={true}
+                                        fullWidth={true}
+                                        onClick={() => {
+                                            dispatch({
+                                                type: typeChange.deleteLine,
+                                                value: index
+                                            })
+                                        }}
+                                    >
+                                        delete {!!item.name ? item.name : `line ${index + 1}`}
+                                    </Button>
+                                </div>
                             )}
                         </fieldset>
                     ))}

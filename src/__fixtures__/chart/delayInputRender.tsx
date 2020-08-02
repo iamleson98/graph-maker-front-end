@@ -23,7 +23,7 @@ export interface CustomChartRenderProp {
     children: React.ReactElement<any, any>;
 }
 
-export function CustomChartRender({ children }: CustomChartRenderProp) {
+export function DelayChartRender({ children }: CustomChartRenderProp) {
 
     const loading = useDelay(1000)
 

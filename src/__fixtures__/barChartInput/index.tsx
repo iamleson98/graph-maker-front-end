@@ -1,4 +1,4 @@
-import React, { memo, useReducer } from 'react'
+import React, { memo, useReducer, useEffect } from 'react'
 import { Add, Remove } from '@material-ui/icons'
 import Tooltip from '@material-ui/core/Tooltip'
 import DelayInput from '../../components/delayinput'
@@ -7,7 +7,11 @@ import '../../tailwind/out.css'
 import { BarchartState, BarchartAction, typeChange, barchartReducer } from './reducer'
 
 
-function BarChartInput() {
+export interface BarChartInputParam {
+    giveState: (value: BarchartState) => void;
+}
+
+function BarChartInput({ giveState }: BarChartInputParam): JSX.Element {
 
     // component state
     const [state, dispatch] = useReducer<React.Reducer<BarchartState, BarchartAction>>(barchartReducer, {
@@ -20,6 +24,11 @@ function BarChartInput() {
         ]
     })
     let { xData, yData, chartTitle, xTitle, yTitle } = state
+
+    // give parent state every time this component re-render
+    useEffect(() => {
+        giveState(state)
+    })
 
     const handleAddXItem = (clickedIndex: number) => () => {
         dispatch({
@@ -73,7 +82,7 @@ function BarChartInput() {
                         />
                     </div>
                     {/* x data */}
-                    <fieldset className="rounded p-3 border-2 border-solid border-gray-200">
+                    <fieldset className="rounded p-2 border-2 border-solid border-gray-200">
                         <legend className="text-sm leading-4 font-medium text-red-500">X data</legend>
                         {xData.map((value, idx) => (
                             <div className="flex items-center mb-1" key={idx}>
@@ -124,10 +133,10 @@ function BarChartInput() {
                         />
                     </div>
                     {/* y data */}
-                    <fieldset className="rounded p-3 border-2 border-solid border-gray-200">
+                    <fieldset className="rounded p-2 border-2 border-solid border-gray-200">
                         <legend className="text-sm leading-4 text-red-500 font-medium">Y data</legend>
                         {yData.map((block, index) => (
-                            <fieldset key={index} className="rounded border-solid border-2 border-gray-200 p-3 mb-2">
+                            <fieldset key={index} className="rounded border-solid border-2 border-gray-200 p-2 mb-2">
                                 <legend className="text-xs leading-4 font-normal">
                                     block {index + 1}
                                 </legend>
