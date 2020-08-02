@@ -28,6 +28,8 @@ export interface BarchartAction {
     };
 }
 
+export const MAX_BLOCKS_PER_CHART = 15, MAX_COLLUMS_PER_BLOCK = 5
+
 export function barchartReducer(state: BarchartState, action: BarchartAction): BarchartState {
     let newState = state;
     let { xData, yData } = state
@@ -49,7 +51,7 @@ export function barchartReducer(state: BarchartState, action: BarchartAction): B
             newState = { ...newState, xData }
             break
         case typeChange.addXFieldChange:
-            if (xData.length <= 14) {
+            if (xData.length < MAX_BLOCKS_PER_CHART) {
                 let newYData = yData
                 xData = xData.concat("")
                 newYData.push(
@@ -65,8 +67,10 @@ export function barchartReducer(state: BarchartState, action: BarchartAction): B
             newState = { ...newState, xData, yData }
             break
         case typeChange.addYFieldChange:
-            yData = yData.map(block => block.concat(""))
-            newState = { ...newState, yData }
+            if (yData[0].length < MAX_COLLUMS_PER_BLOCK) {
+                yData = yData.map(block => block.concat(""))
+                newState = { ...newState, yData }
+            }
             break
         case typeChange.removeYFieldChange:
             // index to remove will be hold in option.value

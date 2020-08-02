@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, memo } from 'react';
 import { PieChart, Pie, Sector } from 'recharts';
 
 
@@ -57,7 +57,7 @@ const renderActiveShape = (props: any) => {
 };
 
 
-export default function Example() {
+function StandardPieChart() {
 
     const [state, setState] = useState({
         activeIndex: 0
@@ -77,12 +77,14 @@ export default function Example() {
                 data={data}
                 cx={160}
                 cy={160}
-                innerRadius={50}
-                outerRadius={70}
-                fill="#ccc"
+                innerRadius={35}
+                outerRadius={55}
+                fill="#805ad5"
                 dataKey="value"
                 onMouseEnter={onPieEnter}
             />
         </PieChart>
     );
 }
+
+export default memo(StandardPieChart)

@@ -20,6 +20,7 @@
     "react-scripts": "3.4.1",
     "recharts": "^1.8.5",
     "rxjs": "^6.6.2",
+    "simplebar-react": "^2.2.1",
     "typescript": "^3.9.7"
   },
   "scripts": {

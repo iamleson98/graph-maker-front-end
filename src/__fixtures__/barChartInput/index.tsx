@@ -36,7 +36,7 @@ function BarChartInput() {
     }
 
     return (
-        <div className="text-gray-700 bg-white rounded p-2 max-w-xs border border-solid">
+        <div className="text-gray-700 bg-white rounded p-2 max-w-xs">
             {/* title */}
             <div className="mb-4">
                 <label htmlFor="barchart-title" className="mr-2">Title</label>
@@ -44,7 +44,7 @@ function BarChartInput() {
                     type="text"
                     id="barchart-title"
                     className="rounded bg-gray-200 py-1 px-2"
-                    placeholder="Enter title"
+                    placeholder="Chart title"
                     defaultValue={chartTitle}
                     giveValue={(value: string) => dispatch({
                         type: typeChange.chartTitleChange,
@@ -53,7 +53,9 @@ function BarChartInput() {
                 />
             </div>
 
-            <div className="">
+            <div
+                className=""
+            >
                 <div className="mb-4">
                     {/* x title */}
                     <div className="mb-2">

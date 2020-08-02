@@ -5,7 +5,9 @@ import { Add, DeleteOutlined } from '@material-ui/icons'
 import Tooltip from '@material-ui/core/Tooltip'
 import {
     PieChartAction, PieChartState, typeChange,
-    MAX_PIE, MAX_SLICES_PER_PIE, pieChartReducer
+    MAX_PIE,
+    // MAX_SLICES_PER_PIE, 
+    pieChartReducer
 } from './reducer'
 
 
@@ -26,7 +28,7 @@ function PieChart() {
     let { chartTitle, pies } = state
 
     return (
-        <div className="text-gray-700 bg-white rounded p-2 max-w-xs border border-solid">
+        <div className="text-gray-700 bg-white rounded p-2 max-w-xs">
             {/* title */}
             <div className="mb-4">
                 <label htmlFor="piechart-title" className="mr-2">Title</label>
@@ -42,7 +44,10 @@ function PieChart() {
                 />
             </div>
 
-            <div className="mb-2">
+            <div
+                className="mb-2"
+
+            >
                 {pies.map((pie, index) => (
                     <fieldset
                         key={index}
@@ -126,7 +131,7 @@ function PieChart() {
                             <Button
                                 size="small"
                                 variant="contained"
-                                disabled={pies[0].length >= MAX_SLICES_PER_PIE}
+                                // disabled={pies[0].length >= MAX_SLICES_PER_PIE}
                                 disableElevation={true}
                                 color={!index ? "primary" : "secondary"}
                                 fullWidth={true}

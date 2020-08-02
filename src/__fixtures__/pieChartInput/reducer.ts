@@ -1,3 +1,4 @@
+// import { isRealNumber } from '../constants'
 
 export enum typeChange {
     addPie,
@@ -84,6 +85,7 @@ export function pieChartReducer(state: PieChartState, action: PieChartAction): P
             break
         case typeChange.sliceValueChange:
             // value is index of slice to update, options.value is value for that field
+            // check if the input value is a real number:
             pies = pies.map(pie => {
                 return pie.map((slice, idx) => {
                     return {

@@ -6,7 +6,7 @@ import { Button } from '@material-ui/core'
 
 import {
     lineChartReducer, LineChartAction,
-    LineChartState, typeChange, MAX_POINTS, MAX_LINES
+    LineChartState, typeChange, MAX_LINES
 } from './reducer'
 
 
@@ -35,7 +35,7 @@ function LineChart() {
                     id="linechart-title"
                     className="bg-gray-200 rounded py-1 px-2"
                     defaultValue={chartTitle}
-                    placeholder="Enter title"
+                    placeholder="Chart title"
                     giveValue={(value: string) => dispatch({
                         type: typeChange.titleChange,
                         value
@@ -43,14 +43,16 @@ function LineChart() {
                 />
             </div>
 
-            <div className="">
+            <div
+                className=""
+            >
                 {/* x data */}
                 <fieldset className="rounded border-2 border-gray-200 border-solid mb-4 p-2">
                     <legend className="text-sm font-medium text-red-500">
                         x data
                     </legend>
                     {xData.map((item, idx) => (
-                        <div className="flex items-center justify-around mb-1">
+                        <div className="flex items-center justify-around mb-1" key={idx}>
                             <span className="text-xs mr-1">{idx + 1}</span>
                             <DelayInput
                                 type="text"
@@ -135,25 +137,27 @@ function LineChart() {
                             ))}
                             {!!index && (
                                 <Tooltip
-                                    title="Delete this line"
+                                    title={`Delete line ${index}`}
                                     placement="top"
                                 >
-                                    <Button
-                                        size="small"
-                                        variant="contained"
-                                        color="secondary"
-                                        className="focus:outline-none mb-2"
-                                        disableElevation={true}
-                                        fullWidth={true}
-                                        onClick={() => {
-                                            dispatch({
-                                                type: typeChange.deleteLine,
-                                                value: index
-                                            })
-                                        }}
-                                    >
-                                        delete {!!item.name ? item.name : "This line"}
-                                    </Button>
+                                    <div>
+                                        <Button
+                                            size="small"
+                                            variant="contained"
+                                            color="secondary"
+                                            className="focus:outline-none mb-2"
+                                            disableElevation={true}
+                                            fullWidth={true}
+                                            onClick={() => {
+                                                dispatch({
+                                                    type: typeChange.deleteLine,
+                                                    value: index
+                                                })
+                                            }}
+                                        >
+                                            delete {!!item.name ? item.name : `line ${index}`}
+                                        </Button>
+                                    </div>
                                 </Tooltip>
                             )}
                         </fieldset>
