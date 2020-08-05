@@ -59,11 +59,12 @@ const renderActiveShape = (props: any) => {
 
 function StandardPieChart() {
 
+    // component state
     const [state, setState] = useState({
         activeIndex: 0
     })
 
-    const onPieEnter = (data: any, index: any) => {
+    const onSliceEnter = (data: any, index: any) => {
         setState({
             activeIndex: index,
         });
@@ -81,7 +82,7 @@ function StandardPieChart() {
                 outerRadius={55}
                 fill="#805ad5"
                 dataKey="value"
-                onMouseEnter={onPieEnter}
+                onMouseEnter={onSliceEnter}
             />
         </PieChart>
     );
