@@ -28,6 +28,10 @@ interface ChartRef extends KeyOfStringInterface {
 
 type chartRefKey = "barChartState" | "pieChartState" | "lineChartState" | "scatterChartState" | "areaChartState";
 
+export interface ChartBaseState {
+    allGood: boolean; // to know whether user can click draw button
+}
+
 function Chart() {
 
     // references
@@ -63,9 +67,13 @@ function Chart() {
     })
     const { activeIndex } = state
 
+    // After a chart input was updated, this will be called
     const setChartState = (type: chartRefKey) => (value: any) => {
         reference.current[type] = value
+        setState({ ...state })
     }
+
+    console.log("hi")
 
     const log = (key: chartRefKey) => {
         console.log(reference.current[key])
@@ -96,8 +104,12 @@ function Chart() {
                                     key={idx}
                                 >
                                     <div
-                                        onClick={() => setState({ ...state, activeIndex: idx })}
-                                        className={`rounded h-8 flex flex-1 mr-1 items-center justify-center cursor-pointer hover:${item.tailwindActiveBg} ${activeIndex === idx ? item.tailwindActiveBg : ""}`}
+                                        onClick={() => {
+                                            if (idx !== activeIndex) {
+                                                setState({ ...state, activeIndex: idx })
+                                            }
+                                        }}
+                                        className={`rounded h-8 flex flex-1 mr-1 items-center justify-center cursor-pointer transition-colors duration-200 ease-out hover:${item.tailwindActiveBg} ${activeIndex === idx ? item.tailwindActiveBg : ""}`}
                                     >
                                         <item.icon fontSize="small" className={item.tailwindColor} />
                                     </div>
@@ -129,6 +141,7 @@ function Chart() {
                                 disableElevation={true}
                                 fullWidth={true}
                                 onClick={() => log(chartButtons[activeIndex].refKey)}
+                                disabled={!!reference.current[chartButtons[activeIndex].refKey]?.allGood}
                             >
                                 Draw chart
                             </Button>

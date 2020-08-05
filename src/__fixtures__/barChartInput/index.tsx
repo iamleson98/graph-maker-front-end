@@ -20,8 +20,12 @@ function BarChartInput({ giveState }: BarChartInputParam): JSX.Element {
         yTitle: "",
         xData: [""],
         yData: [
-            [""]
-        ]
+            {
+                error: undefined,
+                data: [""]
+            }
+        ],
+        allGood: false
     })
     let { xData, yData, chartTitle, xTitle, yTitle } = state
 
@@ -140,12 +144,12 @@ function BarChartInput({ giveState }: BarChartInputParam): JSX.Element {
                                 <legend className="text-xs leading-4 font-normal">
                                     block {index + 1}
                                 </legend>
-                                {block.map((item, idx) => (
+                                {block.data.map((item, idx) => (
                                     <div className="flex items-center mb-1" key={idx}>
                                         <span className="mr-2 text-xs">{idx + 1}</span>
                                         <DelayInput
                                             type="text"
-                                            className="rounded mr-2 bg-gray-200 px-2"
+                                            className={`rounded mr-2 bg-gray-200 px-2 ${block.error ? "bg-red-300" : ""}`}
                                             placeholder="Enter data"
                                             defaultValue={item}
                                             giveValue={(value: string) => {
@@ -179,6 +183,8 @@ function BarChartInput({ giveState }: BarChartInputParam): JSX.Element {
                                         </Tooltip>
                                     </div>
                                 ))}
+                                {/* error */}
+                                {!!block.error && <small className="text-red-600">{block.error}</small>}
                             </fieldset>
                         ))}
                     </fieldset>

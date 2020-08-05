@@ -1,3 +1,8 @@
+import { ChartBaseState } from '../chart'
+import { isRealNumber } from '../constants';
+import { noAnyError } from '../utils'
+
+
 export enum typeChange {
     chartTitleChange,
     xTitleChange,
@@ -11,12 +16,15 @@ export enum typeChange {
     yFieldChange,
 }
 
-export interface BarchartState {
+export interface BarchartState extends ChartBaseState {
     chartTitle: string;
     xTitle: string;
     yTitle: string;
     xData: string[];
-    yData: string[][];
+    yData: {
+        error?: string;
+        data: string[];
+    }[];
 }
 
 export interface BarchartAction {
@@ -29,6 +37,11 @@ export interface BarchartAction {
 }
 
 export const MAX_BLOCKS_PER_CHART = 15, MAX_COLLUMS_PER_BLOCK = 5
+
+type error = string | undefined
+function barChartErrorChecker(data: string[]): error {
+    return data.some(item => !isRealNumber.test(item)) ? "values need to be numbers" : undefined
+}
 
 export function barchartReducer(state: BarchartState, action: BarchartAction): BarchartState {
     let newState = state;
@@ -52,12 +65,11 @@ export function barchartReducer(state: BarchartState, action: BarchartAction): B
             break
         case typeChange.addXFieldChange:
             if (xData.length < MAX_BLOCKS_PER_CHART) {
-                let newYData = yData
                 xData = xData.concat("")
-                newYData.push(
-                    [...(new Array(yData[0].length))].map(() => "") // since cannot concat an array to an array
-                )
-                newState = { ...newState, xData, yData: newYData }
+                yData = yData.concat({
+                    data: [...(new Array(yData[0].data.length))].map(() => "")
+                })
+                newState = { ...newState, xData, yData }
             }
             break
         case typeChange.removeXFieldChange:
@@ -67,14 +79,26 @@ export function barchartReducer(state: BarchartState, action: BarchartAction): B
             newState = { ...newState, xData, yData }
             break
         case typeChange.addYFieldChange:
-            if (yData[0].length < MAX_COLLUMS_PER_BLOCK) {
-                yData = yData.map(block => block.concat(""))
+            if (yData[0].data.length < MAX_COLLUMS_PER_BLOCK) {
+                yData = yData.map(block => {
+                    return {
+                        ...block,
+                        data: block.data.concat("")
+                    }
+                })
                 newState = { ...newState, yData }
             }
             break
         case typeChange.removeYFieldChange:
-            // index to remove will be hold in option.value
-            yData = yData.map(block => block.filter((_, idx) => idx !== value))
+            // index to remove will be hold in value
+            yData = yData.map(block => {
+                let data = block.data.filter((_, idx) => idx !== value)
+                return {
+                    ...block,
+                    data,
+                    error: barChartErrorChecker(data)
+                }
+            })
             newState = { ...newState, yData }
             break
         case typeChange.xFieldChange:
@@ -84,8 +108,12 @@ export function barchartReducer(state: BarchartState, action: BarchartAction): B
             break
         case typeChange.yFieldChange:
             // value is index of y block, options.value is data for that, options.index is index of that field
-            yData[value][options?.index] = options?.value
-            newState = { ...newState, yData }
+            yData[value].data[options?.index] = options?.value
+            let error = barChartErrorChecker(yData[value].data)
+            yData[value].error = error
+
+            const allGood = noAnyError(yData.map(block => block.error))
+            newState = { ...newState, yData, allGood }
             break
 
         default:

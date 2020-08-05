@@ -1,4 +1,6 @@
 import { isRealNumber } from '../constants'
+import { ChartBaseState } from '../chart'
+import { noAnyError } from '../utils'
 
 export enum typeChange {
     addPie,
@@ -10,13 +12,13 @@ export enum typeChange {
     sliceValueChange,
 }
 
-export interface PieChartState {
+export interface PieChartState extends ChartBaseState {
     chartTitle: string;
     pies: {
         name: string;
         value: string;
         error?: string;
-    }[][]
+    }[][];
 }
 
 export interface PieChartAction {
@@ -90,12 +92,15 @@ export function pieChartReducer(state: PieChartState, action: PieChartAction): P
             // value is index of pie to update, options.index is index of that slice, options.value is value for that field
             // check if the input value is a real number:
             let error = isRealNumber.test(options?.value) ? undefined : "value must be a number"
-            pies[value][options?.index] = {
-                ...pies[value][options?.index],
-                error,
-                value: options?.value
-            }
-            newState = { ...newState, pies }
+            pies[value][options?.index].error = error
+            pies[value][options?.index].value = options?.value
+
+            const allGood = noAnyError(
+                pies
+                    .map(pie => pie.map(slice => slice.error))
+                    .reduce((a, b) => a.concat(b), [])
+            )
+            newState = { ...newState, pies, allGood }
             break
 
         default:

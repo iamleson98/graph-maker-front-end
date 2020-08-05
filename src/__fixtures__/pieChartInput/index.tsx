@@ -28,7 +28,8 @@ function PieChart({ giveState }: PieChartParam): JSX.Element {
                     error: undefined,
                 }
             ]
-        ]
+        ],
+        allGood: false
     })
     let { chartTitle, pies } = state
 

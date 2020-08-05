@@ -1,13 +1,16 @@
 import { isRealNumber } from "../constants"
+import { ChartBaseState } from '../chart'
+import { noAnyError } from "../utils"
 
-export interface LineChartState {
+
+export interface LineChartState extends ChartBaseState {
     chartTitle: string;
     xData: string[];
     yData: {
         name: string;
         data: string[];
         error?: string;
-    }[]
+    }[],
 }
 
 export enum typeChange {
@@ -32,6 +35,11 @@ export interface LineChartAction {
 
 // constants
 export const MAX_POINTS = 25, MAX_LINES = 5
+
+type error = string | undefined
+function lineChartErrorChecker(data: string[]): error {
+    return data.some(item => !isRealNumber.test(item)) ? "values need to be numbers" : undefined
+}
 
 export function lineChartReducer(state: LineChartState, action: LineChartAction): LineChartState {
     let newState = state
@@ -58,9 +66,11 @@ export function lineChartReducer(state: LineChartState, action: LineChartAction)
             // value hold index of to be deleted field
             xData = xData.filter((_, idx) => idx !== value)
             yData = yData.map(item => {
+                let data = item.data.filter((_, id) => id !== value)
                 return {
                     ...item,
-                    data: item.data.filter((_, id) => id !== value)
+                    data,
+                    error: lineChartErrorChecker(data)
                 }
             })
             newState = { ...newState, xData, yData }
@@ -69,7 +79,6 @@ export function lineChartReducer(state: LineChartState, action: LineChartAction)
             yData = yData.concat({
                 name: "",
                 data: [...(new Array(xData.length))].map(() => ""),
-                error: undefined
             })
             newState = { ...newState, yData }
             break
@@ -86,14 +95,16 @@ export function lineChartReducer(state: LineChartState, action: LineChartAction)
         case typeChange.yFieldChange:
             // value is index of line, options.index is index of field, options.value is value for it
             yData[value].data[options?.index] = options?.value
-            let error = yData[value].data.some(val => !isRealNumber.test(val)) ? "values must be numbers" : undefined
+            let error = lineChartErrorChecker(yData[value].data)
             yData[value].error = error
             newState = { ...newState, yData }
             break
         case typeChange.lineNameChange:
             // value is index, options.value is value for it
             yData[value].name = options?.value
-            newState = { ...newState, yData }
+
+            const allGood = noAnyError(yData.map(line => line.error))
+            newState = { ...newState, yData, allGood }
             break
         default:
             break

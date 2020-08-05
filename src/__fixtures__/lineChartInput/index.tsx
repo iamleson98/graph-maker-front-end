@@ -25,7 +25,8 @@ function LineChart({ giveState }: LineCharParam): JSX.Element {
                 name: "",
                 data: [""]
             }
-        ]
+        ],
+        allGood: false
     })
     const { chartTitle, xData, yData } = state
 
