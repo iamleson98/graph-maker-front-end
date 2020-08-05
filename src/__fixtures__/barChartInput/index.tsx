@@ -30,7 +30,7 @@ function BarChartInput({ giveState }: BarChartInputParam): JSX.Element {
         giveState(state)
     })
 
-    const handleAddXItem = (clickedIndex: number) => () => {
+    const manipulateAnXField = (clickedIndex: number) => () => {
         dispatch({
             type: typeChange[!clickedIndex ? "addXFieldChange" : "removeXFieldChange"],
             value: !!clickedIndex ? clickedIndex : undefined,
@@ -104,7 +104,7 @@ function BarChartInput({ giveState }: BarChartInputParam): JSX.Element {
                                 />
                                 <Tooltip title={!idx ? "Add item" : "Remove item"} placement="top">
                                     <span
-                                        onClick={handleAddXItem(idx)}
+                                        onClick={manipulateAnXField(idx)}
                                         className={`flex cursor-pointer items-center justify-center rounded ${!idx ? "bg-blue-100 text-blue-600" : "bg-orange-100 text-orange-600"} w-8 h-8 hover:${!idx ? "bg-blue-200" : "bg-orange-200"}`}
                                         title=""
                                     >
