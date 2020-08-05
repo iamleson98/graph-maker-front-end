@@ -30,7 +30,9 @@ function BarChartInput({ giveState }: BarChartInputParam): JSX.Element {
         giveState(state)
     })
 
-    const handleAddXItem = (clickedIndex: number) => () => {
+    const manipulateAnXField = (clickedIndex: number) => () => {
+        // clickedIndex is in range of [0, negative number].
+        // if it is 0, it means we wanna add a field, otherwise, means delete a field with a value is index of that field
         dispatch({
             type: typeChange[!clickedIndex ? "addXFieldChange" : "removeXFieldChange"],
             value: !!clickedIndex ? clickedIndex : undefined,
@@ -38,6 +40,7 @@ function BarChartInput({ giveState }: BarChartInputParam): JSX.Element {
     }
 
     const handleYItemClick = (clickedIndex: number) => {
+        // add button(+) is at index 0, delete button(-) is at greater than 0 indexes.
         dispatch({
             type: typeChange[!clickedIndex ? "addYFieldChange" : "removeYFieldChange"],
             value: !!clickedIndex ? clickedIndex : undefined,
@@ -62,9 +65,7 @@ function BarChartInput({ giveState }: BarChartInputParam): JSX.Element {
                 />
             </div>
 
-            <div
-                className=""
-            >
+            <div className="">
                 <div className="mb-4">
                     {/* x title */}
                     <div className="mb-2">
@@ -94,19 +95,18 @@ function BarChartInput({ giveState }: BarChartInputParam): JSX.Element {
                                     defaultValue={value}
                                     giveValue={(value: string) => {
                                         dispatch({
-                                            type: typeChange.xFieldChange,
-                                            value: idx,
+                                            type: typeChange.xFieldChange, // type of change
+                                            value: idx,                    // index of that field
                                             options: {
-                                                value
+                                                value                      // new value for that field
                                             }
                                         })
                                     }}
                                 />
                                 <Tooltip title={!idx ? "Add item" : "Remove item"} placement="top">
                                     <span
-                                        onClick={handleAddXItem(idx)}
+                                        onClick={manipulateAnXField(idx)}
                                         className={`flex cursor-pointer items-center justify-center rounded ${!idx ? "bg-blue-100 text-blue-600" : "bg-orange-100 text-orange-600"} w-8 h-8 hover:${!idx ? "bg-blue-200" : "bg-orange-200"}`}
-                                        title=""
                                     >
                                         {!idx ? <Add fontSize="small" /> : <Remove fontSize="small" />}
                                     </span>
@@ -127,8 +127,8 @@ function BarChartInput({ giveState }: BarChartInputParam): JSX.Element {
                             placeholder="X title"
                             defaultValue={yTitle}
                             giveValue={(value: string) => dispatch({
-                                type: typeChange.yTitleChange,
-                                value
+                                type: typeChange.yTitleChange, // type of change
+                                value                          // value for that field
                             })}
                         />
                     </div>
@@ -150,11 +150,11 @@ function BarChartInput({ giveState }: BarChartInputParam): JSX.Element {
                                             defaultValue={item}
                                             giveValue={(value: string) => {
                                                 dispatch({
-                                                    type: typeChange.yFieldChange,
-                                                    value: index,
+                                                    type: typeChange.yFieldChange,// type of change
+                                                    value: index,                 // index of that block (each block contains 1 or more bars)
                                                     options: {
-                                                        index: idx,
-                                                        value
+                                                        index: idx,               // index of the bar we need to change value
+                                                        value                     // new value for that bar
                                                     }
                                                 })
                                             }}
@@ -163,7 +163,7 @@ function BarChartInput({ giveState }: BarChartInputParam): JSX.Element {
                                             <span
                                                 onClick={() => {
                                                     // ony buttons in the first fieldset are clickable
-                                                    if (index === 0) {
+                                                    if (!index) {
                                                         handleYItemClick(idx)
                                                     }
                                                 }}
