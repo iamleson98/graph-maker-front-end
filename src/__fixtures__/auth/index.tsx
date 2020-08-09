@@ -28,9 +28,9 @@ function Auth() {
     // memoized values:
     const socialButtons = useMemo(() => {
         return [
-            { name: "Facebook", icon: Facebook, bgClass: "bg-blue-700" },
-            { name: "Google", icon: Google, bgClass: "bg-red-600" },
-            { name: "Twitter", icon: Twitter, bgClass: "bg-blue-500" },
+            { name: "Facebook", icon: Facebook, bgClass: "bg-blue-700", bgHoverClass: "bg-blue-600" },
+            { name: "Google", icon: Google, bgClass: "bg-red-600", bgHoverClass: "bg-red-500" },
+            { name: "Twitter", icon: Twitter, bgClass: "bg-blue-500", bgHoverClass: "bg-blue-400" },
         ]
     }, [])
 
@@ -78,11 +78,10 @@ function Auth() {
                     </div>
                 </div>
                 <div className="border-solid border-gray-400 border-l relative mr-6 sm:hidden">
-                    <div className="text-gray-600 px-1 py-1 rounded bg-white absolute font-medium text-base"
+                    <div className="text-gray-600 px-1 py-1 rounded bg-white absolute font-medium text-base -translate-x-1/2 -translate-y-1/2 transform"
                         style={{
                             top: "50%",
                             left: "50%",
-                            transform: "translate(-50%, -50%)",
                         }}
                     >
                         OR
@@ -91,7 +90,7 @@ function Auth() {
                 <div className="m-auto">
                     {socialButtons.map((button, idx) => (
                         <Tooltip key={idx} title={`Continue with ${button.name}`} placement="right">
-                            <div key={idx} className={`${button.bgClass} rounded py-2 px-6 mb-2 flex cursor-pointer items-center text-center text-white`}>
+                            <div key={idx} className={`${button.bgClass} hover:${button.bgHoverClass} transition-colors duration-200 ease-out rounded py-2 px-6 mb-2 flex cursor-pointer items-center text-center text-white`}>
                                 <button.icon fontSize="small" className="mr-2" />
                                 <span>{button.name}</span>
                             </div>

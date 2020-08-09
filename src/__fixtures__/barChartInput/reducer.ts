@@ -1,6 +1,6 @@
-import { ChartBaseState } from '../chart'
-import { isRealNumber } from '../constants';
-import { noAnyError } from '../utils'
+import { ChartBaseState } from "../chart"
+import { isRealNumber } from "../constants";
+import { noAnyError } from "../utils"
 
 
 export enum typeChange {
@@ -112,13 +112,15 @@ export function barchartReducer(state: BarchartState, action: BarchartAction): B
             let error = barChartErrorChecker(yData[value].data)
             yData[value].error = error
 
-            const allGood = noAnyError(yData.map(block => block.error))
-            newState = { ...newState, yData, allGood }
+            newState = { ...newState, yData }
             break
 
         default:
             break
     }
+
+    // final step to check errors:
+    newState.allGood = noAnyError(newState.yData.map(block => block.error))
 
     return newState;
 }

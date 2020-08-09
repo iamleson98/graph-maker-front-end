@@ -1,11 +1,7 @@
 import React, { memo } from 'react'
 
 
-export interface DummyParam {
-    giveState: (value: any) => void;
-}
-
-function Dummy({ giveState }: DummyParam) {
+function Dummy() {
     return (
         <div></div>
     )

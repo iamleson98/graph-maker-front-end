@@ -1,17 +1,13 @@
-import React, { memo, useReducer, useEffect } from 'react'
-import { Add, Remove } from '@material-ui/icons'
-import Tooltip from '@material-ui/core/Tooltip'
-import DelayInput from '../../components/delayinput'
-import '../../tailwind/out.css'
+import React, { memo, useReducer, useEffect } from "react"
+import { Add, Remove } from "@material-ui/icons"
+import Tooltip from "@material-ui/core/Tooltip"
+import DelayInput from "../../components/delayinput"
+import "../../tailwind/out.css"
+import { BarchartState, BarchartAction, typeChange, barchartReducer } from "./reducer"
+import { localState } from "../../App"
 
-import { BarchartState, BarchartAction, typeChange, barchartReducer } from './reducer'
 
-
-export interface BarChartInputParam {
-    giveState: (value: BarchartState) => void;
-}
-
-function BarChartInput({ giveState }: BarChartInputParam): JSX.Element {
+function BarChartInput(): JSX.Element {
 
     // component state
     const [state, dispatch] = useReducer<React.Reducer<BarchartState, BarchartAction>>(barchartReducer, {
@@ -27,12 +23,16 @@ function BarChartInput({ giveState }: BarChartInputParam): JSX.Element {
         ],
         allGood: false
     })
-    let { xData, yData, chartTitle, xTitle, yTitle } = state
+    let { xData, yData, chartTitle, xTitle, yTitle, allGood } = state
 
-    // give parent state every time this component re-render
     useEffect(() => {
-        giveState(state)
-    })
+        // reactively let parent component to know that whether it can use data to write charts yet.
+        const prevState = localState()
+        localState({
+            ...prevState,
+            canClickDrawChart: allGood
+        })
+    }, [])
 
     const manipulateAnXField = (clickedIndex: number) => () => {
         // clickedIndex is in range of [0, negative number].

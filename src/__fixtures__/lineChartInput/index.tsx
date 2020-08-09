@@ -1,20 +1,16 @@
-import React, { memo, useReducer, useEffect } from 'react'
-import DelayInput from '../../components/delayinput'
-import { Add, Remove } from '@material-ui/icons'
-import Tooltip from '@material-ui/core/Tooltip'
-import { Button } from '@material-ui/core'
+import React, { memo, useReducer } from "react"
+import DelayInput from "../../components/delayinput"
+import { Add, Remove } from "@material-ui/icons"
+import Tooltip from "@material-ui/core/Tooltip"
+import { Button } from "@material-ui/core"
 
 import {
     lineChartReducer, LineChartAction,
     LineChartState, typeChange, MAX_LINES
-} from './reducer'
+} from "./reducer"
 
 
-interface LineCharParam {
-    giveState: (value: LineChartState) => void;
-}
-
-function LineChart({ giveState }: LineCharParam): JSX.Element {
+function LineChart(): JSX.Element {
 
     // component state
     const [state, dispatch] = useReducer<React.Reducer<LineChartState, LineChartAction>>(lineChartReducer, {
@@ -29,11 +25,6 @@ function LineChart({ giveState }: LineCharParam): JSX.Element {
         allGood: false
     })
     const { chartTitle, xData, yData } = state
-
-    // give state to parent component every time this component re-render
-    useEffect(() => {
-        giveState(state)
-    })
 
     return (
         <div className="rounded bg-white p-2 text-gray-700 max-w-xs">
@@ -53,9 +44,7 @@ function LineChart({ giveState }: LineCharParam): JSX.Element {
                 />
             </div>
 
-            <div
-                className=""
-            >
+            <div className="">
                 {/* x data */}
                 <fieldset className="rounded border-2 border-gray-200 border-solid mb-4 p-2">
                     <legend className="text-sm font-medium text-red-500">

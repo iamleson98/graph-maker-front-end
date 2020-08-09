@@ -1,21 +1,23 @@
-import React, { memo, useMemo, useState, useRef } from 'react'
-import { PieChart, Timeline } from '@material-ui/icons'
-import { ChartBar, Scatter, AreaChart } from '../../components/icons'
-import Tooltip from '@material-ui/core/Tooltip'
-import LineChartInput from '../lineChartInput'
-import BarChartInput from '../barChartInput'
-import PieChartInput from '../pieChartInput'
-import SimpleBar from 'simplebar-react'
-import 'simplebar/dist/simplebar.min.css'
-import { DelayChartRender } from './delayInputRender'
-import { Button, SvgIconTypeMap } from '@material-ui/core'
-import Example from '../standardChart/pie'
-import { BarchartState } from '../barChartInput/reducer'
-import { PieChartState } from '../pieChartInput/reducer'
-import { LineChartState } from '../lineChartInput/reducer'
-import { KeyOfStringInterface } from '../constants'
-import { OverridableComponent } from '@material-ui/core/OverridableComponent'
-import Dummy from './dummy'
+import React, { memo, useMemo, useState, useRef } from "react"
+import { PieChart, Timeline } from "@material-ui/icons"
+import { ChartBar, Scatter, AreaChart } from "../../components/icons"
+import Tooltip from "@material-ui/core/Tooltip"
+import LineChartInput from "../lineChartInput"
+import BarChartInput from "../barChartInput"
+import PieChartInput from "../pieChartInput"
+import SimpleBar from "simplebar-react"
+import "simplebar/dist/simplebar.min.css"
+import { DelayChartRender } from "./delayInputRender"
+import { Button, SvgIconTypeMap } from "@material-ui/core"
+import Example from "../standardChart/pie"
+import { BarchartState } from "../barChartInput/reducer"
+import { PieChartState } from "../pieChartInput/reducer"
+import { LineChartState } from "../lineChartInput/reducer"
+import { KeyOfStringInterface } from "../constants"
+import { OverridableComponent } from "@material-ui/core/OverridableComponent"
+import Dummy from "./dummy"
+import { useQuery } from "@apollo/client"
+import { CHECK_CHART_DRAW_BUTTON_CAN_ACTIVE } from "../../graphql/queries"
 
 
 interface ChartRef extends KeyOfStringInterface {
@@ -34,6 +36,9 @@ export interface ChartBaseState {
 
 function Chart() {
 
+    // query to determine if the draw button is clickable
+    const { loading, data } = useQuery(CHECK_CHART_DRAW_BUTTON_CAN_ACTIVE)
+
     // references
     const reference = useRef<ChartRef>({
         barChartState: undefined,
@@ -50,7 +55,7 @@ function Chart() {
         tailwindColor: string;
         tailwindActiveBg: string;
         refKey: chartRefKey;
-        inputComponent: React.MemoExoticComponent<(param: { giveState: (state: any) => void }) => JSX.Element>;
+        inputComponent: React.MemoExoticComponent<() => JSX.Element>;
     }[]>(() => {
         return [
             { name: "Bar chart", icon: ChartBar, tailwindColor: "text-green-500", tailwindActiveBg: "bg-green-200", refKey: "barChartState", inputComponent: BarChartInput },
@@ -66,14 +71,6 @@ function Chart() {
         activeIndex: 0
     })
     const { activeIndex } = state
-
-    // After a chart input was updated, this will be called
-    const setChartState = (type: chartRefKey) => (value: any) => {
-        reference.current[type] = value
-        setState({ ...state })
-    }
-
-    console.log("hi")
 
     const log = (key: chartRefKey) => {
         console.log(reference.current[key])
@@ -125,9 +122,7 @@ function Chart() {
                                 <React.Fragment key={idx}>
                                     {activeIndex === idx && (
                                         <DelayChartRender>
-                                            <item.inputComponent
-                                                giveState={setChartState(item.refKey)}
-                                            />
+                                            <item.inputComponent />
                                         </DelayChartRender>
                                     )}
                                 </React.Fragment>
@@ -141,9 +136,9 @@ function Chart() {
                                 disableElevation={true}
                                 fullWidth={true}
                                 onClick={() => log(chartButtons[activeIndex].refKey)}
-                                disabled={!!reference.current[chartButtons[activeIndex].refKey]?.allGood}
+                                disabled={loading || !data.canClickDrawChart}
                             >
-                                Draw chart
+                                {loading ? "Loading..." : "Draw chart"}
                             </Button>
                         </div>
                     </div>

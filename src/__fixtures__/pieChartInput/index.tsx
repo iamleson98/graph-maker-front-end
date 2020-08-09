@@ -1,21 +1,18 @@
-import React, { memo, useReducer, useEffect } from 'react'
-import DelayInput from '../../components/delayinput'
-import Button from '@material-ui/core/Button'
-import { Add, DeleteOutlined } from '@material-ui/icons'
-import Tooltip from '@material-ui/core/Tooltip'
+import React, { memo, useReducer } from "react"
+import DelayInput from "../../components/delayinput"
+import Button from "@material-ui/core/Button"
+import { Add, DeleteOutlined } from "@material-ui/icons"
+import Tooltip from "@material-ui/core/Tooltip"
 import {
-    PieChartAction, PieChartState, typeChange,
+    PieChartAction,
+    PieChartState,
+    typeChange,
     MAX_PIE,
-    // MAX_SLICES_PER_PIE, 
     pieChartReducer
-} from './reducer'
+} from "./reducer"
 
 
-interface PieChartParam {
-    giveState: (value: PieChartState) => void;
-}
-
-function PieChart({ giveState }: PieChartParam): JSX.Element {
+function PieChart(): JSX.Element {
 
     // component state
     const [state, dispatch] = useReducer<React.Reducer<PieChartState, PieChartAction>>(pieChartReducer, {
@@ -32,11 +29,6 @@ function PieChart({ giveState }: PieChartParam): JSX.Element {
         allGood: false
     })
     let { chartTitle, pies } = state
-
-    // give state to parent component
-    useEffect(() => {
-        giveState(state)
-    })
 
     return (
         <div className="text-gray-700 bg-white rounded p-2 max-w-xs">
