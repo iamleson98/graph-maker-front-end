@@ -6,10 +6,9 @@ import LineChartInput from "../lineChartInput"
 import BarChartInput from "../barChartInput"
 import PieChartInput from "../pieChartInput"
 import SimpleBar from "simplebar-react"
-import "simplebar/dist/simplebar.min.css"
 import { DelayChartRender } from "./delayInputRender"
 import { Button, SvgIconTypeMap } from "@material-ui/core"
-import Example from "../standardChart/pie"
+import StdPieChart from "../standardChart/pie"
 import { BarchartState } from "../barChartInput/reducer"
 import { PieChartState } from "../pieChartInput/reducer"
 import { LineChartState } from "../lineChartInput/reducer"
@@ -18,7 +17,30 @@ import { OverridableComponent } from "@material-ui/core/OverridableComponent"
 import Dummy from "./dummy"
 import { useQuery } from "@apollo/client"
 import { CHECK_CHART_DRAW_BUTTON_CAN_ACTIVE } from "../../graphql/queries"
+import "simplebar/dist/simplebar.min.css"
 
+
+
+const piesData = [
+    [
+        { name: 'Group A', value: 400 },
+        { name: 'Group B', value: 300 },
+        { name: 'Group C', value: 300 },
+        { name: 'Group D', value: 900 },
+    ],
+    [
+        { name: 'Group A', value: 450 },
+        { name: 'Group B', value: 300 },
+        { name: 'Group C', value: 312 },
+        { name: 'Group D', value: 900 },
+    ],
+    [
+        { name: 'Group A', value: 40 },
+        { name: 'Group B', value: 300 },
+        { name: 'Group C', value: 600 },
+        { name: 'Group D', value: 856 },
+    ]
+]
 
 interface ChartRef extends KeyOfStringInterface {
     barChartState?: BarchartState;
@@ -86,7 +108,12 @@ function Chart() {
                 </div>
                 <div className="p-1">
                     <div className="rounded bg-white p-1">
-                        <Example />
+                        {piesData.map((pie, index) => (
+                            <StdPieChart
+                                key={index}
+                                pie={pie}
+                            />
+                        ))}
                     </div>
                 </div>
             </div>
