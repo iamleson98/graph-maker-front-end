@@ -106,15 +106,14 @@ function Chart() {
                         {chartButtons[activeIndex].name}
                     </div>
                 </div>
-                <div className="p-1">
-                    <div className="rounded bg-white p-1">
-                        {piesData.map((pie, index) => (
+                <div className="p-1 flex flex-wrap">
+                    {piesData.map((pie, index) => (
+                        <div className="w-1/2 md:w-full" key={index}>
                             <StdPieChart
-                                key={index}
                                 pie={pie}
                             />
-                        ))}
-                    </div>
+                        </div>
+                    ))}
                 </div>
             </div>
             <div className="w-4/12 sm:w-full max-w-xs m-auto">

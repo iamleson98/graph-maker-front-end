@@ -79,15 +79,15 @@ function StandardPieChart({ pie }: StdPieChartProps) {
     };
 
     return (
-        <PieChart width={320} height={320}>
+        <PieChart width={400} height={400}>
             <Pie
                 activeIndex={state.activeIndex}
                 activeShape={renderActiveShape}
                 data={pie}
-                cx={160}
-                cy={160}
-                innerRadius={35}
-                outerRadius={55}
+                cx={200}
+                cy={200}
+                innerRadius={60}
+                outerRadius={80}
                 fill="#805ad5"
                 dataKey="value"
                 onMouseEnter={onSliceEnter}
