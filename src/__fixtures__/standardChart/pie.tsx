@@ -2,13 +2,6 @@ import React, { useState, memo } from 'react';
 import { PieChart, Pie, Sector } from 'recharts';
 
 
-// const data = [
-//     { name: 'Group A', value: 400 },
-//     { name: 'Group B', value: 300 },
-//     { name: 'Group C', value: 300 },
-//     { name: 'Group D', value: 900 },
-// ];
-
 const renderActiveShape = (props: any) => {
     const RADIAN = Math.PI / 180;
     const {
