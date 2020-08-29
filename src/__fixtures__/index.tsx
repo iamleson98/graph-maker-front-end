@@ -17,7 +17,6 @@ const client = new ApolloClient({
                 fields: {
                     canClickDrawChart: {
                         read() {
-                            console.log(localState())
                             return localState().canClickDrawChart;
                         }
                     }

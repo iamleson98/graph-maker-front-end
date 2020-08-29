@@ -1,4 +1,4 @@
-import React, { memo, useReducer } from "react"
+import React, { memo, useReducer, useEffect } from "react"
 import DelayInput from "../../components/delayinput"
 import Button from "@material-ui/core/Button"
 import { Add, DeleteOutlined } from "@material-ui/icons"
@@ -10,6 +10,7 @@ import {
     MAX_PIE,
     pieChartReducer
 } from "./reducer"
+import { localState } from "../index"
 
 
 function PieChart(): JSX.Element {
@@ -26,9 +27,17 @@ function PieChart(): JSX.Element {
                 }
             ]
         ],
-        allGood: false
+        allGood: true
     })
-    let { chartTitle, pies } = state
+    let { chartTitle, pies, allGood } = state
+
+    useEffect(() => {
+        const prevState = localState()
+        localState({
+            ...prevState,
+            canClickDrawChart: allGood
+        })
+    }, [allGood])
 
     return (
         <div className="text-gray-700 bg-white rounded p-2 max-w-xs">

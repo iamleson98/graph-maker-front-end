@@ -1,4 +1,4 @@
-import React, { memo, useReducer, useEffect } from "react"
+import React, { memo, useReducer } from "react"
 import { Add, Remove } from "@material-ui/icons"
 import Tooltip from "@material-ui/core/Tooltip"
 import DelayInput from "../../components/delayinput"
@@ -23,16 +23,16 @@ function BarChartInput(): JSX.Element {
         ],
         allGood: false
     })
-    let { xData, yData, chartTitle, xTitle, yTitle, allGood } = state
+    let { xData, yData, chartTitle, xTitle, yTitle, allGood } = state;
 
-    useEffect(() => {
-        // reactively let parent component to know that whether it can use data to write charts yet.
+    // run automatically after every re-render
+    (() => {
         const prevState = localState()
         localState({
             ...prevState,
             canClickDrawChart: allGood
         })
-    }, [])
+    })()
 
     const manipulateAnXField = (clickedIndex: number) => () => {
         // clickedIndex is in range of [0, negative number].

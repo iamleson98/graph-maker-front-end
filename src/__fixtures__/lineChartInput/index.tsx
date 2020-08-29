@@ -1,4 +1,4 @@
-import React, { memo, useReducer } from "react"
+import React, { memo, useReducer, useEffect } from "react"
 import DelayInput from "../../components/delayinput"
 import { Add, Remove } from "@material-ui/icons"
 import Tooltip from "@material-ui/core/Tooltip"
@@ -8,6 +8,7 @@ import {
     lineChartReducer, LineChartAction,
     LineChartState, typeChange, MAX_LINES
 } from "./reducer"
+import { localState } from "../index"
 
 
 function LineChart(): JSX.Element {
@@ -24,7 +25,15 @@ function LineChart(): JSX.Element {
         ],
         allGood: false
     })
-    const { chartTitle, xData, yData } = state
+    const { chartTitle, xData, yData, allGood } = state
+
+    useEffect(() => {
+        const prevState = localState()
+        localState({
+            ...prevState,
+            canClickDrawChart: allGood
+        })
+    }, [allGood])
 
     return (
         <div className="rounded bg-white p-2 text-gray-700 max-w-xs">
@@ -174,7 +183,7 @@ function LineChart(): JSX.Element {
                                 })}
                             >
                                 Add line
-                        </Button>
+                            </Button>
                         </div>
                     </Tooltip>
                 </fieldset>

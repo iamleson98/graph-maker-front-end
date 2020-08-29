@@ -25,5 +25,8 @@ module.exports = {
     plugins: [],
     corePlugins: {
         // outline: false,
-    }
+    },
+    future: {
+        removeDeprecatedGapUtilities: true,
+    },
 }
