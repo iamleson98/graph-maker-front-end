@@ -2,12 +2,12 @@ import React, { useState, memo } from 'react';
 import { PieChart, Pie, Sector } from 'recharts';
 
 
-const data = [
-    { name: 'Group A', value: 400 },
-    { name: 'Group B', value: 300 },
-    { name: 'Group C', value: 300 },
-    { name: 'Group D', value: 900 },
-];
+// const data = [
+//     { name: 'Group A', value: 400 },
+//     { name: 'Group B', value: 300 },
+//     { name: 'Group C', value: 300 },
+//     { name: 'Group D', value: 900 },
+// ];
 
 const renderActiveShape = (props: any) => {
     const RADIAN = Math.PI / 180;
@@ -56,8 +56,16 @@ const renderActiveShape = (props: any) => {
     );
 };
 
+export type PieChartInter = {
+    name: string;
+    value: number;
+}[]
 
-function StandardPieChart() {
+export interface StdPieChartProps {
+    pie: PieChartInter;
+}
+
+function StandardPieChart({ pie }: StdPieChartProps) {
 
     // component state
     const [state, setState] = useState({
@@ -71,15 +79,15 @@ function StandardPieChart() {
     };
 
     return (
-        <PieChart width={320} height={320}>
+        <PieChart width={400} height={400}>
             <Pie
                 activeIndex={state.activeIndex}
                 activeShape={renderActiveShape}
-                data={data}
-                cx={160}
-                cy={160}
-                innerRadius={35}
-                outerRadius={55}
+                data={pie}
+                cx={200}
+                cy={200}
+                innerRadius={60}
+                outerRadius={80}
                 fill="#805ad5"
                 dataKey="value"
                 onMouseEnter={onSliceEnter}

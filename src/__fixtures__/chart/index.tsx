@@ -9,7 +9,7 @@ import SimpleBar from "simplebar-react"
 import "simplebar/dist/simplebar.min.css"
 import { DelayChartRender } from "./delayInputRender"
 import { Button, SvgIconTypeMap } from "@material-ui/core"
-import Example from "../standardChart/pie"
+import StdPieChart from "../standardChart/pie"
 import { BarchartState } from "../barChartInput/reducer"
 import { PieChartState } from "../pieChartInput/reducer"
 import { LineChartState } from "../lineChartInput/reducer"
@@ -78,6 +78,7 @@ function Chart() {
 
     return (
         <div className="rounded p-2 flex flex-wrap">
+            {/* chart result */}
             <div className="w-8/12 sm:w-full">
                 <div className="p-1">
                     <div className="rounded bg-white p-2 text-gray-600">
@@ -86,13 +87,27 @@ function Chart() {
                 </div>
                 <div className="p-1">
                     <div className="rounded bg-white p-1">
-                        <Example />
+                        <StdPieChart
+                            pie={[
+                                {
+                                    name: "First",
+                                    value: 34
+                                },
+                                {
+                                    name: "Second",
+                                    value: 44
+                                },
+                            ]}
+                        />
                     </div>
                 </div>
             </div>
+
+            {/* chart input field */}
             <div className="w-4/12 sm:w-full max-w-xs m-auto">
                 <div className="p-1">
                     <div className="bg-white rounded">
+                        {/* chart input type switcher */}
                         <div className="flex items-center p-2 justify-around">
                             {chartButtons.map((item, idx) => (
                                 <Tooltip

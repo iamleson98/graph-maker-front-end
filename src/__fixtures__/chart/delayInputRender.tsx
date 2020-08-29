@@ -1,18 +1,23 @@
 import React, { useEffect, useState, Fragment } from 'react'
 import Fade from '@material-ui/core/Fade'
 import Gears from '../loading/Gears'
+import { timer } from 'rxjs'
 
 
 export function useDelay(time: number): boolean {
+
+    // loading state
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        const timeout = setTimeout(() => {
+
+        // subscription to close the loading gears
+        const $timerSub = timer(time).subscribe(() => {
             setLoading(false)
-        }, time)
+        })
 
         return () => {
-            clearTimeout(timeout)
+            $timerSub?.unsubscribe()
         }
     }, [time])
 
