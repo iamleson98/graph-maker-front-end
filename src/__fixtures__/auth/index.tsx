@@ -71,7 +71,6 @@ function Auth() {
                             color="primary"
                             disableElevation={true}
                             className="focus:outline-none"
-                            size="small"
                         >
                             GO
                         </Button>

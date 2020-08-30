@@ -1,48 +1,106 @@
-import React, { memo } from 'react';
-import {
-    LineChart, Line, XAxis, YAxis,
-    // CartesianGrid, 
-    Tooltip, Legend,
-} from 'recharts';
+import React, { memo, useEffect, useRef } from "react";
+import Chart, { ChartConfiguration, ChartDataSets } from "chart.js"
 
 
-const data = [
-    {
-        name: 'Page A', uv: 4000, pv: 2400, amt: 2400,
-    },
-    {
-        name: 'Page B', uv: 3000, pv: 1398, amt: 2210,
-    },
-    {
-        name: 'Page C', uv: 2000, pv: 9800, amt: 2290,
-    },
-    {
-        name: 'Page D', uv: 2780, pv: 3908, amt: 2000,
-    },
-    {
-        name: 'Page E', uv: 1890, pv: 4800, amt: 2181,
-    },
-    {
-        name: 'Page F', uv: 2390, pv: 3800, amt: 2500,
-    },
-    {
-        name: 'Page G', uv: 3490, pv: 4300, amt: 2100,
-    },
-];
-
-function StandardLineChart() {
-
-    return (
-        <LineChart width={500} height={300} data={data}>
-            {/* <CartesianGrid strokeDasharray="3 3" /> */}
-            <XAxis dataKey="name" padding={{ left: 30, right: 30 }} />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Line type="monotone" dataKey="pv" stroke="#8884d8" activeDot={{ r: 8 }} />
-            <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
-        </LineChart>
-    );
+interface LineConfigProps {
+    xLabels: string[];
+    yDataList: {
+        color?: string;
+        label?: string;
+        data: number[];
+    }[];
 }
 
-export default memo(StandardLineChart)
+export function lineChartConfig({ xLabels, yDataList }: LineConfigProps): ChartConfiguration {
+
+    const dtSets: ChartDataSets[] = yDataList.map((line) => {
+        const { color, label, data } = line
+        return {
+            label: label || "Label",
+            borderColor: color || "#747474",
+            data,
+            pointRadius: 1,
+            fill: false,
+            lineTension: 0,
+            borderWidth: 2,
+        }
+    })
+
+    return {
+        type: "line",
+        data: {
+            labels: xLabels,
+            datasets: dtSets,
+        },
+        options: {
+            responsive: true,
+            legend: {
+                align: "start",
+                position: "bottom",
+                fullWidth: false
+            },
+            animation: {
+                duration: 200
+            },
+            scales: {
+                xAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }],
+                yAxes: [{
+                    gridLines: {
+                        drawBorder: false
+                    },
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            },
+            tooltips: {
+                intersect: false,
+                mode: "index",
+            }
+        }
+    }
+}
+
+function StdLineChart(props: LineConfigProps) {
+
+    // reference
+    const canvasRef = useRef<any>()
+    const chartRef = useRef<Chart>()
+
+    useEffect(() => {
+        // destroy chart to draw new of (if chart exists)
+        chartRef.current?.destroy()
+        chartRef.current = new Chart(
+            (canvasRef.current as HTMLCanvasElement)?.getContext("2d") as CanvasRenderingContext2D,
+            lineChartConfig(props)
+        )
+    }, [])
+
+    return (
+        <>
+            <canvas ref={canvasRef}></canvas>
+        </>
+    )
+}
+
+export default memo(function () {
+    return <StdLineChart
+        xLabels={["one", "two", "three", "four"]}
+        yDataList={[
+            {
+                label: "hi",
+                color: "red",
+                data: [1, 2, 3, 4]
+            },
+            {
+                label: "ha",
+                color: "green",
+                data: [1, 7, 10, 4]
+            }
+        ]}
+    />
+})

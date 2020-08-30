@@ -1,92 +1,78 @@
-import React, { useState, memo } from 'react';
-import { PieChart, Pie, Sector } from 'recharts';
+import React, { useState, memo, useEffect, useRef } from 'react';
+import Chart, { ChartConfiguration, ChartDataSets } from 'chart.js';
 
 
-const renderActiveShape = (props: any) => {
-    const RADIAN = Math.PI / 180;
-    const {
-        cx, cy, midAngle, innerRadius, outerRadius, startAngle, endAngle,
-        fill, payload, percent, value,
-    } = props;
-    const sin = Math.sin(-RADIAN * midAngle);
-    const cos = Math.cos(-RADIAN * midAngle);
-    const sx = cx + (outerRadius + 10) * cos;
-    const sy = cy + (outerRadius + 10) * sin;
-    const mx = cx + (outerRadius + 30) * cos;
-    const my = cy + (outerRadius + 30) * sin;
-    const ex = mx + (cos >= 0 ? 1 : -1) * 22;
-    const ey = my;
-    const textAnchor = cos >= 0 ? 'start' : 'end';
-
-    return (
-        <g>
-            <text x={cx} y={cy} dy={8} textAnchor="middle" fill={fill}>{payload.name}</text>
-            <Sector
-                cx={cx}
-                cy={cy}
-                innerRadius={innerRadius}
-                outerRadius={outerRadius}
-                startAngle={startAngle}
-                endAngle={endAngle}
-                fill={fill}
-            />
-            <Sector
-                cx={cx}
-                cy={cy}
-                startAngle={startAngle}
-                endAngle={endAngle}
-                innerRadius={outerRadius + 6}
-                outerRadius={outerRadius + 10}
-                fill={fill}
-            />
-            <path d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`} stroke={fill} fill="none" />
-            <circle cx={ex} cy={ey} r={2} fill={fill} stroke="none" />
-            <text x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} textAnchor={textAnchor} fill="#333">{`PV ${value}`}</text>
-            <text x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} dy={18} textAnchor={textAnchor} fill="#999">
-                {`(Rate ${(percent * 100).toFixed(2)}%)`}
-            </text>
-        </g>
-    );
-};
-
-export type PieChartInter = {
-    name: string;
-    value: number;
-}[]
-
-export interface StdPieChartProps {
-    pie: PieChartInter;
+interface StdPieChartProps {
+    labels: string[];
+    bgColors?: string[];
+    data: number[];
 }
 
-function StandardPieChart({ pie }: StdPieChartProps) {
+export function pieChartConfig({ labels, bgColors, data }: StdPieChartProps): ChartConfiguration {
 
-    // component state
-    const [state, setState] = useState({
-        activeIndex: 0
-    })
+    const defaultColors = [
+        "red", "orange", "yellow", "green", "blue", "brown", "purple"
+    ]
+    const { length } = defaultColors
 
-    const onSliceEnter = (data: any, index: any) => {
-        setState({
-            activeIndex: index,
-        });
-    };
+    const dtSets: ChartDataSets[] = [{
+        data,
+        backgroundColor: bgColors || (new Array(data.length))
+            .fill(null)
+            .map((_, idx) => defaultColors[idx % length])
+    }]
 
-    return (
-        <PieChart width={400} height={400}>
-            <Pie
-                activeIndex={state.activeIndex}
-                activeShape={renderActiveShape}
-                data={pie}
-                cx={200}
-                cy={200}
-                innerRadius={60}
-                outerRadius={80}
-                fill="#805ad5"
-                dataKey="value"
-                onMouseEnter={onSliceEnter}
-            />
-        </PieChart>
-    );
+    return {
+        type: "doughnut",
+        data: {
+            datasets: dtSets,
+            labels
+        },
+        options: {
+            responsive: true,
+            legend: {
+                align: "start",
+                position: "bottom",
+                fullWidth: false
+            },
+            animation: {
+                animateScale: true,
+                animateRotate: true
+            },
+            title: {
+                display: true
+            }
+        },
+
+    }
 }
 
-export default memo(StandardPieChart)
+function StdPieChart(props: StdPieChartProps) {
+
+    const canvasRef = useRef<any>()
+    const chartRef = useRef<Chart>()
+
+    useEffect(() => {
+        chartRef.current?.destroy()
+        chartRef.current = new Chart(
+            (canvasRef.current as HTMLCanvasElement)?.getContext("2d") as CanvasRenderingContext2D,
+            pieChartConfig(props)
+        )
+    }, [])
+
+    return (
+        <canvas ref={canvasRef}></canvas>
+    )
+}
+
+export default memo(function () {
+    return (
+        <>
+            <StdPieChart
+                labels={["one", "two", "three"]}
+                data={[1, 2, 3, 4]}
+            // bgColors={["red", "blue", "green", "yellow"]}
+            />
+        </>
+    )
+})

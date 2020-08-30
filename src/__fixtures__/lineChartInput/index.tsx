@@ -57,7 +57,7 @@ function LineChart(): JSX.Element {
                 {/* x data */}
                 <fieldset className="rounded border-2 border-gray-200 border-solid mb-4 p-2">
                     <legend className="text-sm font-medium text-red-500">
-                        x data
+                        X data
                     </legend>
                     {xData.map((item, idx) => (
                         <div className="flex items-center justify-around mb-1" key={idx}>
