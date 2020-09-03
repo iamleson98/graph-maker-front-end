@@ -13,7 +13,7 @@ import StdPieChart from "../standardChart/pie"
 import { BarchartState } from "../barChartInput/reducer"
 import { PieChartState } from "../pieChartInput/reducer"
 import { LineChartState } from "../lineChartInput/reducer"
-import { KeyOfStringInterface } from "../constants"
+import { KeyOfStringInterface } from "../../constants"
 import { OverridableComponent } from "@material-ui/core/OverridableComponent"
 import Dummy from "./dummy"
 import { useQuery } from "@apollo/client"
@@ -88,16 +88,7 @@ function Chart() {
                 <div className="p-1">
                     <div className="rounded bg-white p-1">
                         <StdPieChart
-                            pie={[
-                                {
-                                    name: "First",
-                                    value: 34
-                                },
-                                {
-                                    name: "Second",
-                                    value: 44
-                                },
-                            ]}
+
                         />
                     </div>
                 </div>

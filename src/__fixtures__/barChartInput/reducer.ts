@@ -1,5 +1,5 @@
 import { ChartBaseState } from "../chart"
-import { isRealNumber } from "../constants";
+import { isRealNumber } from "../../constants";
 import { noAnyError } from "../utils"
 
 

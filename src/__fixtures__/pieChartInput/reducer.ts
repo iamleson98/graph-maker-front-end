@@ -1,4 +1,4 @@
-import { isRealNumber } from '../constants'
+import { isRealNumber } from '../../constants'
 import { ChartBaseState } from '../chart'
 import { noAnyError } from '../utils'
 

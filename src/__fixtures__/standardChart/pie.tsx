@@ -1,4 +1,4 @@
-import React, { useState, memo, useEffect, useRef } from 'react';
+import React, { memo, useEffect, useRef } from 'react';
 import Chart, { ChartConfiguration, ChartDataSets } from 'chart.js';
 
 
@@ -23,10 +23,11 @@ export function pieChartConfig({ labels, bgColors, data }: StdPieChartProps): Ch
     }]
 
     return {
+
         type: "doughnut",
         data: {
             datasets: dtSets,
-            labels
+            labels,
         },
         options: {
             responsive: true,
@@ -65,14 +66,4 @@ function StdPieChart(props: StdPieChartProps) {
     )
 }
 
-export default memo(function () {
-    return (
-        <>
-            <StdPieChart
-                labels={["one", "two", "three"]}
-                data={[1, 2, 3, 4]}
-            // bgColors={["red", "blue", "green", "yellow"]}
-            />
-        </>
-    )
-})
+export default memo(StdPieChart)

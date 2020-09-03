@@ -49,7 +49,7 @@ function Navigator() {
                             href={"#j"}
                             onClick={() => clickHandler(idx)}
                             key={idx}
-                            className={`text-gray-600 cursor-pointer text-lg font-medium leading-5 float-left px-2 py-2 ${state.activeTab === idx ? "text-blue-700 border-solid border-b-2 border-blue-700" : "hover:text-gray-500 transition-colors duration-200"}`}
+                            className={`text-gray-600 cursor-pointer text-base font-medium leading-5 float-left px-2 py-2 ${state.activeTab === idx ? "text-blue-700 border-solid border-b-2 border-blue-700" : "hover:text-gray-500 transition-colors duration-200"}`}
                         >
                             {nav.name}
                         </a>
@@ -68,7 +68,7 @@ function Navigator() {
                             <ArrowDropDown fontSize="small" />
                         </div>
                     </div>
-                    <div id="menu" className="absolute left-0 transform translate-y-full rounded bg-white shadow hidden">
+                    <div id="menu" className="absolute left-0 rounded bg-white shadow hidden" style={{ top: "100%" }}>
                         <p className="py-2 px-3 text-sm font-normal text-gray-600">
                             Sign out
                         </p>
