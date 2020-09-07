@@ -1,5 +1,6 @@
 import React, { memo, useEffect, useRef } from 'react';
 import Chart, { ChartConfiguration, ChartDataSets } from 'chart.js';
+import { defaultColors } from "../../constants"
 
 
 interface StdPieChartProps {
@@ -10,9 +11,6 @@ interface StdPieChartProps {
 
 export function pieChartConfig({ labels, bgColors, data }: StdPieChartProps): ChartConfiguration {
 
-    const defaultColors = [
-        "red", "orange", "yellow", "green", "blue", "brown", "purple"
-    ]
     const { length } = defaultColors
 
     const dtSets: ChartDataSets[] = [{

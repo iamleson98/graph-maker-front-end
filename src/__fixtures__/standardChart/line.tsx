@@ -1,5 +1,6 @@
 import React, { memo, useEffect, useRef } from "react";
 import Chart, { ChartConfiguration, ChartDataSets } from "chart.js"
+import { defaultColors } from "../../constants"
 
 
 interface LineConfigProps {
@@ -13,11 +14,11 @@ interface LineConfigProps {
 
 export function lineChartConfig({ xLabels, yDataList }: LineConfigProps): ChartConfiguration {
 
-    const dtSets: ChartDataSets[] = yDataList.map((line) => {
+    const dtSets: ChartDataSets[] = yDataList.map((line, idx) => {
         const { color, label, data } = line
         return {
-            label: label || "Label",
-            borderColor: color || "#747474",
+            label: label || `Line ${idx + 1}`,
+            borderColor: color || defaultColors[idx % defaultColors.length],
             data,
             pointRadius: 1,
             fill: false,
@@ -93,12 +94,12 @@ export default memo(function () {
         yDataList={[
             {
                 label: "hi",
-                color: "red",
+                // color: "red",
                 data: [1, 2, 3, 4]
             },
             {
                 label: "ha",
-                color: "green",
+                // color: "green",
                 data: [1, 7, 10, 4]
             }
         ]}

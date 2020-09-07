@@ -5,6 +5,7 @@ import DelayInput from "../../components/delayinput"
 import "../../tailwind/out.css"
 import { BarchartState, BarchartAction, typeChange, barchartReducer } from "./reducer"
 import { localState } from "../../App"
+import ColorSettter from "../colorSettter"
 
 
 function BarChartInput(): JSX.Element {
@@ -162,6 +163,11 @@ function BarChartInput(): JSX.Element {
                                                     }
                                                 })
                                             }}
+                                            endAdornment={index === 0 && (
+                                                <ColorSettter
+                                                    giveColor={console.log}
+                                                />
+                                            )}
                                         />
                                         <Tooltip title={!idx ? "Add item" : "Remove item"} placement="top">
                                             <span

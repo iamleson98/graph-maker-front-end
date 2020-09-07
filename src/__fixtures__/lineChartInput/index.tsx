@@ -9,6 +9,7 @@ import {
     LineChartState, typeChange, MAX_LINES
 } from "./reducer"
 import { localState } from "../index"
+import ColorSetter from "../colorSettter"
 
 
 function LineChart(): JSX.Element {
@@ -108,7 +109,7 @@ function LineChart(): JSX.Element {
                             <legend>
                                 <DelayInput
                                     type="text"
-                                    className="px-2 text-xs w-32 rounded bg-gray-200"
+                                    className="px-2 text-xs w-40 rounded bg-gray-200"
                                     giveValue={(value: string) => dispatch({
                                         type: typeChange.lineNameChange,
                                         value: index,
@@ -118,6 +119,11 @@ function LineChart(): JSX.Element {
                                     })}
                                     defaultValue={item.name}
                                     placeholder={`line ${index + 1} name`}
+                                    endAdornment={(
+                                        <ColorSetter
+                                            giveColor={console.log}
+                                        />
+                                    )}
                                 />
                             </legend>
                             {item.data.map((field, idx) => (

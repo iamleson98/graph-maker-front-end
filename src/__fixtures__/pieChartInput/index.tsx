@@ -11,6 +11,7 @@ import {
     pieChartReducer
 } from "./reducer"
 import { localState } from "../index"
+import ColorSettter from "../colorSettter"
 
 
 function PieChart(): JSX.Element {
@@ -67,7 +68,7 @@ function PieChart(): JSX.Element {
                         </legend>
                         {pie.map((data, idx) => (
                             <div className="flex items-center" key={idx}>
-                                <fieldset className="p-2 rounded border-2 border-solid border-gray-200 mb-2">
+                                <fieldset className="p-2 rounded border-2 mr-2 border-solid border-gray-200 mb-2">
                                     <legend className="text-sm">
                                         Slice {idx + 1}
                                     </legend>
@@ -87,6 +88,11 @@ function PieChart(): JSX.Element {
                                                 }
                                             })}
                                             disabled={!!index}
+                                            endAdornment={index === 0 && (
+                                                <ColorSettter
+                                                    giveColor={console.log}
+                                                />
+                                            )}
                                         // defaultValue={data.name}
                                         />
                                     </div>
