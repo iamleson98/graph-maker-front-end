@@ -9,7 +9,8 @@ import {
     LineChartState, typeChange, MAX_LINES
 } from "./reducer"
 import { localState } from "../index"
-import ColorSetter from "../colorSettter"
+import ColorSetter from "../colorSetter"
+import { defaultFieldColor } from "../../constants"
 
 
 function LineChart(): JSX.Element {
@@ -21,7 +22,8 @@ function LineChart(): JSX.Element {
         yData: [
             {
                 name: "",
-                data: [""]
+                data: [""],
+                color: defaultFieldColor
             }
         ],
         allGood: false
@@ -121,7 +123,13 @@ function LineChart(): JSX.Element {
                                     placeholder={`line ${index + 1} name`}
                                     endAdornment={(
                                         <ColorSetter
-                                            giveColor={console.log}
+                                            giveColor={(color: string) => dispatch({
+                                                type: typeChange.colorChange,
+                                                value: index,
+                                                options: {
+                                                    value: color
+                                                }
+                                            })}
                                         />
                                     )}
                                 />

@@ -1,7 +1,7 @@
-import React, { useEffect, useState, Fragment } from 'react'
-import Fade from '@material-ui/core/Fade'
-import Gears from '../loading/Gears'
-import { timer } from 'rxjs'
+import React, { useEffect, useState, Fragment } from "react"
+import Fade from "@material-ui/core/Fade"
+import Gears from "../loading/Gears"
+import { timer } from "rxjs"
 
 
 export function useDelay(time: number): boolean {

@@ -5,7 +5,8 @@ import DelayInput from "../../components/delayinput"
 import "../../tailwind/out.css"
 import { BarchartState, BarchartAction, typeChange, barchartReducer } from "./reducer"
 import { localState } from "../../App"
-import ColorSettter from "../colorSettter"
+import ColorSettter from "../colorSetter"
+import { defaultFieldColor } from "../../constants"
 
 
 function BarChartInput(): JSX.Element {
@@ -16,6 +17,7 @@ function BarChartInput(): JSX.Element {
         xTitle: "",
         yTitle: "",
         xData: [""],
+        colors: [defaultFieldColor],
         yData: [
             {
                 error: undefined,
@@ -24,7 +26,7 @@ function BarChartInput(): JSX.Element {
         ],
         allGood: false
     })
-    let { xData, yData, chartTitle, xTitle, yTitle, allGood } = state;
+    let { xData, yData, chartTitle, xTitle, yTitle, allGood, colors } = state;
 
     // run automatically after every re-render
     (() => {
@@ -145,14 +147,14 @@ function BarChartInput(): JSX.Element {
                                 <legend className="text-xs leading-4 font-normal">
                                     block {index + 1}
                                 </legend>
-                                {block.data.map((item, idx) => (
+                                {block.data.map((barValue, idx) => (
                                     <div className="flex items-center mb-1" key={idx}>
                                         <span className="mr-2 text-xs">{idx + 1}</span>
                                         <DelayInput
                                             type="text"
                                             className={`rounded mr-2 bg-gray-200 px-2 ${block.error ? "bg-red-300" : ""}`}
                                             placeholder="Enter data"
-                                            defaultValue={item}
+                                            defaultValue={barValue}
                                             giveValue={(value: string) => {
                                                 dispatch({
                                                     type: typeChange.yFieldChange,// type of change
@@ -165,28 +167,30 @@ function BarChartInput(): JSX.Element {
                                             }}
                                             endAdornment={index === 0 && (
                                                 <ColorSettter
-                                                    giveColor={console.log}
+                                                    defaultBg={colors[idx]}
+                                                    giveColor={(color: string) => dispatch({
+                                                        type: typeChange.colorChange,
+                                                        value: idx,
+                                                        options: {
+                                                            value: color
+                                                        }
+                                                    })}
                                                 />
                                             )}
                                         />
-                                        <Tooltip title={!idx ? "Add item" : "Remove item"} placement="top">
-                                            <span
-                                                onClick={() => {
-                                                    // ony buttons in the first fieldset are clickable
-                                                    if (!index) {
-                                                        handleYItemClick(idx)
-                                                    }
-                                                }}
-                                                className={`flex cursor-pointer items-center justify-center rounded ${!!index ? "cursor-not-allowed" : ""} ${!idx ? "bg-blue-100 text-blue-600" : "bg-orange-100 text-orange-600"} w-8 h-8 hover:${!idx ? "bg-blue-200" : "bg-orange-200"}`}
+                                        {!index && (
+                                            <Tooltip
+                                                title={!idx ? "Add item" : "Remove item"}
+                                                placement="top"
                                             >
-                                                {!index && (
-                                                    // only buttons in first fieldset are clickable
-                                                    <>
-                                                        {!idx ? <Add fontSize="small" /> : <Remove fontSize="small" />}
-                                                    </>
-                                                )}
-                                            </span>
-                                        </Tooltip>
+                                                <span
+                                                    onClick={() => handleYItemClick(idx)}
+                                                    className={`flex cursor-pointer items-center justify-center rounded w-8 h-8 hover:${!idx ? "bg-blue-200" : "bg-orange-200"} ${!idx ? "bg-blue-100 text-blue-600" : "bg-orange-100 text-orange-600"}`}
+                                                >
+                                                    {!idx ? <Add fontSize="small" /> : <Remove fontSize="small" />}
+                                                </span>
+                                            </Tooltip>
+                                        )}
                                     </div>
                                 ))}
                                 {/* error */}

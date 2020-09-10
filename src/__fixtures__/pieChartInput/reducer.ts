@@ -1,4 +1,4 @@
-import { isRealNumber } from '../../constants'
+import { isRealNumber, defaultFieldColor } from '../../constants'
 import { ChartBaseState } from '../chart'
 import { noAnyError } from '../utils'
 
@@ -10,11 +10,13 @@ export enum typeChange {
     deleteSlice,
     sliceNameChange,
     sliceValueChange,
+    colorChange
 }
 
 export interface PieChartState extends ChartBaseState {
     chartTitle: string;
     pies: {
+        color: string;
         name: string;
         value: string;
         error?: string;
@@ -62,7 +64,8 @@ export function pieChartReducer(state: PieChartState, action: PieChartAction): P
                     return pie.concat({
                         name: "",
                         value: "",
-                        error: undefined
+                        error: undefined,
+                        color: defaultFieldColor
                     })
                 })
                 newState = { ...newState, pies }
@@ -101,6 +104,11 @@ export function pieChartReducer(state: PieChartState, action: PieChartAction): P
                     .reduce((a, b) => a.concat(b), [])
             )
             newState = { ...newState, pies, allGood }
+            break
+        case typeChange.colorChange:
+            // value is pie index, options.index is slice index, options.value is color for that slice
+            pies[value][options?.index].color = options?.value
+            newState = { ...newState, pies }
             break
 
         default:

@@ -10,9 +10,10 @@ export interface BarChartProps {
         color?: string;
         data: number[];
     }[];
+    chartTitle?: string;
 }
 
-function barChartConfig({ xLabels, yDataList }: BarChartProps): ChartConfiguration {
+function barChartConfig({ xLabels, yDataList, chartTitle }: BarChartProps): ChartConfiguration {
 
     const dtSets: ChartDataSets[] = yDataList.map((bar, idx) => {
         const { label, color, data } = bar
@@ -39,7 +40,7 @@ function barChartConfig({ xLabels, yDataList }: BarChartProps): ChartConfigurati
             },
             title: {
                 display: true,
-                text: "Chart.js Bar Chart"
+                text: chartTitle || "Bar Chart"
             },
             scales: {
                 xAxes: [{
@@ -78,18 +79,20 @@ function StdBarchart(props: BarChartProps) {
     )
 }
 
-export default memo(function () {
-    return <StdBarchart
-        xLabels={["one", "two", "three", "four"]}
-        yDataList={[
-            {
-                // label: "First",
-                data: [1, 6, 90, 34]
-            },
-            {
-                // label: "First",
-                data: [1, 6, 90, 34]
-            },
-        ]}
-    />
-})
+// export default memo(function () {
+//     return <StdBarchart
+//         xLabels={["one", "two", "three", "four"]}
+//         yDataList={[
+//             {
+//                 // label: "First",
+//                 data: [1, 6, 90, 34]
+//             },
+//             {
+//                 // label: "First",
+//                 data: [1, 6, 90, 34]
+//             },
+//         ]}
+//     />
+// })
+
+export default memo(StdBarchart)

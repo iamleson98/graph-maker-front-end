@@ -1,5 +1,5 @@
 import { ChartBaseState } from "../chart"
-import { isRealNumber } from "../../constants";
+import { isRealNumber, defaultFieldColor } from "../../constants";
 import { noAnyError } from "../utils"
 
 
@@ -14,6 +14,7 @@ export enum typeChange {
     removeYFieldChange,
     xFieldChange,
     yFieldChange,
+    colorChange,
 }
 
 export interface BarchartState extends ChartBaseState {
@@ -21,9 +22,10 @@ export interface BarchartState extends ChartBaseState {
     xTitle: string;
     yTitle: string;
     xData: string[];
+    colors: string[];
     yData: {
         error?: string;
-        data: string[];
+        data: string[]; // when draw chart, we need to convert these strings to numbers
     }[];
 }
 
@@ -45,7 +47,7 @@ function barChartErrorChecker(data: string[]): error {
 
 export function barchartReducer(state: BarchartState, action: BarchartAction): BarchartState {
     let newState = state;
-    let { xData, yData } = state
+    let { xData, yData, colors } = state
     const { type, value, options } = action
 
     switch (type) {
@@ -67,7 +69,7 @@ export function barchartReducer(state: BarchartState, action: BarchartAction): B
             if (xData.length < MAX_BLOCKS_PER_CHART) {
                 xData = xData.concat("")
                 yData = yData.concat({
-                    data: [...(new Array(yData[0].data.length))].map(() => "")
+                    data: [...(new Array(yData[0].data.length))].map(() => ""),
                 })
                 newState = { ...newState, xData, yData }
             }
@@ -83,10 +85,11 @@ export function barchartReducer(state: BarchartState, action: BarchartAction): B
                 yData = yData.map(block => {
                     return {
                         ...block,
-                        data: block.data.concat("")
+                        data: block.data.concat(""),
                     }
                 })
-                newState = { ...newState, yData }
+                colors = colors.concat(defaultFieldColor)
+                newState = { ...newState, yData, colors }
             }
             break
         case typeChange.removeYFieldChange:
@@ -99,6 +102,7 @@ export function barchartReducer(state: BarchartState, action: BarchartAction): B
                     error: barChartErrorChecker(data)
                 }
             })
+            colors = colors.filter((_, idx) => idx !== value)
             newState = { ...newState, yData }
             break
         case typeChange.xFieldChange:
@@ -113,6 +117,11 @@ export function barchartReducer(state: BarchartState, action: BarchartAction): B
             yData[value].error = error
 
             newState = { ...newState, yData }
+            break
+        case typeChange.colorChange:
+            // value is bar index, options.value is bar color value
+            colors[value] = options?.value
+            newState = { ...newState, colors }
             break
 
         default:

@@ -11,7 +11,8 @@ import {
     pieChartReducer
 } from "./reducer"
 import { localState } from "../index"
-import ColorSettter from "../colorSettter"
+import ColorSettter from "../colorSetter"
+import { defaultFieldColor } from "../../constants"
 
 
 function PieChart(): JSX.Element {
@@ -25,6 +26,7 @@ function PieChart(): JSX.Element {
                     name: "",
                     value: "",
                     error: undefined,
+                    color: defaultFieldColor
                 }
             ]
         ],
@@ -58,19 +60,19 @@ function PieChart(): JSX.Element {
             </div>
 
             <div className="mb-2">
-                {pies.map((pie, index) => (
+                {pies.map((pie, pieIndex) => (
                     <fieldset
-                        key={index}
+                        key={pieIndex}
                         className="rounded border-2 border-solid border-gray-200 p-2 mb-3"
                     >
                         <legend className="text-sm text-red-500 font-medium">
-                            Pie {index + 1}
+                            Pie {pieIndex + 1}
                         </legend>
-                        {pie.map((data, idx) => (
-                            <div className="flex items-center" key={idx}>
+                        {pie.map((data, sliceIndex) => (
+                            <div className="flex items-center" key={sliceIndex}>
                                 <fieldset className="p-2 rounded border-2 mr-2 border-solid border-gray-200 mb-2">
                                     <legend className="text-sm">
-                                        Slice {idx + 1}
+                                        Slice {sliceIndex + 1}
                                     </legend>
                                     <div className="mb-1 flex items-center">
                                         <span className="mr-2 text-xs">name</span>
@@ -78,19 +80,26 @@ function PieChart(): JSX.Element {
                                             placeholder={data.name}
                                             className={`rounded bg-gray-200 px-2`}
                                             classes={{
-                                                input: !!index ? "cursor-not-allowed" : "initial"
+                                                input: !!pieIndex ? "cursor-not-allowed" : "initial"
                                             }}
                                             giveValue={(value: string) => dispatch({
                                                 type: typeChange.sliceNameChange,
-                                                value: idx,
+                                                value: sliceIndex,
                                                 options: {
                                                     value
                                                 }
                                             })}
-                                            disabled={!!index}
-                                            endAdornment={index === 0 && (
+                                            disabled={!!pieIndex}
+                                            endAdornment={pieIndex === 0 && (
                                                 <ColorSettter
-                                                    giveColor={console.log}
+                                                    giveColor={(color: string) => dispatch({
+                                                        type: typeChange.colorChange,
+                                                        value: pieIndex,
+                                                        options: {
+                                                            index: sliceIndex,
+                                                            value: color
+                                                        }
+                                                    })}
                                                 />
                                             )}
                                         // defaultValue={data.name}
@@ -103,9 +112,9 @@ function PieChart(): JSX.Element {
                                             className={`rounded ${data.error ? "bg-red-300" : "bg-gray-200"} px-2`}
                                             giveValue={(value: string) => dispatch({
                                                 type: typeChange.sliceValueChange,
-                                                value: index,
+                                                value: pieIndex,
                                                 options: {
-                                                    index: idx,
+                                                    index: sliceIndex,
                                                     value
                                                 }
                                             })}
@@ -114,8 +123,8 @@ function PieChart(): JSX.Element {
                                     </div>
                                     {!!data.error && <small className="text-red-600">{data.error}</small>}
                                 </fieldset>
-                                {!!idx && !index && (
-                                    // only display this button in fields that has index greater than 0
+                                {!!sliceIndex && !pieIndex && (
+                                    // only display this button in fields that has pieIndex greater than 0
                                     <div className="text-right">
                                         <Tooltip
                                             title="Delete this slice"
@@ -125,7 +134,7 @@ function PieChart(): JSX.Element {
                                                 className="w-6 h-6 rounded bg-red-100 hover:bg-red-200 inline-flex items-center justify-center cursor-pointer"
                                                 onClick={() => dispatch({
                                                     type: typeChange.deleteSlice,
-                                                    value: idx
+                                                    value: sliceIndex
                                                 })}
                                             >
                                                 <DeleteOutlined color="secondary" fontSize="inherit" />
@@ -140,15 +149,15 @@ function PieChart(): JSX.Element {
                             variant="contained"
                             // disabled={pies[0].length >= MAX_SLICES_PER_PIE}
                             disableElevation={true}
-                            color={!index ? "primary" : "secondary"}
+                            color={!pieIndex ? "primary" : "secondary"}
                             fullWidth={true}
                             className="focus:outline-none"
                             onClick={() => dispatch({
-                                type: typeChange[!index ? "addSlice" : "deletePie"],
-                                value: index
+                                type: typeChange[!pieIndex ? "addSlice" : "deletePie"],
+                                value: pieIndex
                             })}
                         >
-                            {!index ? "Add a slice" : `Remove pie ${index + 1}`}
+                            {!pieIndex ? "Add a slice" : `Remove pie ${pieIndex + 1}`}
                         </Button>
                     </fieldset>
                 ))}

@@ -17,11 +17,10 @@ export function pieChartConfig({ labels, bgColors, data }: StdPieChartProps): Ch
         data,
         backgroundColor: bgColors || (new Array(data.length))
             .fill(null)
-            .map((_, idx) => defaultColors[idx % length])
+            .map((_, idx) => defaultColors[idx % length]),
     }]
 
     return {
-
         type: "doughnut",
         data: {
             datasets: dtSets,
@@ -42,7 +41,6 @@ export function pieChartConfig({ labels, bgColors, data }: StdPieChartProps): Ch
                 display: true
             }
         },
-
     }
 }
 

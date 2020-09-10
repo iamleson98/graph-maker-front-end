@@ -9,7 +9,9 @@ import SimpleBar from "simplebar-react"
 import "simplebar/dist/simplebar.min.css"
 import { DelayChartRender } from "./delayInputRender"
 import { Button, SvgIconTypeMap } from "@material-ui/core"
-import StdPieChart from "../standardChart/pie"
+// import StdPieChart from "../standardChart/pie"
+// import StdLineChart from "../standardChart/line"
+import StdBarChart from "../standardChart/bar"
 import { BarchartState } from "../barChartInput/reducer"
 import { PieChartState } from "../pieChartInput/reducer"
 import { LineChartState } from "../lineChartInput/reducer"
@@ -86,9 +88,34 @@ function Chart() {
                     </div>
                 </div>
                 <div className="p-1">
-                    <div className="rounded bg-white p-1">
-                        <StdPieChart
-
+                    <div className="rounded bg-white p-1 flex flex-wrap justify-center">
+                        {/* <StdLineChart
+                            xLabels={["one", "two", "three", "four", "one", "two", "three", "four"]}
+                            yDataList={[
+                                {
+                                    color: "yellow",
+                                    data: [1, 60, 24, 6, 12, 54, 10, 22],
+                                    label: "Android"
+                                },
+                                {
+                                    color: "blue",
+                                    data: [6, 2, 6, 13, 78, 90, 4, 20],
+                                    label: "Android"
+                                },
+                            ]}
+                        /> */}
+                        <StdBarChart
+                            xLabels={["one", "two", "three", "four", "one", "two", "three", "four"]}
+                            yDataList={[
+                                {
+                                    data: [1, 60, 24, 6, 12, 54, 10, 22],
+                                    label: "Android"
+                                },
+                                {
+                                    data: [6, 2, 6, 13, 78, 90, 4, 20],
+                                    label: "IOS"
+                                },
+                            ]}
                         />
                     </div>
                 </div>

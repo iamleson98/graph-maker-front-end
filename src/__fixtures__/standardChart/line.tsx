@@ -10,9 +10,10 @@ interface LineConfigProps {
         label?: string;
         data: number[];
     }[];
+    chartTitle?: string;
 }
 
-export function lineChartConfig({ xLabels, yDataList }: LineConfigProps): ChartConfiguration {
+export function lineChartConfig({ xLabels, yDataList, chartTitle }: LineConfigProps): ChartConfiguration {
 
     const dtSets: ChartDataSets[] = yDataList.map((line, idx) => {
         const { color, label, data } = line
@@ -22,7 +23,7 @@ export function lineChartConfig({ xLabels, yDataList }: LineConfigProps): ChartC
             data,
             pointRadius: 1,
             fill: false,
-            lineTension: 0,
+            lineTension: 0.2,
             borderWidth: 2,
         }
     })
@@ -42,6 +43,10 @@ export function lineChartConfig({ xLabels, yDataList }: LineConfigProps): ChartC
             },
             animation: {
                 duration: 200
+            },
+            title: {
+                display: true,
+                text: chartTitle || "Line Chart"
             },
             scales: {
                 xAxes: [{
@@ -88,20 +93,21 @@ function StdLineChart(props: LineConfigProps) {
     )
 }
 
-export default memo(function () {
-    return <StdLineChart
-        xLabels={["one", "two", "three", "four"]}
-        yDataList={[
-            {
-                label: "hi",
-                // color: "red",
-                data: [1, 2, 3, 4]
-            },
-            {
-                label: "ha",
-                // color: "green",
-                data: [1, 7, 10, 4]
-            }
-        ]}
-    />
-})
+// export default memo(function () {
+//     return <StdLineChart
+//         xLabels={["one", "two", "three", "four"]}
+//         yDataList={[
+//             {
+//                 label: "hi",
+//                 // color: "red",
+//                 data: [1, 2, 3, 4]
+//             },
+//             {
+//                 label: "ha",
+//                 // color: "green",
+//                 data: [1, 7, 10, 4]
+//             }
+//         ]}
+//     />
+// })
+export default memo(StdLineChart)

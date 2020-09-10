@@ -9,4 +9,6 @@ export interface KeyOfStringInterface {
 
 export const defaultColors = [
     "red", "orange", "yellow", "green", "blue", "brown", "purple"
-]
+],
+
+    defaultFieldColor = "orange"

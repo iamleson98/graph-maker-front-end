@@ -1,4 +1,4 @@
-import { isRealNumber } from "../../constants"
+import { isRealNumber, defaultFieldColor } from "../../constants"
 import { ChartBaseState } from '../chart'
 import { noAnyError } from "../utils"
 
@@ -7,6 +7,7 @@ export interface LineChartState extends ChartBaseState {
     chartTitle: string;
     xData: string[];
     yData: {
+        color: string;
         name: string;
         data: string[];
         error?: string;
@@ -22,6 +23,7 @@ export enum typeChange {
     xFieldChange,
     yFieldChange,
     lineNameChange,
+    colorChange,
 }
 
 export interface LineChartAction {
@@ -79,6 +81,7 @@ export function lineChartReducer(state: LineChartState, action: LineChartAction)
             yData = yData.concat({
                 name: "",
                 data: [...(new Array(xData.length))].map(() => ""),
+                color: defaultFieldColor
             })
             newState = { ...newState, yData }
             break
@@ -105,6 +108,11 @@ export function lineChartReducer(state: LineChartState, action: LineChartAction)
 
             const allGood = noAnyError(yData.map(line => line.error))
             newState = { ...newState, yData, allGood }
+            break
+        case typeChange.colorChange:
+            // value is line index, options.value is color for that line
+            yData[value].color = options?.value
+            newState = { ...state, yData }
             break
         default:
             break
