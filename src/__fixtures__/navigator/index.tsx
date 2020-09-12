@@ -1,9 +1,13 @@
-import React, { memo, useState } from "react"
+import React, { memo, useRef, useState } from "react"
 import { ArrowDropDown } from "@material-ui/icons"
 import ClickAwayListener from "@material-ui/core/ClickAwayListener"
+import Menu from "../menu"
 
 
 function Navigator() {
+
+    // ref
+    const menuRef = useRef<any>()
 
     // component state
     const [state, setState] = useState({
@@ -36,12 +40,11 @@ function Navigator() {
     }
 
     function toggleMenu(type: "open" | "close") {
-        var menu = document.getElementById("menu") as HTMLDivElement
-        menu.classList[type === "open" ? "remove" : "add"]("hidden")
+        (menuRef.current as HTMLElement).classList[type === "open" ? "remove" : "add"]("hidden")
     }
 
     return (
-        <div className="flex flex-no-wrap">
+        <div className="flex flex-no-wrap py-1 px-4 justify-between">
             <div>
                 {navigators.map(function (nav, idx) {
                     return (
@@ -57,8 +60,8 @@ function Navigator() {
                 })}
             </div>
 
-            <ClickAwayListener onClickAway={() => toggleMenu("close")}>
-                <div className="relative">
+            <div className="relative">
+                <ClickAwayListener onClickAway={() => toggleMenu("close")}>
                     <div className="flex items-center cursor-pointer" onClick={() => toggleMenu("open")}>
                         <div className="border-2 border-solid rounded-full border-gray-200 overflow-hidden w-8 h-8 text-center mr-2">
                             <img src="https://upload.wikimedia.org/wikipedia/vi/thumb/b/b0/Avatar-Teaser-Poster.jpg/220px-Avatar-Teaser-Poster.jpg" alt="Phuc nguyen" />
@@ -68,16 +71,14 @@ function Navigator() {
                             <ArrowDropDown fontSize="small" />
                         </div>
                     </div>
-                    <div id="menu" className="absolute left-0 rounded bg-white shadow hidden" style={{ top: "100%" }}>
-                        <p className="py-2 px-3 text-sm font-normal text-gray-600">
-                            Sign out
-                        </p>
-                        <p className="py-2 px-3 text-sm font-normal text-gray-600">
-                            Setting
-                        </p>
-                    </div>
-                </div>
-            </ClickAwayListener>
+                </ClickAwayListener>
+                <Menu
+                    addClass="hidden w-full top-full"
+                    values={["Sign out", "Setting"]}
+                    giveValue={console.log}
+                    refer={menuRef}
+                />
+            </div>
         </div>
     )
 }

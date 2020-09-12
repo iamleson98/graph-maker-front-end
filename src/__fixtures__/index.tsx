@@ -4,6 +4,9 @@ import { ApolloProvider, makeVar } from "@apollo/client"
 // import Chart from "./chart"
 import UserInfo from "./userInfo"
 import History from "./history"
+import Nav from "./navigator"
+
+import "../index.css"
 
 
 // local state
@@ -31,11 +34,12 @@ const client = new ApolloClient({
 function App() {
     return (
         <ApolloProvider client={client}>
-            <div className="flex">
-                <div className="w-3/12">
+            <Nav />
+            <div className="flex flex-wrap">
+                <div className="w-3/12 xs:w-full">
                     <UserInfo />
                 </div>
-                <div className="w-8/12">
+                <div className="w-8/12 xs:w-full">
                     <History />
                 </div>
             </div>

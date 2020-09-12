@@ -52,19 +52,22 @@ function History() {
     // component state
     const [state, setState] = useState({
         dateFilter: "",
-        chartFilter: ""
+        chartFilter: "",
     })
+    const { dateFilter, chartFilter } = state
 
     const filters = [
         {
-            name: "date",
-            menuList: ["old first", "new first"],
+            placeholder: "create date",
+            value: dateFilter,
+            menuList: ["older first", "latest first"],
             ref: dateFilterRef,
             stateKey: "dateFilter"
         },
         {
-            name: "chart type",
-            menuList: ["Pie", "Line", "Area", "Bar"],
+            placeholder: "chart type",
+            value: chartFilter,
+            menuList: ["Pie chart", "Line chart", "Area chart", "Bar chart"],
             ref: chartFilterRef,
             stateKey: "chartFilter"
         }
@@ -75,9 +78,10 @@ function History() {
     }
 
     const setFilterTypes = (stateKey: string) => (value: string) => {
+        // stateKey is either "dateFilter" or "chartFilter"
         setState({
             ...state,
-            [stateKey]: value
+            [stateKey]: value // stateKey is used as key here, so it must be exactly the same
         })
     }
 
@@ -87,22 +91,25 @@ function History() {
 
             {/* filter */}
             <div className="flex items-center text-gray-600 mb-3">
-                <div className="mr-3 text-sm flex items-center">
-                    <FilterList fontSize="small" /> <span>Filter</span>
+                <div className="mr-3 text-sm xs:text-xs flex items-center">
+                    <FilterList fontSize="small" />
+                    <span>Filter</span>
                 </div>
                 {filters.map((filter, idx) => (
                     <div
                         key={idx}
-                        className="bg-gray-200 hover:bg-gray-300 transition-colors duration-200 cursor-pointer rounded mr-3 relative"
+                        className="bg-gray-200 hover:bg-gray-300 transition-colors duration-200 cursor-pointer rounded mr-2 relative"
                     >
                         <ClickAwayListener
                             onClickAway={() => toggleMenu(filter.ref, "close")}
                         >
                             <div
-                                className="flex items-center px-2 py-1"
+                                className="flex xs:text-sm whitespace-no-wrap items-center px-2 py-1"
                                 onClick={() => toggleMenu(filter.ref, "open")}
                             >
-                                <span className="mr-2">{filter.name}</span>
+                                <span className="mr-1">
+                                    {filter.value || filter.placeholder}
+                                </span>
                                 <KeyboardArrowDown fontSize="small" />
                             </div>
                         </ClickAwayListener>
