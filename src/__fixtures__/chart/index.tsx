@@ -17,9 +17,9 @@ import { PieChartState } from "../pieChartInput/reducer"
 import { LineChartState } from "../lineChartInput/reducer"
 import { KeyOfStringInterface } from "../../constants"
 import { OverridableComponent } from "@material-ui/core/OverridableComponent"
-import Dummy from "./dummy"
-import { useQuery } from "@apollo/client"
-import { CHECK_CHART_DRAW_BUTTON_CAN_ACTIVE } from "../../graphql/queries"
+import DummyChartInput from "../dummyInput/dummy"
+// import { useQuery } from "@apollo/client"
+// import { CHECK_CHART_DRAW_BUTTON_CAN_ACTIVE } from "../../graphql/queries"
 
 
 interface ChartRef extends KeyOfStringInterface {
@@ -39,7 +39,8 @@ export interface ChartBaseState {
 function Chart() {
 
     // query to determine if the draw button is clickable
-    const { loading, data } = useQuery(CHECK_CHART_DRAW_BUTTON_CAN_ACTIVE)
+    // const { loading, data } = useQuery(CHECK_CHART_DRAW_BUTTON_CAN_ACTIVE)
+    const loading = false
 
     // references
     const reference = useRef<ChartRef>({
@@ -51,7 +52,7 @@ function Chart() {
     })
 
     // memoized values
-    const chartButtons = useMemo<{
+    const chartRoutes = useMemo<{
         name: string;
         icon: OverridableComponent<SvgIconTypeMap<{}, "svg">>;
         tailwindColor: string;
@@ -60,11 +61,11 @@ function Chart() {
         inputComponent: React.MemoExoticComponent<() => JSX.Element>;
     }[]>(() => {
         return [
-            { name: "Bar chart", icon: ChartBar, tailwindColor: "text-green-500", tailwindActiveBg: "bg-green-200", refKey: "barChartState", inputComponent: BarChartInput },
-            { name: "Pie chart", icon: PieChart, tailwindColor: "text-red-500", tailwindActiveBg: "bg-red-200", refKey: "pieChartState", inputComponent: PieChartInput },
-            { name: "Line chart", icon: Timeline, tailwindColor: "text-orange-500", tailwindActiveBg: "bg-orange-200", refKey: "lineChartState", inputComponent: LineChartInput },
-            { name: "Area chart", icon: AreaChart, tailwindColor: "text-purple-500", tailwindActiveBg: "bg-purple-200", refKey: "areaChartState", inputComponent: Dummy },
-            { name: "Scatter chart", icon: Scatter, tailwindColor: "text-blue-500", tailwindActiveBg: "bg-blue-200", refKey: "scatterChartState", inputComponent: Dummy },
+            { name: "Bar chart", icon: ChartBar, tailwindColor: "text-green-500", tailwindActiveBg: "bg-green-100", refKey: "barChartState", inputComponent: BarChartInput },
+            { name: "Pie chart", icon: PieChart, tailwindColor: "text-red-500", tailwindActiveBg: "bg-red-100", refKey: "pieChartState", inputComponent: PieChartInput },
+            { name: "Line chart", icon: Timeline, tailwindColor: "text-orange-500", tailwindActiveBg: "bg-orange-100", refKey: "lineChartState", inputComponent: LineChartInput },
+            { name: "Area chart", icon: AreaChart, tailwindColor: "text-purple-500", tailwindActiveBg: "bg-purple-100", refKey: "areaChartState", inputComponent: DummyChartInput },
+            { name: "Scatter chart", icon: Scatter, tailwindColor: "text-blue-500", tailwindActiveBg: "bg-blue-100", refKey: "scatterChartState", inputComponent: DummyChartInput },
         ]
     }, [])
 
@@ -78,32 +79,23 @@ function Chart() {
         console.log(reference.current[key])
     }
 
+    const changeChart = (newIdx: number) => () => {
+        if (newIdx !== activeIndex) {
+            setState({ ...state, activeIndex: newIdx })
+        }
+    }
+
     return (
         <div className="rounded p-2 flex flex-wrap">
             {/* chart result */}
             <div className="w-8/12 sm:w-full">
                 <div className="p-1">
-                    <div className="rounded bg-white p-2 text-gray-600">
-                        {chartButtons[activeIndex].name}
+                    <div className="rounded bg-white font-medium p-2 text-gray-700">
+                        {chartRoutes[activeIndex].name}
                     </div>
                 </div>
                 <div className="p-1">
                     <div className="rounded bg-white p-1 flex flex-wrap justify-center">
-                        {/* <StdLineChart
-                            xLabels={["one", "two", "three", "four", "one", "two", "three", "four"]}
-                            yDataList={[
-                                {
-                                    color: "yellow",
-                                    data: [1, 60, 24, 6, 12, 54, 10, 22],
-                                    label: "Android"
-                                },
-                                {
-                                    color: "blue",
-                                    data: [6, 2, 6, 13, 78, 90, 4, 20],
-                                    label: "Android"
-                                },
-                            ]}
-                        /> */}
                         <StdBarChart
                             xLabels={["one", "two", "three", "four", "one", "two", "three", "four"]}
                             yDataList={[
@@ -127,18 +119,14 @@ function Chart() {
                     <div className="bg-white rounded">
                         {/* chart input type switcher */}
                         <div className="flex items-center p-2 justify-around">
-                            {chartButtons.map((item, idx) => (
+                            {chartRoutes.map((item, idx) => (
                                 <Tooltip
                                     title={item.name}
                                     placement="top"
                                     key={idx}
                                 >
                                     <div
-                                        onClick={() => {
-                                            if (idx !== activeIndex) {
-                                                setState({ ...state, activeIndex: idx })
-                                            }
-                                        }}
+                                        onClick={changeChart(idx)}
                                         className={`rounded h-8 flex flex-1 mr-1 items-center justify-center cursor-pointer transition-colors duration-200 ease-out hover:${item.tailwindActiveBg} ${activeIndex === idx ? item.tailwindActiveBg : ""}`}
                                     >
                                         <item.icon fontSize="small" className={item.tailwindColor} />
@@ -148,10 +136,10 @@ function Chart() {
                         </div>
                         <SimpleBar
                             style={{
-                                height: 480
+                                height: 450
                             }}
                         >
-                            {chartButtons.map((item, idx) => (
+                            {chartRoutes.map((item, idx) => (
                                 <React.Fragment key={idx}>
                                     {activeIndex === idx && (
                                         <DelayChartRender>
@@ -168,8 +156,8 @@ function Chart() {
                                 className="focus:outline-none"
                                 disableElevation={true}
                                 fullWidth={true}
-                                onClick={() => log(chartButtons[activeIndex].refKey)}
-                                disabled={loading || !data.canClickDrawChart}
+                                onClick={() => log(chartRoutes[activeIndex].refKey)}
+                                disabled={loading}
                             >
                                 {loading ? "Loading..." : "Draw chart"}
                             </Button>

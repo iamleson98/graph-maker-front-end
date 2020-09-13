@@ -14,36 +14,38 @@ export const localState = makeVar({
     canClickDrawChart: false
 })
 
-const client = new ApolloClient({
-    uri: "https://localhost:6000",
-    cache: new InMemoryCache({
-        typePolicies: {
-            Query: {
-                fields: {
-                    canClickDrawChart: {
-                        read() {
-                            return localState().canClickDrawChart;
-                        }
-                    }
-                }
-            }
-        }
-    })
-})
+// const client = new ApolloClient({
+//     uri: "https://localhost:6000",
+//     cache: new InMemoryCache({
+//         typePolicies: {
+//             Query: {
+//                 fields: {
+//                     canClickDrawChart: {
+//                         read() {
+//                             return localState().canClickDrawChart;
+//                         }
+//                     }
+//                 }
+//             }
+//         }
+//     })
+// })
 
 function App() {
     return (
-        <ApolloProvider client={client}>
+        <div>
             <Nav />
-            <div className="flex flex-wrap">
-                <div className="w-3/12 xs:w-full">
-                    <UserInfo />
+            <main className="mt-16">
+                <div className="flex flex-wrap">
+                    <div className="w-3/12 sm:w-full">
+                        <UserInfo />
+                    </div>
+                    <div className="w-8/12 sm:w-full">
+                        <History />
+                    </div>
                 </div>
-                <div className="w-8/12 xs:w-full">
-                    <History />
-                </div>
-            </div>
-        </ApolloProvider>
+            </main>
+        </div>
     );
 }
 
