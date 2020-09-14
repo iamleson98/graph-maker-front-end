@@ -78,7 +78,7 @@ function UserInfo() {
                     <div className="w-1/6 text-xs">
                         {item.name}
                     </div>
-                    <p className="w-5/6 overflow-hidden text-sm mr-2 font-medium">
+                    <div className="w-5/6 overflow-hidden text-sm mr-2 font-medium">
                         {!edit ? (
                             <>{item.value}</>
                         ) : (
@@ -95,7 +95,7 @@ function UserInfo() {
                                     }}
                                 />
                             )}
-                    </p>
+                    </div>
                 </div>
             ))}
 

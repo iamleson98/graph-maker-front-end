@@ -43,7 +43,7 @@ function PieChart(): JSX.Element {
     }, [allGood])
 
     return (
-        <div className="text-gray-700 bg-white rounded p-2 max-w-xs">
+        <div className="text-gray-700 bg-white rounded p-2">
             {/* title */}
             <div className="mb-4">
                 <label htmlFor="piechart-title" className="mr-2">Title</label>
@@ -69,8 +69,8 @@ function PieChart(): JSX.Element {
                             Pie {pieIndex + 1}
                         </legend>
                         {pie.map((data, sliceIndex) => (
-                            <div className="flex items-center" key={sliceIndex}>
-                                <fieldset className="p-2 rounded border-2 mr-2 border-solid border-gray-200 mb-2">
+                            <div className="flex items-center mb-2" key={sliceIndex}>
+                                <fieldset className="p-2 rounded border-2 mr-2 border-solid border-gray-200">
                                     <legend className="text-sm">
                                         Slice {sliceIndex + 1}
                                     </legend>
@@ -108,6 +108,7 @@ function PieChart(): JSX.Element {
                                     <div className="flex items-center">
                                         <span className="mr-2 text-xs">value</span>
                                         <DelayInput
+                                            fullWidth={true}
                                             placeholder="value"
                                             className={`rounded ${data.error ? "bg-red-300" : "bg-gray-200"} px-2`}
                                             giveValue={(value: string) => dispatch({

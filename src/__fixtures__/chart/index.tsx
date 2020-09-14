@@ -8,7 +8,7 @@ import PieChartInput from "../pieChartInput"
 import SimpleBar from "simplebar-react"
 import "simplebar/dist/simplebar.min.css"
 import { DelayChartRender } from "./delayInputRender"
-import { Button, SvgIconTypeMap } from "@material-ui/core"
+import { SvgIconTypeMap } from "@material-ui/core"
 // import StdPieChart from "../standardChart/pie"
 // import StdLineChart from "../standardChart/line"
 import StdBarChart from "../standardChart/bar"
@@ -18,8 +18,6 @@ import { LineChartState } from "../lineChartInput/reducer"
 import { KeyOfStringInterface } from "../../constants"
 import { OverridableComponent } from "@material-ui/core/OverridableComponent"
 import DummyChartInput from "../dummyInput/dummy"
-// import { useQuery } from "@apollo/client"
-// import { CHECK_CHART_DRAW_BUTTON_CAN_ACTIVE } from "../../graphql/queries"
 
 
 interface ChartRef extends KeyOfStringInterface {
@@ -37,10 +35,6 @@ export interface ChartBaseState {
 }
 
 function Chart() {
-
-    // query to determine if the draw button is clickable
-    // const { loading, data } = useQuery(CHECK_CHART_DRAW_BUTTON_CAN_ACTIVE)
-    const loading = false
 
     // references
     const reference = useRef<ChartRef>({
@@ -75,10 +69,6 @@ function Chart() {
     })
     const { activeIndex } = state
 
-    const log = (key: chartRefKey) => {
-        console.log(reference.current[key])
-    }
-
     const changeChart = (newIdx: number) => () => {
         if (newIdx !== activeIndex) {
             setState({ ...state, activeIndex: newIdx })
@@ -91,11 +81,12 @@ function Chart() {
             <div className="w-8/12 sm:w-full">
                 <div className="p-1">
                     <div className="rounded bg-white font-medium p-2 text-gray-700">
+                        {/* display type of chart */}
                         {chartRoutes[activeIndex].name}
                     </div>
                 </div>
                 <div className="p-1">
-                    <div className="rounded bg-white p-1 flex flex-wrap justify-center">
+                    <div className="rounded bg-white p-2 flex flex-wrap justify-center">
                         <StdBarChart
                             xLabels={["one", "two", "three", "four", "one", "two", "three", "four"]}
                             yDataList={[
@@ -114,7 +105,12 @@ function Chart() {
             </div>
 
             {/* chart input field */}
-            <div className="w-4/12 sm:w-full max-w-xs m-auto">
+            <div className="w-4/12 sm:w-full m-auto">
+                <div className="p-1">
+                    <div className="rounded bg-white font-medium p-2 text-gray-700">
+                        Input data
+                    </div>
+                </div>
                 <div className="p-1">
                     <div className="bg-white rounded">
                         {/* chart input type switcher */}
@@ -138,6 +134,7 @@ function Chart() {
                             style={{
                                 height: 450
                             }}
+                            className="p-1"
                         >
                             {chartRoutes.map((item, idx) => (
                                 <React.Fragment key={idx}>
@@ -149,19 +146,6 @@ function Chart() {
                                 </React.Fragment>
                             ))}
                         </SimpleBar>
-                        <div className="p-2 sm:fixed bg-white sm:w-full sm:bottom-0 sm:left-0">
-                            <Button
-                                color="primary"
-                                variant="contained"
-                                className="focus:outline-none"
-                                disableElevation={true}
-                                fullWidth={true}
-                                onClick={() => log(chartRoutes[activeIndex].refKey)}
-                                disabled={loading}
-                            >
-                                {loading ? "Loading..." : "Draw chart"}
-                            </Button>
-                        </div>
                     </div>
                 </div>
             </div>

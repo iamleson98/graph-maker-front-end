@@ -39,7 +39,7 @@ function LineChart(): JSX.Element {
     }, [allGood])
 
     return (
-        <div className="rounded bg-white p-2 text-gray-700 max-w-xs">
+        <div className="rounded bg-white p-2 text-gray-700">
             {/* title */}
             <div className="mb-4">
                 <label htmlFor="linechart-title" className="mr-2 text-base">Title</label>
@@ -66,6 +66,7 @@ function LineChart(): JSX.Element {
                         <div className="flex items-center justify-around mb-1" key={idx}>
                             <span className="text-xs mr-1">{idx + 1}</span>
                             <DelayInput
+                                fullWidth={true}
                                 type="text"
                                 placeholder="value"
                                 className="rounded bg-gray-200 mr-1 py-1 px-2"
@@ -83,7 +84,7 @@ function LineChart(): JSX.Element {
                                 placement="top"
                             >
                                 <div
-                                    className={`w-8 h-8 cursor-pointer rounded flex items-center justify-center ${!idx ? "bg-blue-100 hover:bg-blue-200" : "bg-orange-100 hover:bg-orange-200"}`}
+                                    className={`w-8 h-8 flex-shrink-0 cursor-pointer rounded flex items-center justify-center ${!idx ? "bg-blue-100 hover:bg-blue-200" : "bg-orange-100 hover:bg-orange-200"}`}
                                     onClick={() => {
                                         dispatch({
                                             type: typeChange[!idx ? "addXField" : "deleteXField"],
@@ -110,6 +111,7 @@ function LineChart(): JSX.Element {
                         >
                             <legend>
                                 <DelayInput
+                                    fullWidth={true}
                                     type="text"
                                     className="px-2 text-xs w-40 rounded bg-gray-200"
                                     giveValue={(value: string) => dispatch({
@@ -141,6 +143,7 @@ function LineChart(): JSX.Element {
                                 >
                                     <span className="text-xs mr-2">{idx + 1}</span>
                                     <DelayInput
+                                        fullWidth={true}
                                         type="text"
                                         placeholder="value"
                                         className={`rounded ${item.error ? "bg-red-300" : "bg-gray-200"} px-2 mr-2`}

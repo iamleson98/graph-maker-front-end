@@ -2,9 +2,7 @@ import React, { memo, useReducer } from "react"
 import { Add, Remove } from "@material-ui/icons"
 import Tooltip from "@material-ui/core/Tooltip"
 import DelayInput from "../../components/delayinput"
-import "../../tailwind/out.css"
 import { BarchartState, BarchartAction, typeChange, barchartReducer } from "./reducer"
-import { localState } from "../../App"
 import ColorSettter from "../colorSetter"
 import { defaultFieldColor } from "../../constants"
 
@@ -28,15 +26,6 @@ function BarChartInput(): JSX.Element {
     })
     let { xData, yData, chartTitle, xTitle, yTitle, allGood, colors } = state;
 
-    // run automatically after every re-render
-    (() => {
-        const prevState = localState()
-        localState({
-            ...prevState,
-            canClickDrawChart: allGood
-        })
-    })()
-
     const manipulateAnXField = (clickedIndex: number) => () => {
         // clickedIndex is in range of [0, negative number].
         // if it is 0, it means we wanna add a field, otherwise, means delete a field with a value is index of that field
@@ -55,7 +44,7 @@ function BarChartInput(): JSX.Element {
     }
 
     return (
-        <div className="text-gray-700 bg-white rounded p-2 max-w-xs">
+        <div className="text-gray-700 bg-white rounded p-2">
             {/* title */}
             <div className="mb-4">
                 <label htmlFor="barchart-title" className="mr-2">Title</label>
@@ -96,6 +85,7 @@ function BarChartInput(): JSX.Element {
                             <div className="flex items-center mb-1" key={idx}>
                                 <span className="mr-2 text-sm">{idx + 1}</span>
                                 <DelayInput
+                                    fullWidth={true}
                                     type="text"
                                     className="rounded mr-2 bg-gray-200 py-1 px-2"
                                     placeholder="Enter data"
@@ -113,7 +103,7 @@ function BarChartInput(): JSX.Element {
                                 <Tooltip title={!idx ? "Add item" : "Remove item"} placement="top">
                                     <span
                                         onClick={manipulateAnXField(idx)}
-                                        className={`flex cursor-pointer items-center justify-center rounded ${!idx ? "bg-blue-100 text-blue-600" : "bg-orange-100 text-orange-600"} w-8 h-8 hover:${!idx ? "bg-blue-200" : "bg-orange-200"}`}
+                                        className={`flex cursor-pointer items-center flex-shrink-0 justify-center rounded ${!idx ? "bg-blue-100 text-blue-600" : "bg-orange-100 text-orange-600"} w-8 h-8 hover:${!idx ? "bg-blue-200" : "bg-orange-200"}`}
                                     >
                                         {!idx ? <Add fontSize="small" /> : <Remove fontSize="small" />}
                                     </span>
@@ -131,7 +121,7 @@ function BarChartInput(): JSX.Element {
                             type="text"
                             id="y-title"
                             className="rounded bg-gray-200 py-1 px-2"
-                            placeholder="X title"
+                            placeholder="Y title"
                             defaultValue={yTitle}
                             giveValue={(value: string) => dispatch({
                                 type: typeChange.yTitleChange, // type of change
@@ -151,6 +141,7 @@ function BarChartInput(): JSX.Element {
                                     <div className="flex items-center mb-1" key={idx}>
                                         <span className="mr-2 text-xs">{idx + 1}</span>
                                         <DelayInput
+                                            fullWidth={true}
                                             type="text"
                                             className={`rounded mr-2 bg-gray-200 px-2 ${block.error ? "bg-red-300" : ""}`}
                                             placeholder="Enter data"
@@ -185,7 +176,7 @@ function BarChartInput(): JSX.Element {
                                             >
                                                 <span
                                                     onClick={() => handleYItemClick(idx)}
-                                                    className={`flex cursor-pointer items-center justify-center rounded w-8 h-8 hover:${!idx ? "bg-blue-200" : "bg-orange-200"} ${!idx ? "bg-blue-100 text-blue-600" : "bg-orange-100 text-orange-600"}`}
+                                                    className={`flex cursor-pointer items-center flex-shrink-0 justify-center rounded w-8 h-8 hover:${!idx ? "bg-blue-200" : "bg-orange-200"} ${!idx ? "bg-blue-100 text-blue-600" : "bg-orange-100 text-orange-600"}`}
                                                 >
                                                     {!idx ? <Add fontSize="small" /> : <Remove fontSize="small" />}
                                                 </span>

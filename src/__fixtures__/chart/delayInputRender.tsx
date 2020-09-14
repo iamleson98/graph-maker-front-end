@@ -51,9 +51,7 @@ export function DelayChartRender({ children }: CustomChartRenderProp) {
                             enter: 1000
                         }}
                     >
-                        <div className="p-1">
-                            {children}
-                        </div>
+                        {children}
                     </Fade>
                 )}
         </Fragment>

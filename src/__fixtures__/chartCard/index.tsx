@@ -19,17 +19,17 @@ function ChartCard({ img, title, timestamp }: ChartCardProps) {
     }
 
     return (
-        <div className="rounded bg-white transition-shadow hover:shadow-md duration-200 text-gray-700 max-w-xs mr-2 mb-2">
+        <div className="bg-white transition-shadow hover:shadow-lg duration-200 text-gray-700 max-w-xs mr-2 mb-2">
             {/* chart image */}
             <div
                 style={{
                     backgroundImage: `url(${img})`,
                 }}
-                className="bg-no-repeat bg-center bg-contain h-48 xs:h-40"
+                className="bg-no-repeat bg-center bg-contain h-48 xs:h-40 rounded"
             >
             </div>
             {/* meta */}
-            <div className="bg-gray-200 flex items-center justify-between py-1 px-2">
+            <div className="bg-gray-200 flex items-center justify-between py-1 px-2 rounded">
                 <div className="mr-2">
                     <p className="font-medium text-base xs:text-sm cursor-pointer">
                         {`${title.slice(0, 25)}...`}

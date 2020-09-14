@@ -60,6 +60,7 @@ function Auth() {
             >
                 <div className="mr-6 mb-4">
                     <DelayInput
+                        fullWidth={true}
                         type="text"
                         giveValue={console.log}
                         placeholder="Enter your email"
