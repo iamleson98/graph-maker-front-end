@@ -1,4 +1,4 @@
-import React, { memo, useReducer, useEffect } from "react"
+import React, { memo, useReducer } from "react"
 import DelayInput from "../../components/delayinput"
 import Button from "@material-ui/core/Button"
 import { Add, DeleteOutlined } from "@material-ui/icons"
@@ -10,7 +10,6 @@ import {
     MAX_PIE,
     pieChartReducer
 } from "./reducer"
-import { localState } from "../index"
 import ColorSettter from "../colorSetter"
 import { defaultFieldColor } from "../../constants"
 
@@ -33,14 +32,6 @@ function PieChart(): JSX.Element {
         allGood: true
     })
     let { chartTitle, pies, allGood } = state
-
-    useEffect(() => {
-        const prevState = localState()
-        localState({
-            ...prevState,
-            canClickDrawChart: allGood
-        })
-    }, [allGood])
 
     return (
         <div className="text-gray-700 bg-white rounded p-2">
@@ -70,13 +61,14 @@ function PieChart(): JSX.Element {
                         </legend>
                         {pie.map((data, sliceIndex) => (
                             <div className="flex items-center mb-2" key={sliceIndex}>
-                                <fieldset className="p-2 rounded border-2 mr-2 border-solid border-gray-200">
+                                <fieldset className="p-2 rounded w-full border-2 mr-2 border-solid border-gray-200">
                                     <legend className="text-sm">
                                         Slice {sliceIndex + 1}
                                     </legend>
                                     <div className="mb-1 flex items-center">
                                         <span className="mr-2 text-xs">name</span>
                                         <DelayInput
+                                            fullWidth={true}
                                             placeholder={data.name}
                                             className={`rounded bg-gray-200 px-2`}
                                             classes={{

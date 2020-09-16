@@ -12,9 +12,10 @@ export function useDelay(time: number): boolean {
     useEffect(() => {
 
         // subscription to close the loading gears
-        const $timerSub = timer(time).subscribe(() => {
-            setLoading(false)
-        })
+        const $timerSub = timer(time)
+            .subscribe(() => {
+                setLoading(false)
+            })
 
         return () => {
             $timerSub?.unsubscribe()

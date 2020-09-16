@@ -57,7 +57,7 @@ function Navigator() {
                                 href={"#j"}
                                 onClick={() => clickHandler(idx)}
                                 key={idx}
-                                className={`text-gray-600 inline cursor-pointer text-sm font-medium leading-5 float-left px-2 py-2 ${state.activeTab === idx ? "text-blue-700" : "hover:text-gray-500 transition-colors duration-200"}`}
+                                className={`text-gray-700 inline cursor-pointer text-sm font-medium leading-5 float-left px-2 py-2 ${state.activeTab === idx ? "text-blue-700" : "hover:text-gray-600 transition-colors duration-200"}`}
                             >
                                 {nav.name}
                             </a>

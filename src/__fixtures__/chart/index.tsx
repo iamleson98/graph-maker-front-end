@@ -11,24 +11,32 @@ import { DelayChartRender } from "./delayInputRender"
 import { SvgIconTypeMap } from "@material-ui/core"
 // import StdPieChart from "../standardChart/pie"
 // import StdLineChart from "../standardChart/line"
-import StdBarChart from "../standardChart/bar"
-import { BarchartState } from "../barChartInput/reducer"
-import { PieChartState } from "../pieChartInput/reducer"
-import { LineChartState } from "../lineChartInput/reducer"
-import { KeyOfStringInterface } from "../../constants"
+// import StdBarChart from "../standardChart/bar"
+// import { BarchartState } from "../barChartInput/reducer"
+// import { PieChartState } from "../pieChartInput/reducer"
+// import { LineChartState } from "../lineChartInput/reducer"
+// import { KeyOfStringInterface } from "../../constants"
 import { OverridableComponent } from "@material-ui/core/OverridableComponent"
 import DummyChartInput from "../dummyInput/dummy"
+import { useQuery } from "@apollo/client"
+import { GET_CURRENT_CHART_STATE } from "../../graphql/queries"
+import { ChartType, localState } from "../index"
 
 
-interface ChartRef extends KeyOfStringInterface {
-    barChartState?: BarchartState;
-    pieChartState?: PieChartState;
-    lineChartState?: LineChartState;
-    scatterChartState?: any;
-    areaChartState?: any;
-}
+// interface ChartRef extends KeyOfStringInterface {
+//     barChartState?: BarchartState;
+//     pieChartState?: PieChartState;
+//     lineChartState?: LineChartState;
+//     scatterChartState?: any;
+//     areaChartState?: any;
+// }
 
-type chartRefKey = "barChartState" | "pieChartState" | "lineChartState" | "scatterChartState" | "areaChartState";
+type chartRefKey =
+    | "barChartState"
+    | "pieChartState"
+    | "lineChartState"
+    | "scatterChartState"
+    | "areaChartState";
 
 export interface ChartBaseState {
     allGood: boolean; // to know whether user can click draw button
@@ -36,18 +44,13 @@ export interface ChartBaseState {
 
 function Chart() {
 
-    // references
-    const reference = useRef<ChartRef>({
-        barChartState: undefined,
-        pieChartState: undefined,
-        lineChartState: undefined,
-        areaChartState: undefined,
-        scatterChartState: undefined
-    })
+    // get local state
+    const { data, loading } = useQuery(GET_CURRENT_CHART_STATE)
+    console.log(data, loading)
 
     // memoized values
     const chartRoutes = useMemo<{
-        name: string;
+        name: ChartType;
         icon: OverridableComponent<SvgIconTypeMap<{}, "svg">>;
         tailwindColor: string;
         tailwindActiveBg: string;
@@ -71,7 +74,17 @@ function Chart() {
 
     const changeChart = (newIdx: number) => () => {
         if (newIdx !== activeIndex) {
-            setState({ ...state, activeIndex: newIdx })
+            setState({
+                ...state,
+                activeIndex: newIdx
+            })
+
+            // tell parent to update current chart type
+            const prevState = localState()
+            localState({
+                ...prevState,
+                chartType: chartRoutes[newIdx].name
+            })
         }
     }
 
@@ -87,19 +100,7 @@ function Chart() {
                 </div>
                 <div className="p-1">
                     <div className="rounded bg-white p-2 flex flex-wrap justify-center">
-                        <StdBarChart
-                            xLabels={["one", "two", "three", "four", "one", "two", "three", "four"]}
-                            yDataList={[
-                                {
-                                    data: [1, 60, 24, 6, 12, 54, 10, 22],
-                                    label: "Android"
-                                },
-                                {
-                                    data: [6, 2, 6, 13, 78, 90, 4, 20],
-                                    label: "IOS"
-                                },
-                            ]}
-                        />
+                        {/* chart display area */}
                     </div>
                 </div>
             </div>

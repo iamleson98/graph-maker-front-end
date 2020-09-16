@@ -1,10 +1,10 @@
 import React from "react";
 import { ApolloClient, InMemoryCache, useQuery } from "@apollo/client"
 import { ApolloProvider, makeVar } from "@apollo/client"
-// import Chart from "./chart"
-import UserInfo from "./userInfo"
-import History from "./history"
-import Nav from "./navigator"
+import Chart from "./chart"
+// import UserInfo from "./userInfo"
+// import History from "./history"
+// import Nav from "./navigator"
 import { BarchartState } from "../__fixtures__/barChartInput/reducer"
 import { LineChartState } from "../__fixtures__/lineChartInput/reducer"
 import { PieChartState } from "../__fixtures__/pieChartInput/reducer"
@@ -16,8 +16,15 @@ import { GET_CURRENT_CHART_STATE } from "../graphql/queries";
 
 export interface DummyState { }
 
+export type ChartType =
+    | "Bar chart"
+    | "Pie chart"
+    | "Line chart"
+    | "Area chart"
+    | "Scatter chart"
+
 export interface LocalState {
-    chartType: "line" | "bar" | "pie" | "scatter" | "area";
+    chartType: ChartType;
     barChartState: null | BarchartState;
     lineChartState: null | LineChartState;
     pieChartState: null | PieChartState;
@@ -27,7 +34,7 @@ export interface LocalState {
 
 // local state
 export const localState = makeVar<LocalState>({
-    chartType: "bar",
+    chartType: "Bar chart",
     barChartState: null,
     lineChartState: null,
     pieChartState: null,
@@ -55,19 +62,19 @@ const client = new ApolloClient({
                             // check chart type and decode what to return
                             let chartState;
                             switch (chartType) {
-                                case "area":
+                                case "Area chart":
                                     chartState = areaChartState;
                                     break
-                                case "bar":
+                                case "Bar chart":
                                     chartState = barChartState;
                                     break
-                                case "line":
+                                case "Line chart":
                                     chartState = lineChartState;
                                     break
-                                case "pie":
+                                case "Pie chart":
                                     chartState = pieChartState;
                                     break
-                                case "scatter":
+                                case "Scatter chart":
                                     chartState = scatterChartState;
                                     break
                             }
@@ -88,7 +95,7 @@ function App() {
 
     return (
         <ApolloProvider client={client}>
-            <Nav />
+            {/* <Nav />
             <main className="mt-16">
                 <div className="flex flex-wrap">
                     <div className="w-3/12 sm:w-full">
@@ -99,17 +106,10 @@ function App() {
                     </div>
                 </div>
             </main>
-            <A />
+            <A /> */}
+            <Chart />
         </ApolloProvider>
     );
-}
-
-function A() {
-
-    const { data } = useQuery(GET_CURRENT_CHART_STATE)
-    console.log(data)
-
-    return <></>
 }
 
 export default App;

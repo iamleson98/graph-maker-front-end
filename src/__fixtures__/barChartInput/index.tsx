@@ -24,7 +24,7 @@ function BarChartInput(): JSX.Element {
         ],
         allGood: false
     })
-    let { xData, yData, chartTitle, xTitle, yTitle, allGood, colors } = state;
+    let { xData, yData, chartTitle, xTitle, yTitle, colors } = state;
 
     const manipulateAnXField = (clickedIndex: number) => () => {
         // clickedIndex is in range of [0, negative number].

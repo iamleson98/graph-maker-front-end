@@ -8,7 +8,6 @@ import {
     lineChartReducer, LineChartAction,
     LineChartState, typeChange, MAX_LINES
 } from "./reducer"
-import { localState } from "../index"
 import ColorSetter from "../colorSetter"
 import { defaultFieldColor } from "../../constants"
 
@@ -29,14 +28,6 @@ function LineChart(): JSX.Element {
         allGood: false
     })
     const { chartTitle, xData, yData, allGood } = state
-
-    useEffect(() => {
-        const prevState = localState()
-        localState({
-            ...prevState,
-            canClickDrawChart: allGood
-        })
-    }, [allGood])
 
     return (
         <div className="rounded bg-white p-2 text-gray-700">
