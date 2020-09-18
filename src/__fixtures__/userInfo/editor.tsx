@@ -36,7 +36,7 @@ function AvatarDialog({ onClose }: AvatarDialogProps) {
     const { croppie, canSave } = state
 
     useEffect(() => {
-        if (!croppie) {
+        if (!state.croppie) {
             setState({
                 ...state,
                 croppie: new Croppie(
@@ -45,7 +45,7 @@ function AvatarDialog({ onClose }: AvatarDialogProps) {
                 )
             })
         }
-    }, [])
+    }, [croppieOps, state])
 
     const handleSelectImg = (evt: React.ChangeEvent<HTMLInputElement>) => {
         const { files } = evt.target

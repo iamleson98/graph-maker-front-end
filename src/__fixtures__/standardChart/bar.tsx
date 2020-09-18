@@ -72,7 +72,7 @@ function StdBarchart(props: BarChartProps) {
             (canvasRef.current as HTMLCanvasElement).getContext("2d") as CanvasRenderingContext2D,
             barChartConfig(props)
         )
-    }, [])
+    }, [props])
 
     return (
         <canvas ref={canvasRef}></canvas>

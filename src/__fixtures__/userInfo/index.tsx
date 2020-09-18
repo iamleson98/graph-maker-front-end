@@ -56,7 +56,7 @@ function UserInfo() {
 
             {/* avatar */}
             <div className="rounded-full mb-4 group relative overflow-hidden border-solid border-4 border-gray-200 m-auto w-40 h-40">
-                <img className="w-full h-full" src="https://i.pinimg.com/originals/0b/ee/64/0bee64ce2416f673c0dc9e04a10ed9d3.jpg" alt="profile picture" />
+                <img className="w-full h-full" src="https://i.pinimg.com/originals/0b/ee/64/0bee64ce2416f673c0dc9e04a10ed9d3.jpg" alt="profile" />
                 <div
                     className="absolute items-center justify-center w-full text-white group-hover:flex hidden cursor-pointer left-0 right-0 bottom-0 bg-opacity-75 bg-black h-20"
                     onClick={() => setState({

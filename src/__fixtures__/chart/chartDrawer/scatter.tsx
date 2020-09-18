@@ -1,10 +1,10 @@
 import React, { memo } from 'react'
 
 
-function Bar() {
+function Scatter() {
     return (
-        <div></div>
+        <div>scatter</div>
     )
 }
 
-export default memo(Bar)
+export default memo(Scatter)

@@ -1,4 +1,3 @@
-import { ChartBaseState } from "../chart"
 import { isRealNumber, defaultFieldColor } from "../../constants";
 import { noAnyError } from "../utils"
 
@@ -17,7 +16,7 @@ export enum typeChange {
     colorChange,
 }
 
-export interface BarchartState extends ChartBaseState {
+export interface BarchartState {
     chartTitle: string;
     xTitle: string;
     yTitle: string;
@@ -27,6 +26,20 @@ export interface BarchartState extends ChartBaseState {
         error?: string;
         data: string[]; // when draw chart, we need to convert these strings to numbers
     }[];
+}
+
+export const InitBarChartState: BarchartState = {
+    chartTitle: "",
+    xTitle: "",
+    yTitle: "",
+    xData: [""],
+    colors: [defaultFieldColor],
+    yData: [
+        {
+            error: undefined,
+            data: [""]
+        }
+    ]
 }
 
 export interface BarchartAction {
@@ -129,7 +142,9 @@ export function barchartReducer(state: BarchartState, action: BarchartAction): B
     }
 
     // final step to check errors:
-    newState.allGood = noAnyError(newState.yData.map(block => block.error))
+    if (noAnyError(newState.yData.map(block => block.error))) {
+
+    }
 
     return newState;
 }

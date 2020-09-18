@@ -1,6 +1,5 @@
-import { isRealNumber, defaultFieldColor } from '../../constants'
-import { ChartBaseState } from '../chart'
-import { noAnyError } from '../utils'
+import { isRealNumber, defaultFieldColor } from "../../constants"
+import { noAnyError } from "../utils"
 
 export enum typeChange {
     addPie,
@@ -13,7 +12,7 @@ export enum typeChange {
     colorChange
 }
 
-export interface PieChartState extends ChartBaseState {
+export interface PieChartState {
     chartTitle: string;
     pies: {
         color: string;
@@ -21,6 +20,20 @@ export interface PieChartState extends ChartBaseState {
         value: string;
         error?: string;
     }[][];
+}
+
+export const InitPieChartState: PieChartState = {
+    chartTitle: "",
+    pies: [
+        [
+            {
+                name: "",
+                value: "",
+                error: undefined,
+                color: defaultFieldColor
+            }
+        ]
+    ]
 }
 
 export interface PieChartAction {
@@ -98,12 +111,12 @@ export function pieChartReducer(state: PieChartState, action: PieChartAction): P
             pies[value][options?.index].error = error
             pies[value][options?.index].value = options?.value
 
-            const allGood = noAnyError(
-                pies
-                    .map(pie => pie.map(slice => slice.error))
-                    .reduce((a, b) => a.concat(b), [])
-            )
-            newState = { ...newState, pies, allGood }
+            // const allGood = noAnyError(
+            //     pies
+            //         .map(pie => pie.map(slice => slice.error))
+            //         .reduce((a, b) => a.concat(b), [])
+            // )
+            newState = { ...newState, pies }
             break
         case typeChange.colorChange:
             // value is pie index, options.index is slice index, options.value is color for that slice
@@ -114,6 +127,12 @@ export function pieChartReducer(state: PieChartState, action: PieChartAction): P
         default:
             break
     }
+
+    // newState.allGood = noAnyError(
+    //     pies
+    //         .map(pie => pie.map(slice => slice.error))
+    //         .reduce((a, b) => a.concat(b), [])
+    // )
 
     return newState
 }

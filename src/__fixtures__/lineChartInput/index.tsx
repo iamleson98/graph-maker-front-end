@@ -1,33 +1,21 @@
-import React, { memo, useReducer, useEffect } from "react"
+import React, { memo, useReducer } from "react"
 import DelayInput from "../../components/delayinput"
 import { Add, Remove } from "@material-ui/icons"
 import Tooltip from "@material-ui/core/Tooltip"
 import { Button } from "@material-ui/core"
-
 import {
     lineChartReducer, LineChartAction,
-    LineChartState, typeChange, MAX_LINES
+    LineChartState, typeChange, MAX_LINES,
+    InitLineChartState
 } from "./reducer"
 import ColorSetter from "../colorSetter"
-import { defaultFieldColor } from "../../constants"
 
 
 function LineChart(): JSX.Element {
 
     // component state
-    const [state, dispatch] = useReducer<React.Reducer<LineChartState, LineChartAction>>(lineChartReducer, {
-        chartTitle: "",
-        xData: [""],
-        yData: [
-            {
-                name: "",
-                data: [""],
-                color: defaultFieldColor
-            }
-        ],
-        allGood: false
-    })
-    const { chartTitle, xData, yData, allGood } = state
+    const [state, dispatch] = useReducer<React.Reducer<LineChartState, LineChartAction>>(lineChartReducer, InitLineChartState)
+    const { chartTitle, xData, yData } = state
 
     return (
         <div className="rounded bg-white p-2 text-gray-700">

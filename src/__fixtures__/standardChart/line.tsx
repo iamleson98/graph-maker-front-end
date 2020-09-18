@@ -3,7 +3,7 @@ import Chart, { ChartConfiguration, ChartDataSets } from "chart.js"
 import { defaultColors } from "../../constants"
 
 
-interface LineConfigProps {
+export interface LineChartProps {
     xLabels: string[];
     yDataList: {
         color?: string;
@@ -13,7 +13,7 @@ interface LineConfigProps {
     chartTitle?: string;
 }
 
-export function lineChartConfig({ xLabels, yDataList, chartTitle }: LineConfigProps): ChartConfiguration {
+export function lineChartConfig({ xLabels, yDataList, chartTitle }: LineChartProps): ChartConfiguration {
 
     const dtSets: ChartDataSets[] = yDataList.map((line, idx) => {
         const { color, label, data } = line
@@ -71,7 +71,7 @@ export function lineChartConfig({ xLabels, yDataList, chartTitle }: LineConfigPr
     }
 }
 
-function StdLineChart(props: LineConfigProps) {
+function StdLineChart(props: LineChartProps) {
 
     // reference
     const canvasRef = useRef<any>()
@@ -84,7 +84,7 @@ function StdLineChart(props: LineConfigProps) {
             (canvasRef.current as HTMLCanvasElement)?.getContext("2d") as CanvasRenderingContext2D,
             lineChartConfig(props)
         )
-    }, [])
+    }, [props])
 
     return (
         <>

@@ -1,5 +1,5 @@
-import React, { memo, useEffect, useRef } from 'react';
-import Chart, { ChartConfiguration, ChartDataSets } from 'chart.js';
+import React, { memo, useEffect, useRef } from "react";
+import Chart, { ChartConfiguration, ChartDataSets } from "chart.js";
 import { defaultColors } from "../../constants"
 
 
@@ -55,7 +55,7 @@ function StdPieChart(props: StdPieChartProps) {
             (canvasRef.current as HTMLCanvasElement)?.getContext("2d") as CanvasRenderingContext2D,
             pieChartConfig(props)
         )
-    }, [])
+    }, [props])
 
     return (
         <canvas ref={canvasRef}></canvas>

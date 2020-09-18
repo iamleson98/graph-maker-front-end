@@ -1,4 +1,4 @@
-import React, { memo, useMemo, useState, useRef } from "react"
+import React, { memo, useEffect, useMemo, useRef, useState } from "react"
 import { PieChart, Timeline } from "@material-ui/icons"
 import { ChartBar, Scatter, AreaChart } from "../../components/icons"
 import Tooltip from "@material-ui/core/Tooltip"
@@ -6,47 +6,20 @@ import LineChartInput from "../lineChartInput"
 import BarChartInput from "../barChartInput"
 import PieChartInput from "../pieChartInput"
 import SimpleBar from "simplebar-react"
-import "simplebar/dist/simplebar.min.css"
 import { DelayChartRender } from "./delayInputRender"
 import { SvgIconTypeMap } from "@material-ui/core"
-// import StdPieChart from "../standardChart/pie"
-// import StdLineChart from "../standardChart/line"
-// import StdBarChart from "../standardChart/bar"
-// import { BarchartState } from "../barChartInput/reducer"
-// import { PieChartState } from "../pieChartInput/reducer"
-// import { LineChartState } from "../lineChartInput/reducer"
-// import { KeyOfStringInterface } from "../../constants"
 import { OverridableComponent } from "@material-ui/core/OverridableComponent"
 import DummyChartInput from "../dummyInput/dummy"
-import { useQuery } from "@apollo/client"
-import { GET_CURRENT_CHART_STATE } from "../../graphql/queries"
 import { ChartType, localState } from "../index"
+import { BarChartDrawer, LineChartDrawer, PieChartDrawer, ScatterChartDrawer, AreaChartDrawer } from "./chartDrawer"
+import "simplebar/dist/simplebar.min.css"
+import { Subscription, timer } from "rxjs"
 
-
-// interface ChartRef extends KeyOfStringInterface {
-//     barChartState?: BarchartState;
-//     pieChartState?: PieChartState;
-//     lineChartState?: LineChartState;
-//     scatterChartState?: any;
-//     areaChartState?: any;
-// }
-
-type chartRefKey =
-    | "barChartState"
-    | "pieChartState"
-    | "lineChartState"
-    | "scatterChartState"
-    | "areaChartState";
-
-export interface ChartBaseState {
-    allGood: boolean; // to know whether user can click draw button
-}
 
 function Chart() {
 
-    // get local state
-    const { data, loading } = useQuery(GET_CURRENT_CHART_STATE)
-    console.log(data, loading)
+    // refs
+    const timerSub = useRef<Subscription>()
 
     // memoized values
     const chartRoutes = useMemo<{
@@ -54,39 +27,49 @@ function Chart() {
         icon: OverridableComponent<SvgIconTypeMap<{}, "svg">>;
         tailwindColor: string;
         tailwindActiveBg: string;
-        refKey: chartRefKey;
         inputComponent: React.MemoExoticComponent<() => JSX.Element>;
+        drawerComponent: React.MemoExoticComponent<() => JSX.Element>;
     }[]>(() => {
         return [
-            { name: "Bar chart", icon: ChartBar, tailwindColor: "text-green-500", tailwindActiveBg: "bg-green-100", refKey: "barChartState", inputComponent: BarChartInput },
-            { name: "Pie chart", icon: PieChart, tailwindColor: "text-red-500", tailwindActiveBg: "bg-red-100", refKey: "pieChartState", inputComponent: PieChartInput },
-            { name: "Line chart", icon: Timeline, tailwindColor: "text-orange-500", tailwindActiveBg: "bg-orange-100", refKey: "lineChartState", inputComponent: LineChartInput },
-            { name: "Area chart", icon: AreaChart, tailwindColor: "text-purple-500", tailwindActiveBg: "bg-purple-100", refKey: "areaChartState", inputComponent: DummyChartInput },
-            { name: "Scatter chart", icon: Scatter, tailwindColor: "text-blue-500", tailwindActiveBg: "bg-blue-100", refKey: "scatterChartState", inputComponent: DummyChartInput },
+            { name: "Bar chart", icon: ChartBar, tailwindColor: "text-green-500", tailwindActiveBg: "bg-green-100", inputComponent: BarChartInput, drawerComponent: BarChartDrawer },
+            { name: "Pie chart", icon: PieChart, tailwindColor: "text-red-500", tailwindActiveBg: "bg-red-100", inputComponent: PieChartInput, drawerComponent: PieChartDrawer },
+            { name: "Line chart", icon: Timeline, tailwindColor: "text-orange-500", tailwindActiveBg: "bg-orange-100", inputComponent: LineChartInput, drawerComponent: LineChartDrawer },
+            { name: "Area chart", icon: AreaChart, tailwindColor: "text-purple-500", tailwindActiveBg: "bg-purple-100", inputComponent: DummyChartInput, drawerComponent: AreaChartDrawer },
+            { name: "Scatter chart", icon: Scatter, tailwindColor: "text-blue-500", tailwindActiveBg: "bg-blue-100", inputComponent: DummyChartInput, drawerComponent: ScatterChartDrawer },
         ]
     }, [])
 
     // component state
     const [state, setState] = useState({
-        activeIndex: 0
+        activeIndex: 0,
     })
     const { activeIndex } = state
 
     const changeChart = (newIdx: number) => () => {
-        if (newIdx !== activeIndex) {
-            setState({
-                ...state,
-                activeIndex: newIdx
-            })
 
+        if (newIdx !== activeIndex) {
             // tell parent to update current chart type
             const prevState = localState()
             localState({
                 ...prevState,
                 chartType: chartRoutes[newIdx].name
             })
+
+            timerSub.current = timer(150)
+                .subscribe(() => {
+                    setState({
+                        ...state,
+                        activeIndex: newIdx
+                    })
+                })
         }
     }
+
+    useEffect(() => {
+        timerSub.current?.unsubscribe()
+    }, [])
+
+    const CurrentDrawer = chartRoutes[activeIndex].drawerComponent
 
     return (
         <div className="rounded p-2 flex flex-wrap">
@@ -101,6 +84,7 @@ function Chart() {
                 <div className="p-1">
                     <div className="rounded bg-white p-2 flex flex-wrap justify-center">
                         {/* chart display area */}
+                        <CurrentDrawer />
                     </div>
                 </div>
             </div>

@@ -8,30 +8,17 @@ import {
     PieChartState,
     typeChange,
     MAX_PIE,
-    pieChartReducer
+    pieChartReducer,
+    InitPieChartState
 } from "./reducer"
 import ColorSettter from "../colorSetter"
-import { defaultFieldColor } from "../../constants"
 
 
 function PieChart(): JSX.Element {
 
     // component state
-    const [state, dispatch] = useReducer<React.Reducer<PieChartState, PieChartAction>>(pieChartReducer, {
-        chartTitle: "",
-        pies: [
-            [
-                {
-                    name: "",
-                    value: "",
-                    error: undefined,
-                    color: defaultFieldColor
-                }
-            ]
-        ],
-        allGood: true
-    })
-    let { chartTitle, pies, allGood } = state
+    const [state, dispatch] = useReducer<React.Reducer<PieChartState, PieChartAction>>(pieChartReducer, InitPieChartState)
+    let { chartTitle, pies } = state
 
     return (
         <div className="text-gray-700 bg-white rounded p-2">
@@ -94,7 +81,6 @@ function PieChart(): JSX.Element {
                                                     })}
                                                 />
                                             )}
-                                        // defaultValue={data.name}
                                         />
                                     </div>
                                     <div className="flex items-center">
@@ -140,7 +126,6 @@ function PieChart(): JSX.Element {
                         <Button
                             size="small"
                             variant="contained"
-                            // disabled={pies[0].length >= MAX_SLICES_PER_PIE}
                             disableElevation={true}
                             color={!pieIndex ? "primary" : "secondary"}
                             fullWidth={true}

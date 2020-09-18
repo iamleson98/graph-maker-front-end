@@ -1,20 +1,14 @@
 import React from "react";
-import { ApolloClient, InMemoryCache, useQuery } from "@apollo/client"
+import { ApolloClient, InMemoryCache } from "@apollo/client"
 import { ApolloProvider, makeVar } from "@apollo/client"
 import Chart from "./chart"
-// import UserInfo from "./userInfo"
-// import History from "./history"
-// import Nav from "./navigator"
-import { BarchartState } from "../__fixtures__/barChartInput/reducer"
-import { LineChartState } from "../__fixtures__/lineChartInput/reducer"
-import { PieChartState } from "../__fixtures__/pieChartInput/reducer"
-
+import { KeyOfStringInterface } from "../constants";
 import "../tailwind/out.css"
 import "../index.css"
-import { GET_CURRENT_CHART_STATE } from "../graphql/queries";
+import { BarchartState } from "./barChartInput/reducer";
+import { LineChartState } from "./lineChartInput/reducer";
+import { PieChartState } from "./pieChartInput/reducer";
 
-
-export interface DummyState { }
 
 export type ChartType =
     | "Bar chart"
@@ -23,13 +17,21 @@ export type ChartType =
     | "Area chart"
     | "Scatter chart"
 
-export interface LocalState {
+export type localStateKey =
+    | "chartType"
+    | "barChartState"
+    | "lineChartState"
+    | "pieChartState"
+    | "areaChartState"
+    | "scatterChartState"
+
+export interface LocalState extends KeyOfStringInterface {
     chartType: ChartType;
-    barChartState: null | BarchartState;
-    lineChartState: null | LineChartState;
-    pieChartState: null | PieChartState;
-    areaChartState: null | DummyState;
-    scatterChartState: null | DummyState;
+    barChartState: BarchartState | null;
+    lineChartState: LineChartState | null;
+    pieChartState: PieChartState | null;
+    areaChartState: any;
+    scatterChartState: any;
 }
 
 // local state
@@ -78,10 +80,7 @@ const client = new ApolloClient({
                                     chartState = scatterChartState;
                                     break
                             }
-                            return {
-                                chartType,
-                                chartState
-                            }
+                            return chartState
                         }
                     },
 
@@ -95,18 +94,6 @@ function App() {
 
     return (
         <ApolloProvider client={client}>
-            {/* <Nav />
-            <main className="mt-16">
-                <div className="flex flex-wrap">
-                    <div className="w-3/12 sm:w-full">
-                        <UserInfo />
-                    </div>
-                    <div className="w-8/12 sm:w-full">
-                        <History />
-                    </div>
-                </div>
-            </main>
-            <A /> */}
             <Chart />
         </ApolloProvider>
     );

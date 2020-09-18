@@ -1,9 +1,8 @@
 import { isRealNumber, defaultFieldColor } from "../../constants"
-import { ChartBaseState } from '../chart'
-import { noAnyError } from "../utils"
+import { noAnyError, updateLocalState } from "../utils"
 
 
-export interface LineChartState extends ChartBaseState {
+export interface LineChartState {
     chartTitle: string;
     xData: string[];
     yData: {
@@ -12,6 +11,18 @@ export interface LineChartState extends ChartBaseState {
         data: string[];
         error?: string;
     }[],
+}
+
+export const InitLineChartState: LineChartState = {
+    chartTitle: "",
+    xData: [""],
+    yData: [
+        {
+            name: "",
+            data: [""],
+            color: defaultFieldColor
+        }
+    ]
 }
 
 export enum typeChange {
@@ -105,17 +116,22 @@ export function lineChartReducer(state: LineChartState, action: LineChartAction)
         case typeChange.lineNameChange:
             // value is index, options.value is value for it
             yData[value].name = options?.value
-
-            const allGood = noAnyError(yData.map(line => line.error))
-            newState = { ...newState, yData, allGood }
+            newState = { ...newState, yData }
             break
         case typeChange.colorChange:
             // value is line index, options.value is color for that line
-            yData[value].color = options?.value
-            newState = { ...state, yData }
+            // yData[value].color = options?.value
+            const newYData = [...yData]
+            newYData[value].color = options?.value
+            newState = { ...state, yData: newYData }
             break
         default:
             break
+    }
+
+    // check if there is no error, update local state
+    if (noAnyError(yData.map(line => line.error))) {
+        updateLocalState("lineChartState", newState)
     }
 
     return newState

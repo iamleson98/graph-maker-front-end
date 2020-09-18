@@ -2,28 +2,14 @@ import React, { memo, useReducer } from "react"
 import { Add, Remove } from "@material-ui/icons"
 import Tooltip from "@material-ui/core/Tooltip"
 import DelayInput from "../../components/delayinput"
-import { BarchartState, BarchartAction, typeChange, barchartReducer } from "./reducer"
+import { BarchartState, BarchartAction, typeChange, barchartReducer, InitBarChartState } from "./reducer"
 import ColorSettter from "../colorSetter"
-import { defaultFieldColor } from "../../constants"
 
 
 function BarChartInput(): JSX.Element {
 
     // component state
-    const [state, dispatch] = useReducer<React.Reducer<BarchartState, BarchartAction>>(barchartReducer, {
-        chartTitle: "",
-        xTitle: "",
-        yTitle: "",
-        xData: [""],
-        colors: [defaultFieldColor],
-        yData: [
-            {
-                error: undefined,
-                data: [""]
-            }
-        ],
-        allGood: false
-    })
+    const [state, dispatch] = useReducer<React.Reducer<BarchartState, BarchartAction>>(barchartReducer, InitBarChartState)
     let { xData, yData, chartTitle, xTitle, yTitle, colors } = state;
 
     const manipulateAnXField = (clickedIndex: number) => () => {
