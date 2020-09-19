@@ -1,14 +1,14 @@
-import { useQuery } from "@apollo/client"
+import { useReactiveVar } from "@apollo/client"
 import React, { memo, useEffect, useState } from "react"
-import { GET_CURRENT_CHART_STATE } from "../../../graphql/queries"
-import { LineChartState } from "../../lineChartInput/reducer"
+import { LocalState } from "../.."
+import { localState } from "../../"
 import StdLineChart, { LineChartProps } from "../../standardChart/line"
 
 
 function LineDrawer() {
 
     // get local chart state
-    const { data, loading } = useQuery(GET_CURRENT_CHART_STATE)
+    const { lineChartState } = useReactiveVar<LocalState>(localState)
 
     const [state, setState] = useState<LineChartProps>({
         xLabels: [],
@@ -18,13 +18,13 @@ function LineDrawer() {
     const { xLabels, yDataList, chartTitle } = state
 
     useEffect(() => {
-        if (!!data && !!data.currentChartState) {
-            const { chartTitle, xData, yData }: LineChartState = data.currentChartState
+        if (!!lineChartState) {
+            const { chartTitle, xData, yData } = lineChartState
             const newLineChartProps: LineChartProps = {
                 xLabels: xData,
                 chartTitle,
                 yDataList: yData.map(item => {
-                    const numberList = item.data.map(itm => Number(itm))
+                    const numberList = item.data.map(itm => Number(itm)) // NOTE: Number("") === 0
                     return {
                         color: item.color,
                         label: item.name,
@@ -34,11 +34,7 @@ function LineDrawer() {
             }
             setState(newLineChartProps)
         }
-    }, [data])
-
-    if (loading) {
-        return <p>Loading...</p>
-    }
+    }, [lineChartState])
 
     return (
         <StdLineChart

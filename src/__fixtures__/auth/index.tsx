@@ -2,7 +2,6 @@ import React, { memo, useMemo } from 'react'
 import DelayInput from '../../components/delayinput'
 import { Button, SvgIcon, Tooltip } from '@material-ui/core'
 import Logo from "../../components/logo"
-import { ArrowRightAlt } from '@material-ui/icons'
 
 
 const Google = (props: any) => (
@@ -52,7 +51,7 @@ function Auth() {
             >
                 <Logo />
             </div>
-            <div className="absolute flex sm:right-0 sm:flex-wrap"
+            <div className="absolute flex xs:block sm:right-0 sm:flex-wrap"
                 style={{
                     top: "30%",
                     right: "10%"
@@ -64,18 +63,15 @@ function Auth() {
                         type="text"
                         giveValue={console.log}
                         placeholder="Enter your email"
-                        className="bg-gray-200 rounded py-1 px-2 mb-2"
+                        className="bg-gray-100 rounded py-1 px-2 mb-2 border-2 border-gray-500"
                     />
                     <div className="text-right">
                         <Button
                             variant="contained"
-                            // fullWidth={true}
+                            size="small"
                             color="primary"
                             disableElevation={true}
                             className="focus:outline-none"
-                            endIcon={(
-                                <ArrowRightAlt />
-                            )}
                         >
                             GO
                         </Button>

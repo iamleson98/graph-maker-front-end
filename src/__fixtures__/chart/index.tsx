@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useMemo, useRef, useState } from "react"
+import React, { memo, useMemo, useState } from "react"
 import { PieChart, Timeline } from "@material-ui/icons"
 import { ChartBar, Scatter, AreaChart } from "../../components/icons"
 import Tooltip from "@material-ui/core/Tooltip"
@@ -10,16 +10,12 @@ import { DelayChartRender } from "./delayInputRender"
 import { SvgIconTypeMap } from "@material-ui/core"
 import { OverridableComponent } from "@material-ui/core/OverridableComponent"
 import DummyChartInput from "../dummyInput/dummy"
-import { ChartType, localState } from "../index"
+import { ChartType } from "../index"
 import { BarChartDrawer, LineChartDrawer, PieChartDrawer, ScatterChartDrawer, AreaChartDrawer } from "./chartDrawer"
 import "simplebar/dist/simplebar.min.css"
-import { Subscription, timer } from "rxjs"
 
 
 function Chart() {
-
-    // refs
-    const timerSub = useRef<Subscription>()
 
     // memoized values
     const chartRoutes = useMemo<{
@@ -31,11 +27,11 @@ function Chart() {
         drawerComponent: React.MemoExoticComponent<() => JSX.Element>;
     }[]>(() => {
         return [
-            { name: "Bar chart", icon: ChartBar, tailwindColor: "text-green-500", tailwindActiveBg: "bg-green-100", inputComponent: BarChartInput, drawerComponent: BarChartDrawer },
-            { name: "Pie chart", icon: PieChart, tailwindColor: "text-red-500", tailwindActiveBg: "bg-red-100", inputComponent: PieChartInput, drawerComponent: PieChartDrawer },
-            { name: "Line chart", icon: Timeline, tailwindColor: "text-orange-500", tailwindActiveBg: "bg-orange-100", inputComponent: LineChartInput, drawerComponent: LineChartDrawer },
-            { name: "Area chart", icon: AreaChart, tailwindColor: "text-purple-500", tailwindActiveBg: "bg-purple-100", inputComponent: DummyChartInput, drawerComponent: AreaChartDrawer },
-            { name: "Scatter chart", icon: Scatter, tailwindColor: "text-blue-500", tailwindActiveBg: "bg-blue-100", inputComponent: DummyChartInput, drawerComponent: ScatterChartDrawer },
+            { name: "Bar chart", icon: ChartBar, tailwindColor: "text-green-500", tailwindActiveBg: "bg-green-200", inputComponent: BarChartInput, drawerComponent: BarChartDrawer },
+            { name: "Pie chart", icon: PieChart, tailwindColor: "text-red-500", tailwindActiveBg: "bg-red-200", inputComponent: PieChartInput, drawerComponent: PieChartDrawer },
+            { name: "Line chart", icon: Timeline, tailwindColor: "text-orange-500", tailwindActiveBg: "bg-orange-200", inputComponent: LineChartInput, drawerComponent: LineChartDrawer },
+            { name: "Area chart", icon: AreaChart, tailwindColor: "text-purple-500", tailwindActiveBg: "bg-purple-200", inputComponent: DummyChartInput, drawerComponent: AreaChartDrawer },
+            { name: "Scatter chart", icon: Scatter, tailwindColor: "text-blue-500", tailwindActiveBg: "bg-blue-200", inputComponent: DummyChartInput, drawerComponent: ScatterChartDrawer },
         ]
     }, [])
 
@@ -48,33 +44,19 @@ function Chart() {
     const changeChart = (newIdx: number) => () => {
 
         if (newIdx !== activeIndex) {
-            // tell parent to update current chart type
-            const prevState = localState()
-            localState({
-                ...prevState,
-                chartType: chartRoutes[newIdx].name
+            setState({
+                ...state,
+                activeIndex: newIdx
             })
-
-            timerSub.current = timer(150)
-                .subscribe(() => {
-                    setState({
-                        ...state,
-                        activeIndex: newIdx
-                    })
-                })
         }
     }
-
-    useEffect(() => {
-        timerSub.current?.unsubscribe()
-    }, [])
 
     const CurrentDrawer = chartRoutes[activeIndex].drawerComponent
 
     return (
         <div className="rounded p-2 flex flex-wrap">
             {/* chart result */}
-            <div className="w-8/12 sm:w-full">
+            <div className="sm:w-full w-8/12">
                 <div className="p-1">
                     <div className="rounded bg-white font-medium p-2 text-gray-700">
                         {/* display type of chart */}

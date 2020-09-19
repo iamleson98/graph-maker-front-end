@@ -50,40 +50,6 @@ const client = new ApolloClient({
         typePolicies: {
             Query: {
                 fields: {
-                    currentChartState: {
-                        read() {
-                            const {
-                                chartType,
-                                barChartState,
-                                lineChartState,
-                                pieChartState,
-                                areaChartState,
-                                scatterChartState
-                            } = localState()
-
-                            // check chart type and decode what to return
-                            let chartState;
-                            switch (chartType) {
-                                case "Area chart":
-                                    chartState = areaChartState;
-                                    break
-                                case "Bar chart":
-                                    chartState = barChartState;
-                                    break
-                                case "Line chart":
-                                    chartState = lineChartState;
-                                    break
-                                case "Pie chart":
-                                    chartState = pieChartState;
-                                    break
-                                case "Scatter chart":
-                                    chartState = scatterChartState;
-                                    break
-                            }
-                            return chartState
-                        }
-                    },
-
                 }
             }
         }

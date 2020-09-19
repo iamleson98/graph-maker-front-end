@@ -42,16 +42,23 @@ export function lineChartConfig({ xLabels, yDataList, chartTitle }: LineChartPro
                 fullWidth: false
             },
             animation: {
-                duration: 200
+                duration: 500,
+                easing: "linear"
             },
             title: {
                 display: true,
                 text: chartTitle || "Line Chart"
             },
             scales: {
+
                 xAxes: [{
                     ticks: {
                         beginAtZero: true
+                    },
+                    scaleLabel: {
+                        display: true,
+                        labelString: "the x label",
+                        fontSize: 14,
                     }
                 }],
                 yAxes: [{
@@ -60,6 +67,11 @@ export function lineChartConfig({ xLabels, yDataList, chartTitle }: LineChartPro
                     },
                     ticks: {
                         beginAtZero: true
+                    },
+                    scaleLabel: {
+                        display: true,
+                        labelString: "The y label",
+                        fontSize: 14,
                     }
                 }]
             },

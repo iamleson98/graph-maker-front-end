@@ -30,14 +30,14 @@ function BarChartInput(): JSX.Element {
     }
 
     return (
-        <div className="text-gray-700 bg-white rounded p-2">
+        <div className="text-gray-600 bg-white rounded p-2">
             {/* title */}
             <div className="mb-4">
-                <label htmlFor="barchart-title" className="mr-2">Title</label>
+                <label htmlFor="barchart-title" className="mr-2 text-sm font-medium">Chart title</label>
                 <DelayInput
                     type="text"
                     id="barchart-title"
-                    className="rounded bg-gray-200 py-1 px-2"
+                    className="rounded bg-gray-200 px-2"
                     placeholder="Chart title"
                     defaultValue={chartTitle}
                     giveValue={(value: string) => dispatch({
@@ -51,12 +51,12 @@ function BarChartInput(): JSX.Element {
                 <div className="mb-4">
                     {/* x title */}
                     <div className="mb-2">
-                        <label htmlFor="x-title" className="mr-2">X title</label>
+                        <label htmlFor="x-title" className="mr-2 text-sm">Ox label</label>
                         <DelayInput
                             type="text"
                             id="x-title"
-                            className="rounded bg-gray-200 py-1 px-2"
-                            placeholder="X title"
+                            className="rounded bg-gray-200 px-2"
+                            placeholder="Ox label"
                             defaultValue={xTitle}
                             giveValue={(value: string) => dispatch({
                                 type: typeChange.xTitleChange,
@@ -66,14 +66,14 @@ function BarChartInput(): JSX.Element {
                     </div>
                     {/* x data */}
                     <fieldset className="rounded p-2 border-2 border-solid border-gray-200">
-                        <legend className="text-sm leading-4 font-medium text-red-500">X data</legend>
+                        <legend className="text-sm leading-4 font-medium text-red-500">Data on Ox</legend>
                         {xData.map((value, idx) => (
                             <div className="flex items-center mb-1" key={idx}>
                                 <span className="mr-2 text-sm">{idx + 1}</span>
                                 <DelayInput
                                     fullWidth={true}
                                     type="text"
-                                    className="rounded mr-2 bg-gray-200 py-1 px-2"
+                                    className="rounded mr-2 bg-gray-200 px-2"
                                     placeholder="Enter data"
                                     defaultValue={value}
                                     giveValue={(value: string) => {
@@ -102,12 +102,12 @@ function BarChartInput(): JSX.Element {
                 <div className="mb-4">
                     {/* y title */}
                     <div className="mb-2">
-                        <label htmlFor="y-title" className="mr-2">Y title</label>
+                        <label htmlFor="y-title" className="mr-2 text-sm">Oy label</label>
                         <DelayInput
                             type="text"
                             id="y-title"
-                            className="rounded bg-gray-200 py-1 px-2"
-                            placeholder="Y title"
+                            className="rounded bg-gray-200 px-2"
+                            placeholder="Oy label"
                             defaultValue={yTitle}
                             giveValue={(value: string) => dispatch({
                                 type: typeChange.yTitleChange, // type of change
@@ -117,7 +117,7 @@ function BarChartInput(): JSX.Element {
                     </div>
                     {/* y data */}
                     <fieldset className="rounded p-2 border-2 border-solid border-gray-200">
-                        <legend className="text-sm leading-4 text-red-500 font-medium">Y data</legend>
+                        <legend className="text-sm leading-4 text-red-500 font-medium">Data on Oy</legend>
                         {yData.map((block, index) => (
                             <fieldset key={index} className="rounded border-solid border-2 border-gray-200 p-2 mb-2">
                                 <legend className="text-xs leading-4 font-normal">

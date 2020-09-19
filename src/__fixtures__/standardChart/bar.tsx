@@ -38,6 +38,10 @@ function barChartConfig({ xLabels, yDataList, chartTitle }: BarChartProps): Char
                 position: "bottom",
                 fullWidth: false
             },
+            animation: {
+                duration: 500,
+                easing: "linear"
+            },
             title: {
                 display: true,
                 text: chartTitle || "Bar Chart"

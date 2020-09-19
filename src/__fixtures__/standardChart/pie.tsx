@@ -3,19 +3,20 @@ import Chart, { ChartConfiguration, ChartDataSets } from "chart.js";
 import { defaultColors } from "../../constants"
 
 
-interface StdPieChartProps {
+export interface StdPieChartProps {
     labels: string[];
-    bgColors?: string[];
+    sliceBackgrounds?: string[];
     data: number[];
+    chartTitle?: string;
 }
 
-export function pieChartConfig({ labels, bgColors, data }: StdPieChartProps): ChartConfiguration {
+export function pieChartConfig({ labels, sliceBackgrounds, data, chartTitle }: StdPieChartProps): ChartConfiguration {
 
     const { length } = defaultColors
 
     const dtSets: ChartDataSets[] = [{
         data,
-        backgroundColor: bgColors || (new Array(data.length))
+        backgroundColor: sliceBackgrounds || (new Array(data.length))
             .fill(null)
             .map((_, idx) => defaultColors[idx % length]),
     }]
@@ -34,11 +35,14 @@ export function pieChartConfig({ labels, bgColors, data }: StdPieChartProps): Ch
                 fullWidth: false
             },
             animation: {
+                duration: 500,
+                easing: "linear",
                 animateScale: true,
                 animateRotate: true
             },
             title: {
-                display: true
+                display: true,
+                text: chartTitle || "Pie chart",
             }
         },
     }

@@ -5,6 +5,8 @@ import { noAnyError, updateLocalState } from "../utils"
 export interface LineChartState {
     chartTitle: string;
     xData: string[];
+    xLabel?: string;
+    yLabel?: string;
     yData: {
         color: string;
         name: string;
@@ -55,75 +57,85 @@ function lineChartErrorChecker(data: string[]): error {
 }
 
 export function lineChartReducer(state: LineChartState, action: LineChartAction): LineChartState {
-    let newState = state
     const { type, value, options } = action
-    let { xData, yData } = state
+    const { xData, yData } = state
+
+    let cloneYData = [...yData];
+    let cloneXData = [...xData];
 
     switch (type) {
         case typeChange.titleChange:
-            newState = { ...state, chartTitle: value }
+            state = { ...state, chartTitle: value }
             break
         case typeChange.addXField:
             if (xData.length < MAX_POINTS) {
-                xData = xData.concat("")
-                yData = yData.map(item => {
-                    return {
-                        ...item,
-                        data: item.data.concat("")
-                    }
-                })
-                newState = { ...newState, xData, yData }
+                state = {
+                    ...state,
+                    xData: xData.concat(""),
+                    yData: yData.map(item => {
+                        return {
+                            ...item,
+                            data: item.data.concat("")
+                        }
+                    })
+                }
             }
             break
         case typeChange.deleteXField:
             // value hold index of to be deleted field
-            xData = xData.filter((_, idx) => idx !== value)
-            yData = yData.map(item => {
-                let data = item.data.filter((_, id) => id !== value)
-                return {
-                    ...item,
-                    data,
-                    error: lineChartErrorChecker(data)
-                }
-            })
-            newState = { ...newState, xData, yData }
+            state = {
+                ...state,
+                xData: xData.filter((_, idx) => idx !== value),
+                yData: yData.map(item => {
+                    let data = item.data.filter((_, id) => id !== value)
+                    return {
+                        ...item,
+                        data,
+                        error: lineChartErrorChecker(data)
+                    }
+                })
+            }
             break
         case typeChange.addLine:
-            yData = yData.concat({
-                name: "",
-                data: [...(new Array(xData.length))].map(() => ""),
-                color: defaultFieldColor
-            })
-            newState = { ...newState, yData }
+            state = {
+                ...state,
+                yData: yData.concat({
+                    name: "",
+                    data: [...(new Array(xData.length))].map(() => ""),
+                    color: defaultFieldColor
+                })
+            }
             break
         case typeChange.deleteLine:
             // value is index of line to be deleted
-            yData = yData.filter((_, idx) => idx !== value)
-            newState = { ...newState, yData }
+            state = { ...state, yData: yData.filter((_, idx) => idx !== value) }
             break
         case typeChange.xFieldChange:
-            // value is index, options.value is value for it
-            xData[value] = options?.value
-            newState = { ...newState, xData }
+            // value is index of the x field, options.value is value for it
+            cloneXData[value] = options?.value
+            state = { ...state, xData: cloneXData }
             break
         case typeChange.yFieldChange:
-            // value is index of line, options.index is index of field, options.value is value for it
-            yData[value].data[options?.index] = options?.value
-            let error = lineChartErrorChecker(yData[value].data)
-            yData[value].error = error
-            newState = { ...newState, yData }
+            // value is index of line, options.index is index of y field, options.value is value for it
+            const cloneData = [...cloneYData[value].data]
+            cloneData[options?.index] = options?.value
+
+            cloneYData[value] = {
+                ...cloneYData[value],
+                data: cloneData,
+                error: lineChartErrorChecker(cloneData)
+            }
+            state = { ...state, yData: cloneYData }
             break
         case typeChange.lineNameChange:
             // value is index, options.value is value for it
-            yData[value].name = options?.value
-            newState = { ...newState, yData }
+            cloneYData[value] = { ...cloneYData[value], name: options?.value }
+            state = { ...state, yData: cloneYData }
             break
         case typeChange.colorChange:
             // value is line index, options.value is color for that line
-            // yData[value].color = options?.value
-            const newYData = [...yData]
-            newYData[value].color = options?.value
-            newState = { ...state, yData: newYData }
+            cloneYData[value] = { ...cloneYData[value], color: options?.value }
+            state = { ...state, yData: cloneYData }
             break
         default:
             break
@@ -131,8 +143,8 @@ export function lineChartReducer(state: LineChartState, action: LineChartAction)
 
     // check if there is no error, update local state
     if (noAnyError(yData.map(line => line.error))) {
-        updateLocalState("lineChartState", newState)
+        updateLocalState("lineChartState", state)
     }
 
-    return newState
+    return state
 }

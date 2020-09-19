@@ -1,5 +1,6 @@
 import { isRealNumber, defaultFieldColor } from "../../constants"
-import { noAnyError } from "../utils"
+import { noAnyError, updateLocalState } from "../utils"
+
 
 export enum typeChange {
     addPie,
@@ -49,90 +50,110 @@ export interface PieChartAction {
 export const MAX_SLICES_PER_PIE = 15, MAX_PIE = 4
 
 export function pieChartReducer(state: PieChartState, action: PieChartAction): PieChartState {
-    let newState = state
-    let { pies } = state
+    const { pies } = state
     const { type, value, options } = action
+
+    let clonePies = [...pies]
 
     switch (type) {
         case typeChange.addPie:
             if (pieChartReducer.length < MAX_PIE) {
-                const newPie = pies[0].map(pie => {
+                const newPie = clonePies[0].map(pie => {
                     return { ...pie, value: "", error: undefined }
                 })
-                pies.push(newPie)
-                newState = { ...newState, pies }
+                clonePies.push(newPie) // only push can append an array to another array
+                state = { ...state, pies: clonePies }
             }
             break
         case typeChange.deletePie:
             // value holds index of pie to remove
-            pies = pies.filter((_, idx) => idx !== value)
-            newState = { ...state, pies }
+            state = { ...state, pies: clonePies.filter((_, idx) => idx !== value) }
             break
         case typeChange.titleChange:
-            newState = { ...newState, chartTitle: action.value }
+            state = { ...state, chartTitle: action.value }
             break
         case typeChange.addSlice:
             if (pies[0].length < MAX_SLICES_PER_PIE) {
-                pies = pies.map(pie => {
-                    return pie.concat({
-                        name: "",
-                        value: "",
-                        error: undefined,
-                        color: defaultFieldColor
+                state = {
+                    ...state,
+                    pies: clonePies.map(pie => {
+                        return pie.concat({
+                            name: "",
+                            value: "",
+                            error: undefined,
+                            color: defaultFieldColor
+                        })
                     })
-                })
-                newState = { ...newState, pies }
+                }
             }
             break
         case typeChange.deleteSlice:
             // value hold index to remove
-            pies = pies.map(pie => {
-                return pie.filter((_, id) => id !== value)
-            })
-            newState = { ...newState, pies }
+            state = {
+                ...state,
+                pies: clonePies.map(pie => {
+                    return pie.filter((_, id) => id !== value)
+                })
+            }
             break
         case typeChange.sliceNameChange:
             // value is index, options.value is value
-            pies = pies.map(pie => {
-                return pie.map((slice, idx) => {
-                    const { name } = slice
-                    return {
-                        ...slice,
-                        name: idx === value ? options?.value : name,
-                    }
+            state = {
+                ...state,
+                pies: clonePies.map(pie => {
+                    return pie.map((slice, idx) => {
+                        const { name } = slice
+                        return {
+                            ...slice,
+                            name: idx === value ? options?.value : name,
+                        }
+                    })
                 })
-            })
-            newState = { ...state, pies }
+            }
             break
         case typeChange.sliceValueChange:
-            // value is index of pie to update, options.index is index of that slice, options.value is value for that field
+            // value is index of pie to update, options.index is index of that slice, options.value is value for that slice
             // check if the input value is a real number:
             let error = isRealNumber.test(options?.value) ? undefined : "value must be a number"
-            pies[value][options?.index].error = error
-            pies[value][options?.index].value = options?.value
 
-            // const allGood = noAnyError(
-            //     pies
-            //         .map(pie => pie.map(slice => slice.error))
-            //         .reduce((a, b) => a.concat(b), [])
-            // )
-            newState = { ...newState, pies }
+            clonePies = clonePies.map((pie, pieIdx) => {
+                if (value === pieIdx) {
+                    return pie.map((slice, sliceIdx) => {
+                        if (sliceIdx === options?.index) {
+                            return { ...slice, error, value: options.value }
+                        }
+                        return slice
+                    })
+                }
+                return pie
+            })
+
+            state = { ...state, pies: clonePies }
             break
         case typeChange.colorChange:
-            // value is pie index, options.index is slice index, options.value is color for that slice
-            pies[value][options?.index].color = options?.value
-            newState = { ...newState, pies }
+            // value is slice indexes, options.value is color for those slices
+            clonePies = clonePies.map((pie) => {
+                return pie.map((slice, sliceIndex) => {
+                    if (sliceIndex === value) {
+                        return { ...slice, color: options?.value }
+                    }
+                    return slice
+                })
+            })
+            state = { ...state, pies: clonePies }
             break
 
         default:
             break
     }
 
-    // newState.allGood = noAnyError(
-    //     pies
-    //         .map(pie => pie.map(slice => slice.error))
-    //         .reduce((a, b) => a.concat(b), [])
-    // )
+    if (noAnyError(
+        clonePies
+            .map(pie => pie.map(slice => slice.error))
+            .reduce((a, b) => a.concat(b), [])
+    )) {
+        updateLocalState("pieChartState", state)
+    }
 
-    return newState
+    return state
 }

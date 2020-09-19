@@ -28,7 +28,7 @@ function PieChart(): JSX.Element {
                 <DelayInput
                     type="text"
                     placeholder="Chart title"
-                    className="rounded bg-gray-200 py-1 px-2"
+                    className="rounded bg-gray-200 px-2"
                     giveValue={(value: string) => dispatch({
                         type: typeChange.titleChange,
                         value
@@ -46,49 +46,51 @@ function PieChart(): JSX.Element {
                         <legend className="text-sm text-red-500 font-medium">
                             Pie {pieIndex + 1}
                         </legend>
-                        {pie.map((data, sliceIndex) => (
+                        {pie.map((slice, sliceIndex) => (
                             <div className="flex items-center mb-2" key={sliceIndex}>
                                 <fieldset className="p-2 rounded w-full border-2 mr-2 border-solid border-gray-200">
                                     <legend className="text-sm">
                                         Slice {sliceIndex + 1}
                                     </legend>
-                                    <div className="mb-1 flex items-center">
-                                        <span className="mr-2 text-xs">name</span>
-                                        <DelayInput
-                                            fullWidth={true}
-                                            placeholder={data.name}
-                                            className={`rounded bg-gray-200 px-2`}
-                                            classes={{
-                                                input: !!pieIndex ? "cursor-not-allowed" : "initial"
-                                            }}
-                                            giveValue={(value: string) => dispatch({
-                                                type: typeChange.sliceNameChange,
-                                                value: sliceIndex,
-                                                options: {
-                                                    value
-                                                }
-                                            })}
-                                            disabled={!!pieIndex}
-                                            endAdornment={pieIndex === 0 && (
-                                                <ColorSettter
-                                                    giveColor={(color: string) => dispatch({
-                                                        type: typeChange.colorChange,
-                                                        value: pieIndex,
-                                                        options: {
-                                                            index: sliceIndex,
-                                                            value: color
-                                                        }
-                                                    })}
-                                                />
-                                            )}
-                                        />
-                                    </div>
+                                    {!pieIndex && (
+                                        <div className="mb-1 flex items-center">
+                                            <span className="mr-2 text-xs">name</span>
+                                            <DelayInput
+                                                fullWidth={true}
+                                                placeholder={slice.name}
+                                                className={`rounded bg-gray-200 px-2`}
+                                                classes={{
+                                                    input: !!pieIndex ? "cursor-not-allowed" : "initial"
+                                                }}
+                                                giveValue={(value: string) => dispatch({
+                                                    type: typeChange.sliceNameChange,
+                                                    value: sliceIndex,
+                                                    options: {
+                                                        value
+                                                    }
+                                                })}
+                                                disabled={!!pieIndex}
+                                                endAdornment={pieIndex === 0 && (
+                                                    <ColorSettter
+                                                        giveColor={(color: string) => dispatch({
+                                                            type: typeChange.colorChange,
+                                                            value: sliceIndex,
+                                                            options: {
+                                                                value: color
+                                                            }
+                                                        })}
+                                                        defaultBg={slice.color}
+                                                    />
+                                                )}
+                                            />
+                                        </div>
+                                    )}
                                     <div className="flex items-center">
                                         <span className="mr-2 text-xs">value</span>
                                         <DelayInput
                                             fullWidth={true}
                                             placeholder="value"
-                                            className={`rounded ${data.error ? "bg-red-300" : "bg-gray-200"} px-2`}
+                                            className={`rounded ${slice.error ? "bg-red-300" : "bg-gray-200"} px-2`}
                                             giveValue={(value: string) => dispatch({
                                                 type: typeChange.sliceValueChange,
                                                 value: pieIndex,
@@ -97,10 +99,10 @@ function PieChart(): JSX.Element {
                                                     value
                                                 }
                                             })}
-                                            defaultValue={data.value}
+                                            defaultValue={slice.value}
                                         />
                                     </div>
-                                    {!!data.error && <small className="text-red-600">{data.error}</small>}
+                                    {!!slice.error && <small className="text-red-600">{slice.error}</small>}
                                 </fieldset>
                                 {!!sliceIndex && !pieIndex && (
                                     // only display this button in fields that has pieIndex greater than 0

@@ -1,21 +1,43 @@
-import { useQuery } from "@apollo/client"
-import React, { memo } from "react"
-import { GET_CURRENT_CHART_STATE } from "../../../graphql/queries"
+import { useReactiveVar } from "@apollo/client"
+import React, { memo, useEffect, useState } from "react"
+import { localState } from "../.."
+import StdBarchart, { BarChartProps } from "../../standardChart/bar"
 
 
 function BarDrawer() {
 
     // get local chart state
-    const { data, loading } = useQuery(GET_CURRENT_CHART_STATE)
+    const { barChartState } = useReactiveVar(localState)
 
-    if (loading) {
-        return <p>Loading...</p>
-    }
+    const [state, setState] = useState<BarChartProps>({
+        xLabels: [],
+        yDataList: [],
+        chartTitle: ""
+    })
+    const { xLabels, yDataList, chartTitle } = state
 
-    console.log(data)
+    useEffect(() => {
+        if (!!barChartState) {
+            const {
+                chartTitle,
+                xData,
+                colors,
+                yData
+            } = barChartState
+            const yDataList = yData.map((item, index) => {
+                return {
+                    
+                }
+            })
+        }
+    }, [barChartState])
 
     return (
-        <div>area</div>
+        <StdBarchart
+            xLabels={xLabels}
+            yDataList={yDataList}
+            chartTitle={chartTitle}
+        />
     )
 }
 

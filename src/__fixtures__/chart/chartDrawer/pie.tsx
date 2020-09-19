@@ -1,21 +1,59 @@
-import { useQuery } from "@apollo/client"
-import React, { memo } from "react"
-import { GET_CURRENT_CHART_STATE } from "../../../graphql/queries"
+import { useReactiveVar } from "@apollo/client"
+import React, { memo, useEffect, useState } from "react"
+import { localState } from "../.."
+import StdPieChart, { StdPieChartProps } from "../../standardChart/pie"
 
 
 function PieDrawer() {
 
     // get local chart state
-    const { data, loading } = useQuery(GET_CURRENT_CHART_STATE)
+    const { pieChartState } = useReactiveVar(localState)
 
-    if (loading) {
-        return <p>Loading...</p>
-    }
+    const [pies, setPies] = useState<StdPieChartProps[]>([])
 
-    console.log(data)
+    useEffect(() => {
+        if (!!pieChartState) {
+            const { chartTitle, pies } = pieChartState
+            const newPies: StdPieChartProps[] = pies.map(pie => {
+                const labels: string[] = [],
+                    sliceBackgrounds: string[] = [],
+                    data: number[] = []
+
+                pie.forEach(slice => {
+                    labels.push(slice.name)
+                    sliceBackgrounds.push(slice.color)
+                    data.push(Number(slice.value))
+                })
+
+                return {
+                    labels,
+                    sliceBackgrounds,
+                    data,
+                    chartTitle
+                }
+            })
+
+            setPies(newPies)
+        }
+    }, [pieChartState])
 
     return (
-        <div>area</div>
+        <>
+            {pies.map((pie, pieIndex) => (
+                <div
+                    key={pieIndex}
+                    className="w-1/2 sm:w-full p-1"
+                >
+                    <StdPieChart
+                        key={pieIndex}
+                        chartTitle={pie.chartTitle}
+                        data={pie.data}
+                        sliceBackgrounds={pie.sliceBackgrounds}
+                        labels={pie.labels}
+                    />
+                </div>
+            ))}
+        </>
     )
 }
 
