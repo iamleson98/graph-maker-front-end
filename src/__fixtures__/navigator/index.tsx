@@ -45,7 +45,7 @@ function Navigator() {
     }
 
     return (
-        <div className="flex flex-no-wrap items-center py-2 bg-white px-4 fixed top-0 left-0 w-full z-20 shadow-xs justify-between">
+        <div className="flex flex-no-wrap items-center py-1 bg-white px-4 fixed top-0 left-0 w-full z-20 shadow-xs justify-between">
             <a href="/">
                 <Logo />
             </a>

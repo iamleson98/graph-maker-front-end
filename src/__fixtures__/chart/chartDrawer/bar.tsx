@@ -11,33 +11,41 @@ function BarDrawer() {
 
     const [state, setState] = useState<BarChartProps>({
         xLabels: [],
+        xLabel: "",
+        yLabel: "",
         yDataList: [],
         chartTitle: ""
     })
-    const { xLabels, yDataList, chartTitle } = state
+    const { xLabels, yDataList, chartTitle, xLabel, yLabel } = state
 
     useEffect(() => {
         if (!!barChartState) {
             const {
                 chartTitle,
+                yLabel,
+                xLabel,
                 xData,
                 colors,
                 yData
             } = barChartState
             const yDataList = yData.map((item, index) => {
                 return {
-                    
+
                 }
             })
         }
     }, [barChartState])
 
     return (
-        <StdBarchart
-            xLabels={xLabels}
-            yDataList={yDataList}
-            chartTitle={chartTitle}
-        />
+        <div className="p-1 rounded border border-solid border-gray-300 w-full">
+            <StdBarchart
+                xLabels={xLabels}
+                xLabel={xLabel}
+                yLabel={yLabel}
+                yDataList={yDataList}
+                chartTitle={chartTitle}
+            />
+        </div>
     )
 }
 

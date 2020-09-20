@@ -8,6 +8,8 @@ import "../index.css"
 import { BarchartState } from "./barChartInput/reducer";
 import { LineChartState } from "./lineChartInput/reducer";
 import { PieChartState } from "./pieChartInput/reducer";
+import { InitBarChartState, InitLineChartState, InitPieChartState } from "./initState";
+import Navigator from "./navigator"
 
 
 export type ChartType =
@@ -27,9 +29,9 @@ export type localStateKey =
 
 export interface LocalState extends KeyOfStringInterface {
     chartType: ChartType;
-    barChartState: BarchartState | null;
-    lineChartState: LineChartState | null;
-    pieChartState: PieChartState | null;
+    barChartState: BarchartState;
+    lineChartState: LineChartState;
+    pieChartState: PieChartState;
     areaChartState: any;
     scatterChartState: any;
 }
@@ -37,9 +39,9 @@ export interface LocalState extends KeyOfStringInterface {
 // local state
 export const localState = makeVar<LocalState>({
     chartType: "Bar chart",
-    barChartState: null,
-    lineChartState: null,
-    pieChartState: null,
+    barChartState: InitBarChartState,
+    lineChartState: InitLineChartState,
+    pieChartState: InitPieChartState,
     areaChartState: null,
     scatterChartState: null
 })
@@ -60,6 +62,7 @@ function App() {
 
     return (
         <ApolloProvider client={client}>
+            <Navigator />
             <Chart />
         </ApolloProvider>
     );

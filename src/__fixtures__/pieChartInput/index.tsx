@@ -9,22 +9,22 @@ import {
     typeChange,
     MAX_PIE,
     pieChartReducer,
-    InitPieChartState
 } from "./reducer"
 import ColorSettter from "../colorSetter"
+import { localState } from ".."
 
 
 function PieChart(): JSX.Element {
 
     // component state
-    const [state, dispatch] = useReducer<React.Reducer<PieChartState, PieChartAction>>(pieChartReducer, InitPieChartState)
+    const [state, dispatch] = useReducer<React.Reducer<PieChartState, PieChartAction>>(pieChartReducer, localState().pieChartState)
     let { chartTitle, pies } = state
 
     return (
-        <div className="text-gray-700 bg-white rounded p-2">
+        <div className="text-gray-600 bg-white rounded p-2">
             {/* title */}
             <div className="mb-4">
-                <label htmlFor="piechart-title" className="mr-2">Title</label>
+                <label htmlFor="piechart-title" className="mr-2 text-sm font-medium">Chart title</label>
                 <DelayInput
                     type="text"
                     placeholder="Chart title"
@@ -52,12 +52,13 @@ function PieChart(): JSX.Element {
                                     <legend className="text-sm">
                                         Slice {sliceIndex + 1}
                                     </legend>
-                                    {!pieIndex && (
+                                    {!pieIndex ? (
                                         <div className="mb-1 flex items-center">
                                             <span className="mr-2 text-xs">name</span>
                                             <DelayInput
                                                 fullWidth={true}
-                                                placeholder={slice.name}
+                                                placeholder="slice name"
+                                                defaultValue={slice.name}
                                                 className={`rounded bg-gray-200 px-2`}
                                                 classes={{
                                                     input: !!pieIndex ? "cursor-not-allowed" : "initial"
@@ -84,7 +85,12 @@ function PieChart(): JSX.Element {
                                                 )}
                                             />
                                         </div>
-                                    )}
+                                    ) : (
+                                            <div className="mb-1 flex items-center">
+                                                <span className="mr-2 text-xs">name</span>
+                                                <span className="text-sm font-medium">{slice.name}</span>
+                                            </div>
+                                        )}
                                     <div className="flex items-center">
                                         <span className="mr-2 text-xs">value</span>
                                         <DelayInput

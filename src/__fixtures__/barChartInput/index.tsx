@@ -2,15 +2,16 @@ import React, { memo, useReducer } from "react"
 import { Add, Remove } from "@material-ui/icons"
 import Tooltip from "@material-ui/core/Tooltip"
 import DelayInput from "../../components/delayinput"
-import { BarchartState, BarchartAction, typeChange, barchartReducer, InitBarChartState } from "./reducer"
+import { BarchartState, BarchartAction, typeChange, barchartReducer } from "./reducer"
 import ColorSettter from "../colorSetter"
+import { localState } from ".."
 
 
 function BarChartInput(): JSX.Element {
 
     // component state
-    const [state, dispatch] = useReducer<React.Reducer<BarchartState, BarchartAction>>(barchartReducer, InitBarChartState)
-    let { xData, yData, chartTitle, xTitle, yTitle, colors } = state;
+    const [state, dispatch] = useReducer<React.Reducer<BarchartState, BarchartAction>>(barchartReducer, localState().barChartState)
+    let { xData, yData, chartTitle, xLabel, yLabel, colors } = state;
 
     const manipulateAnXField = (clickedIndex: number) => () => {
         // clickedIndex is in range of [0, negative number].
@@ -57,9 +58,9 @@ function BarChartInput(): JSX.Element {
                             id="x-title"
                             className="rounded bg-gray-200 px-2"
                             placeholder="Ox label"
-                            defaultValue={xTitle}
+                            defaultValue={xLabel}
                             giveValue={(value: string) => dispatch({
-                                type: typeChange.xTitleChange,
+                                type: typeChange.xLabelChange,
                                 value
                             })}
                         />
@@ -108,9 +109,9 @@ function BarChartInput(): JSX.Element {
                             id="y-title"
                             className="rounded bg-gray-200 px-2"
                             placeholder="Oy label"
-                            defaultValue={yTitle}
+                            defaultValue={yLabel}
                             giveValue={(value: string) => dispatch({
-                                type: typeChange.yTitleChange, // type of change
+                                type: typeChange.yLabelChange, // type of change
                                 value                          // value for that field
                             })}
                         />
@@ -121,7 +122,7 @@ function BarChartInput(): JSX.Element {
                         {yData.map((block, index) => (
                             <fieldset key={index} className="rounded border-solid border-2 border-gray-200 p-2 mb-2">
                                 <legend className="text-xs leading-4 font-normal">
-                                    block {index + 1}
+                                    {`block ${xData[index] || index + 1}`}
                                 </legend>
                                 {block.data.map((barValue, idx) => (
                                     <div className="flex items-center mb-1" key={idx}>

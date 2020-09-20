@@ -5,6 +5,8 @@ import { defaultColors } from "../../constants"
 
 export interface LineChartProps {
     xLabels: string[];
+    xLabel?: string;
+    yLabel?: string;
     yDataList: {
         color?: string;
         label?: string;
@@ -13,7 +15,7 @@ export interface LineChartProps {
     chartTitle?: string;
 }
 
-export function lineChartConfig({ xLabels, yDataList, chartTitle }: LineChartProps): ChartConfiguration {
+export function lineChartConfig({ xLabels, yDataList, chartTitle, xLabel, yLabel }: LineChartProps): ChartConfiguration {
 
     const dtSets: ChartDataSets[] = yDataList.map((line, idx) => {
         const { color, label, data } = line
@@ -57,8 +59,7 @@ export function lineChartConfig({ xLabels, yDataList, chartTitle }: LineChartPro
                     },
                     scaleLabel: {
                         display: true,
-                        labelString: "the x label",
-                        fontSize: 14,
+                        labelString: xLabel || "Label on Ox",
                     }
                 }],
                 yAxes: [{
@@ -70,8 +71,7 @@ export function lineChartConfig({ xLabels, yDataList, chartTitle }: LineChartPro
                     },
                     scaleLabel: {
                         display: true,
-                        labelString: "The y label",
-                        fontSize: 14,
+                        labelString: yLabel || "Label on Oy",
                     }
                 }]
             },

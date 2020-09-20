@@ -64,7 +64,7 @@ function Chart() {
                     </div>
                 </div>
                 <div className="p-1">
-                    <div className="rounded bg-white p-2 flex flex-wrap justify-center">
+                    <div className="rounded bg-white flex flex-wrap justify-center">
                         {/* chart display area */}
                         <CurrentDrawer />
                     </div>

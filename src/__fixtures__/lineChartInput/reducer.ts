@@ -5,8 +5,8 @@ import { noAnyError, updateLocalState } from "../utils"
 export interface LineChartState {
     chartTitle: string;
     xData: string[];
-    xLabel?: string;
-    yLabel?: string;
+    xLabel: string;
+    yLabel: string;
     yData: {
         color: string;
         name: string;
@@ -15,17 +15,19 @@ export interface LineChartState {
     }[],
 }
 
-export const InitLineChartState: LineChartState = {
-    chartTitle: "",
-    xData: [""],
-    yData: [
-        {
-            name: "",
-            data: [""],
-            color: defaultFieldColor
-        }
-    ]
-}
+// export const InitLineChartState: LineChartState = {
+//     chartTitle: "",
+//     xLabel: "",
+//     yLabel: "",
+//     xData: [""],
+//     yData: [
+//         {
+//             name: "",
+//             data: [""],
+//             color: defaultFieldColor
+//         }
+//     ]
+// }
 
 export enum typeChange {
     titleChange,
@@ -37,6 +39,8 @@ export enum typeChange {
     yFieldChange,
     lineNameChange,
     colorChange,
+    xLabelChange,
+    yLabelChange,
 }
 
 export interface LineChartAction {
@@ -59,9 +63,6 @@ function lineChartErrorChecker(data: string[]): error {
 export function lineChartReducer(state: LineChartState, action: LineChartAction): LineChartState {
     const { type, value, options } = action
     const { xData, yData } = state
-
-    let cloneYData = [...yData];
-    let cloneXData = [...xData];
 
     switch (type) {
         case typeChange.titleChange:
@@ -112,37 +113,83 @@ export function lineChartReducer(state: LineChartState, action: LineChartAction)
             break
         case typeChange.xFieldChange:
             // value is index of the x field, options.value is value for it
-            cloneXData[value] = options?.value
-            state = { ...state, xData: cloneXData }
+            state = {
+                ...state,
+                xData: xData.map((itm, idx) => {
+                    if (idx === value) {
+                        return options?.value
+                    }
+                    return itm
+                })
+            }
             break
         case typeChange.yFieldChange:
             // value is index of line, options.index is index of y field, options.value is value for it
-            const cloneData = [...cloneYData[value].data]
-            cloneData[options?.index] = options?.value
-
-            cloneYData[value] = {
-                ...cloneYData[value],
-                data: cloneData,
-                error: lineChartErrorChecker(cloneData)
+            state = {
+                ...state,
+                yData: yData.map((item, index) => {
+                    if (value === index) {
+                        const data = item.data.map((itm, idx) => {
+                            if (idx === options?.index) {
+                                return options.value
+                            }
+                            return itm
+                        })
+                        return {
+                            ...item,
+                            data,
+                            error: lineChartErrorChecker(data)
+                        }
+                    }
+                    return item
+                })
             }
-            state = { ...state, yData: cloneYData }
             break
         case typeChange.lineNameChange:
             // value is index, options.value is value for it
-            cloneYData[value] = { ...cloneYData[value], name: options?.value }
-            state = { ...state, yData: cloneYData }
+            state = {
+                ...state,
+                yData: yData.map((item, idex) => {
+                    if (idex === value) {
+                        return {
+                            ...item,
+                            name: options?.value
+                        }
+                    }
+                    return item
+                })
+            }
             break
         case typeChange.colorChange:
             // value is line index, options.value is color for that line
-            cloneYData[value] = { ...cloneYData[value], color: options?.value }
-            state = { ...state, yData: cloneYData }
+            state = {
+                ...state,
+                yData: yData.map((item, idx) => {
+                    if (idx === value) {
+                        return {
+                            ...item,
+                            color: options?.value
+                        }
+                    }
+                    return item
+                })
+            }
             break
+        case typeChange.xLabelChange:
+            // action.value is new value for X label
+            state = { ...state, xLabel: value }
+            break
+        case typeChange.yLabelChange:
+            // action.value is new value for Y label
+            state = { ...state, yLabel: value }
+            break
+
         default:
             break
     }
 
     // check if there is no error, update local state
-    if (noAnyError(yData.map(line => line.error))) {
+    if (noAnyError(state.yData.map(line => line.error))) {
         updateLocalState("lineChartState", state)
     }
 

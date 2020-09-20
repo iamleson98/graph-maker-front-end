@@ -6,16 +6,16 @@ import { Button } from "@material-ui/core"
 import {
     lineChartReducer, LineChartAction,
     LineChartState, typeChange, MAX_LINES,
-    InitLineChartState
 } from "./reducer"
 import ColorSetter from "../colorSetter"
+import { localState } from ".."
 
 
 function LineChart(): JSX.Element {
 
     // component state
-    const [state, dispatch] = useReducer<React.Reducer<LineChartState, LineChartAction>>(lineChartReducer, InitLineChartState)
-    const { chartTitle, xData, yData } = state
+    const [state, dispatch] = useReducer<React.Reducer<LineChartState, LineChartAction>>(lineChartReducer, localState().lineChartState)
+    const { chartTitle, xData, yData, xLabel, yLabel } = state
 
     return (
         <div className="rounded bg-white p-2 text-gray-600">
@@ -39,14 +39,19 @@ function LineChart(): JSX.Element {
                 <div className="mb-4">
                     {/* title on Ox */}
                     <div className="mb-2">
-                        <label htmlFor="x-title" className="mr-2 text-sm">Ox label</label>
+                        <label htmlFor="x-label" className="mr-2 text-sm">Ox label</label>
                         <DelayInput
                             type="text"
-                            id="x-title"
+                            id="x-label"
                             className="rounded bg-gray-200 px-2"
                             placeholder="Ox label"
-                            defaultValue={"hi"}
-                            giveValue={console.log}
+                            defaultValue={xLabel}
+                            giveValue={(value: string) => {
+                                dispatch({
+                                    type: typeChange.xLabelChange,
+                                    value: value.trim()
+                                })
+                            }}
                         />
                     </div>
 
@@ -97,14 +102,19 @@ function LineChart(): JSX.Element {
                     {/* title on oy */}
                     <div className="mb-2">
                         <div className="mb-2">
-                            <label htmlFor="x-title" className="mr-2 text-sm">Oy label</label>
+                            <label htmlFor="y-label" className="mr-2 text-sm">Oy label</label>
                             <DelayInput
                                 type="text"
-                                id="x-title"
+                                id="y-label"
                                 className="rounded bg-gray-200 px-2"
-                                placeholder="Ox label"
-                                defaultValue={"ha"}
-                                giveValue={console.log}
+                                placeholder="Oy label"
+                                defaultValue={yLabel}
+                                giveValue={(value: string) => {
+                                    dispatch({
+                                        type: typeChange.yLabelChange,
+                                        value: value.trim()
+                                    })
+                                }}
                             />
                         </div>
                     </div>

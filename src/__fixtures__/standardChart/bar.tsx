@@ -5,6 +5,8 @@ import { defaultColors } from "../../constants";
 
 export interface BarChartProps {
     xLabels: string[];
+    xLabel?: string;
+    yLabel?: string;
     yDataList: {
         label?: string;
         color?: string;
@@ -13,7 +15,7 @@ export interface BarChartProps {
     chartTitle?: string;
 }
 
-function barChartConfig({ xLabels, yDataList, chartTitle }: BarChartProps): ChartConfiguration {
+function barChartConfig({ xLabels, yDataList, chartTitle, xLabel, yLabel }: BarChartProps): ChartConfiguration {
 
     const dtSets: ChartDataSets[] = yDataList.map((bar, idx) => {
         const { label, color, data } = bar
@@ -50,6 +52,10 @@ function barChartConfig({ xLabels, yDataList, chartTitle }: BarChartProps): Char
                 xAxes: [{
                     ticks: {
                         beginAtZero: true
+                    },
+                    scaleLabel: {
+                        display: true,
+                        labelString: xLabel || "Label on Ox"
                     }
                 }],
                 yAxes: [{
@@ -58,6 +64,10 @@ function barChartConfig({ xLabels, yDataList, chartTitle }: BarChartProps): Char
                     },
                     ticks: {
                         beginAtZero: true
+                    },
+                    scaleLabel: {
+                        display: true,
+                        labelString: yLabel || "Label on Oy"
                     }
                 }]
             },

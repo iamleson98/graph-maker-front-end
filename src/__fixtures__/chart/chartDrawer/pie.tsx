@@ -42,15 +42,17 @@ function PieDrawer() {
             {pies.map((pie, pieIndex) => (
                 <div
                     key={pieIndex}
-                    className="w-1/2 sm:w-full p-1"
+                    className={`${pies.length > 1 ? "w-1/2 sm:w-full" : "w-full"} p-1`}
                 >
-                    <StdPieChart
-                        key={pieIndex}
-                        chartTitle={pie.chartTitle}
-                        data={pie.data}
-                        sliceBackgrounds={pie.sliceBackgrounds}
-                        labels={pie.labels}
-                    />
+                    <div className="border-solid border rounded border-gray-300">
+                        <StdPieChart
+                            key={pieIndex}
+                            chartTitle={pie.chartTitle}
+                            data={pie.data}
+                            sliceBackgrounds={pie.sliceBackgrounds}
+                            labels={pie.labels}
+                        />
+                    </div>
                 </div>
             ))}
         </>
