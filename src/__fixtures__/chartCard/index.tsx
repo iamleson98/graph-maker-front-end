@@ -29,7 +29,7 @@ function ChartCard({ img, title, timestamp }: ChartCardProps) {
             >
             </div>
             {/* meta */}
-            <div className="bg-gray-200 flex items-center justify-between py-1 px-2 rounded">
+            <div className="bg-gray-300 flex items-center justify-between py-1 px-2 rounded">
                 <div className="mr-2">
                     <p className="font-medium text-base xs:text-sm cursor-pointer">
                         {`${title.slice(0, 25)}...`}

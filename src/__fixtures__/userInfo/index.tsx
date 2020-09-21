@@ -118,7 +118,7 @@ function UserInfo() {
                     <p className="text-center text-sm p-2 mb-4 font-medium">
                         <sup>
                             <svg width="1.1rem" height="1.1rem" viewBox="0 0 18 18" className="transform rotate-180 origin-center inline-block" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" d="M7.066 4.76A1.665 1.665 0 0 0 4 5.668a1.667 1.667 0 0 0 2.561 1.406c-.131.389-.375.804-.777 1.22a.417.417 0 1 0 .6.58c1.486-1.54 1.293-3.214.682-4.112zm4 0A1.665 1.665 0 0 0 8 5.668a1.667 1.667 0 0 0 2.561 1.406c-.131.389-.375.804-.777 1.22a.417.417 0 1 0 .6.58c1.486-1.54 1.293-3.214.682-4.112z" />
+                                <path fillRule="evenodd" d="M7.066 4.76A1.665 1.665 0 0 0 4 5.668a1.667 1.667 0 0 0 2.561 1.406c-.131.389-.375.804-.777 1.22a.417.417 0 1 0 .6.58c1.486-1.54 1.293-3.214.682-4.112zm4 0A1.665 1.665 0 0 0 8 5.668a1.667 1.667 0 0 0 2.561 1.406c-.131.389-.375.804-.777 1.22a.417.417 0 1 0 .6.58c1.486-1.54 1.293-3.214.682-4.112z" />
                             </svg>
                         </sup>
                         {geoThought}
@@ -137,6 +137,8 @@ function UserInfo() {
             ) : (
                     <Button
                         color="primary"
+                        variant="contained"
+                        disableElevation={true}
                         fullWidth={true}
                         onClick={editClickHandler}
                     >

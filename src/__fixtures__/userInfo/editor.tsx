@@ -20,9 +20,9 @@ function AvatarDialog({ onClose }: AvatarDialogProps) {
 
     // croppie options
     const croppieOps: Croppie.CroppieOptions = {
-        boundary: { width: 280, height: 250 },
+        boundary: { width: 300, height: 280 },
         enableZoom: true,
-        viewport: { width: 200, height: 200, type: "square" }
+        viewport: { width: 250, height: 250, type: "square" }
     }
 
     // component state

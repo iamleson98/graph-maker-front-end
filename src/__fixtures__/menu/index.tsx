@@ -3,8 +3,8 @@ import React, { memo } from "react"
 
 export interface MenuProps {
     addClass?: string;
-    values: string[];
-    giveValue: (value: string) => void;
+    values: React.ReactNode[];
+    giveValue: (value: any) => void;
     refer: React.MutableRefObject<any>;
 }
 

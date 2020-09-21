@@ -1,7 +1,8 @@
-import React, { memo, useMemo } from 'react'
-import DelayInput from '../../components/delayinput'
-import { Button, SvgIcon, Tooltip } from '@material-ui/core'
-import Logo from "../../components/logo"
+import React, { memo, useMemo, useState } from "react"
+import DelayInput from "../../components/delayinput"
+import { Button, FormHelperText, SvgIcon, Tooltip } from "@material-ui/core"
+import { Email, Visibility, VisibilityOff } from "@material-ui/icons"
+// import Logo from "../../components/logo"
 
 
 const Google = (props: any) => (
@@ -26,6 +27,17 @@ const staticUrl = "http://localhost:3000/static"
 
 function Auth() {
 
+    // state
+    const [state, setState] = useState({
+        email: "",
+        password: "",
+        passwordVisible: false,
+
+        emailError: null,
+        passwordErr: null
+    })
+    const { email, password, passwordVisible, emailError, passwordErr } = state
+
     // memoized values:
     const socialButtons = useMemo(() => {
         return [
@@ -35,36 +47,61 @@ function Auth() {
         ]
     }, [])
 
+    const changeHandler = (type: "password" | "email") => (value: string) => {
+
+    }
+
     return (
-        <div
-            className="relative bg-white bg-no-repeat w-screen h-screen max-w-6xl m-auto"
+        <div className="h-full w-full relative bg-white bg-no-repeat bg-auto xs:bg-contain"
             style={{
-                backgroundPosition: "20% 50%",
-                backgroundImage: `url(${staticUrl}/image/vn.jpg)`
+                backgroundImage: `url(${staticUrl}/image/vn.jpg)`,
+                backgroundPosition: "20% 50%"
             }}
         >
-            <div className="cursor-pointer absolute"
+            <div className="flex absolute sm:flex-wrap sm:flex-col justify-between items-center"
                 style={{
-                    top: "50px",
-                    left: "100px"
+                    top: "50%",
+                    right: "20%",
+                    transform: "translateY(-50%)"
                 }}
             >
-                <Logo />
-            </div>
-            <div className="absolute flex xs:block sm:right-0 sm:flex-wrap"
-                style={{
-                    top: "30%",
-                    right: "10%"
-                }}
-            >
-                <div className="mr-6 mb-4">
+                <div className="mr-3 mb-2">
                     <DelayInput
-                        fullWidth={true}
+                        delay={333}
                         type="text"
-                        giveValue={console.log}
-                        placeholder="Enter your email"
-                        className="bg-gray-100 rounded py-1 px-2 mb-2 border-2 border-gray-500"
+                        giveValue={changeHandler("email")}
+                        placeholder="Email"
+                        className="bg-gray-100 rounded py-1 px-2 mb-1 border-2 border-gray-400"
+                        defaultValue={email}
+                        endAdornment={(
+                            <div className="cursor-pointer text-gray-600 flex items-center justify-center">
+                                <Email fontSize="small" />
+                            </div>
+                        )}
                     />
+                    <br />
+                    {!!emailError && <FormHelperText error={true} className="mb-1">{emailError}</FormHelperText>}
+                    <DelayInput
+                        delay={333}
+                        type={passwordVisible ? "text" : "password"}
+                        giveValue={changeHandler("password")}
+                        placeholder="Password"
+                        className="bg-gray-100 rounded py-1 px-2 mb-1 border-2 border-gray-400"
+                        defaultValue={password}
+                        endAdornment={(
+                            <div className="cursor-pointer text-gray-600 flex items-center justify-center"
+                                onClick={() => {
+                                    setState({
+                                        ...state,
+                                        passwordVisible: !passwordVisible
+                                    })
+                                }}
+                            >
+                                {passwordVisible ? <VisibilityOff fontSize="small" /> : <Visibility fontSize="small" />}
+                            </div>
+                        )}
+                    />
+                    {!!passwordErr && <FormHelperText error={true} className="mb-1">{passwordErr}</FormHelperText>}
                     <div className="text-right">
                         <Button
                             variant="contained"
@@ -77,15 +114,8 @@ function Auth() {
                         </Button>
                     </div>
                 </div>
-                <div className="border-solid border-gray-400 border-l relative mr-6 sm:hidden">
-                    <div className="text-gray-600 px-1 py-1 rounded bg-white absolute font-medium text-base -translate-x-1/2 -translate-y-1/2 transform"
-                        style={{
-                            top: "50%",
-                            left: "50%",
-                        }}
-                    >
-                        OR
-                    </div>
+                <div className="text-gray-600 px-1 py-1 rounded bg-white font-medium text-base mr-3 mb-2">
+                    OR
                 </div>
                 <div className="m-auto">
                     {socialButtons.map((button, idx) => (

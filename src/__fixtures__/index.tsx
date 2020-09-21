@@ -1,15 +1,15 @@
 import React from "react";
 import { ApolloClient, InMemoryCache } from "@apollo/client"
 import { ApolloProvider, makeVar } from "@apollo/client"
-import Chart from "./chart"
 import { KeyOfStringInterface } from "../constants";
-import "../tailwind/out.css"
-import "../index.css"
 import { BarchartState } from "./barChartInput/reducer";
 import { LineChartState } from "./lineChartInput/reducer";
 import { PieChartState } from "./pieChartInput/reducer";
 import { InitBarChartState, InitLineChartState, InitPieChartState } from "./initState";
-import Navigator from "./navigator"
+import { BrowserRouter } from "react-router-dom"
+import Layout from "./layout"
+import "../tailwind/out.css"
+import "../index.css"
 
 
 export type ChartType =
@@ -27,6 +27,7 @@ export type localStateKey =
     | "pieChartState"
     | "areaChartState"
     | "scatterChartState"
+    | "isSignedIn"
 
 export interface LocalState extends KeyOfStringInterface {
     chartType: ChartType;
@@ -36,6 +37,7 @@ export interface LocalState extends KeyOfStringInterface {
     pieChartState: PieChartState;
     areaChartState: any;
     scatterChartState: any;
+    isSignedIn: boolean;
 }
 
 // local state
@@ -46,7 +48,8 @@ export const localState = makeVar<LocalState>({
     lineChartState: InitLineChartState,
     pieChartState: InitPieChartState,
     areaChartState: null,
-    scatterChartState: null
+    scatterChartState: null,
+    isSignedIn: false
 })
 
 const client = new ApolloClient({
@@ -54,8 +57,7 @@ const client = new ApolloClient({
     cache: new InMemoryCache({
         typePolicies: {
             Query: {
-                fields: {
-                }
+                fields: {}
             }
         }
     })
@@ -65,10 +67,9 @@ function App() {
 
     return (
         <ApolloProvider client={client}>
-            <Navigator />
-            <main className="mt-10 bg-gray-200">
-                <Chart />
-            </main>
+            <BrowserRouter>
+                <Layout />
+            </BrowserRouter>
         </ApolloProvider>
     );
 }

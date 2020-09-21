@@ -91,7 +91,7 @@ function History() {
 
             {/* filter */}
             <div className="flex items-center text-gray-600 mb-3">
-                <div className="mr-3 text-sm xs:text-xs flex items-center">
+                <div className="mr-3 text-sm xs:text-xs flex items-center text-red-500 font-medium">
                     <FilterList fontSize="small" />
                     <span>Filter</span>
                 </div>
