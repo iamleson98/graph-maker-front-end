@@ -32,7 +32,10 @@ export function pieChartConfig({ labels, sliceBackgrounds, data, chartTitle }: S
             legend: {
                 align: "start",
                 position: "bottom",
-                fullWidth: false
+                fullWidth: false,
+                labels: {
+                    boxWidth: 12,
+                }
             },
             animation: {
                 duration: 500,

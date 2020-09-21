@@ -1,5 +1,5 @@
 import { isRealNumber, defaultFieldColor } from "../../constants";
-import { noAnyError, updateLocalState } from "../utils"
+// import { noAnyError, updateLocalState } from "../utils"
 
 
 export enum typeChange {
@@ -12,7 +12,8 @@ export enum typeChange {
     addYFieldChange,
     removeYFieldChange,
     xFieldChange,
-    yFieldChange,
+    yFieldValueChange,
+    yFieldNameChange,
     colorChange,
 }
 
@@ -24,23 +25,10 @@ export interface BarchartState {
     colors: string[];
     yData: {
         error?: string;
-        data: string[]; // when draw chart, we need to convert these strings to numbers
-    }[];
+        name: string;
+        value: string; // when draw chart, we need to convert these strings to numbers
+    }[][];
 }
-
-// export const InitBarChartState: BarchartState = {
-//     chartTitle: "",
-//     xLabel: "",
-//     yLabel: "",
-//     xData: [""],
-//     colors: [defaultFieldColor],
-//     yData: [
-//         {
-//             error: undefined,
-//             data: [""]
-//         }
-//     ]
-// }
 
 export interface BarchartAction {
     type: typeChange;
@@ -51,11 +39,11 @@ export interface BarchartAction {
     };
 }
 
-export const MAX_BLOCKS_PER_CHART = 15, MAX_COLLUMS_PER_BLOCK = 5
+export const MAX_BLOCKS_PER_CHART = 15, MAX_COLLUMS_PER_BLOCK = 4
 
 type error = string | undefined
-function barChartErrorChecker(data: string[]): error {
-    return data.some(item => !isRealNumber.test(item)) ? "values need to be numbers" : undefined
+function barChartErrorChecker(data: string): error {
+    return !isRealNumber.test(data) ? "values need to be numbers" : undefined
 }
 
 export function barchartReducer(state: BarchartState, action: BarchartAction): BarchartState {
@@ -80,13 +68,20 @@ export function barchartReducer(state: BarchartState, action: BarchartAction): B
             break
         case typeChange.addXFieldChange:
             if (xData.length < MAX_BLOCKS_PER_CHART) {
+                const { length } = yData[0]
                 state = {
                     ...state,
                     xData: xData.concat(""),
-                    yData: yData.concat({
-                        data: [...(new Array(yData[0].data.length))].map(() => ""),
-                        error: undefined
-                    })
+                    yData: [
+                        ...yData,
+                        [...new Array(length)].map((_, idx) => {
+                            const { name } = yData[0][idx]
+                            return {
+                                name: name,
+                                value: ""
+                            }
+                        })
+                    ]
                 }
             }
             break
@@ -99,30 +94,25 @@ export function barchartReducer(state: BarchartState, action: BarchartAction): B
             }
             break
         case typeChange.addYFieldChange:
-            if (yData[0].data.length < MAX_COLLUMS_PER_BLOCK) {
+            if (yData[0].length < MAX_COLLUMS_PER_BLOCK) {
                 state = {
                     ...state,
                     yData: yData.map(block => {
-                        return {
-                            ...block,
-                            data: block.data.concat(""),
-                        }
+                        return block.concat({
+                            name: "",
+                            value: ""
+                        })
                     }),
                     colors: colors.concat(defaultFieldColor)
                 }
             }
             break
         case typeChange.removeYFieldChange:
-            // index to remove will be hold in value
+            // value is index of bar to remove in each block
             state = {
                 ...state,
                 yData: yData.map(block => {
-                    let data = block.data.filter((_, idx) => idx !== value)
-                    return {
-                        ...block,
-                        data,
-                        error: barChartErrorChecker(data)
-                    }
+                    return block.filter((_, idx) => idx !== value)
                 }),
                 colors: colors.filter((_, idx) => idx !== value)
             }
@@ -139,24 +129,41 @@ export function barchartReducer(state: BarchartState, action: BarchartAction): B
                 })
             }
             break
-        case typeChange.yFieldChange:
+        case typeChange.yFieldValueChange:
             // value is index of y block, options.value is data for that, options.index is index of that field
             state = {
                 ...state,
                 yData: yData.map((block, blockIndex) => {
                     if (blockIndex === value) {
-                        const data = block.data.map((dtItm, dtIdx) => {
-                            if (dtIdx === options?.index) {
-                                return options?.value
+                        return block.map((bar, barIndex) => {
+                            if (barIndex === options?.index) {
+                                return {
+                                    ...bar,
+                                    value: options?.value,
+                                    error: barChartErrorChecker(options?.value)
+                                }
                             }
-                            return dtItm
+                            return bar
                         })
-                        return {
-                            error: barChartErrorChecker(data),
-                            data,
-                        }
                     }
                     return block
+                })
+            }
+            break
+        case typeChange.yFieldNameChange:
+            // value is index of bar, options.value is data for that block
+            state = {
+                ...state,
+                yData: yData.map(block => {
+                    return block.map((bar, barIdx) => {
+                        if (barIdx === value) {
+                            return {
+                                ...bar,
+                                name: options?.value
+                            }
+                        }
+                        return bar
+                    })
                 })
             }
             break
@@ -175,11 +182,6 @@ export function barchartReducer(state: BarchartState, action: BarchartAction): B
 
         default:
             break
-    }
-
-    // final step to check errors:
-    if (noAnyError(state.yData.map(block => block.error))) {
-        updateLocalState("barChartState", state)
     }
 
     return state;

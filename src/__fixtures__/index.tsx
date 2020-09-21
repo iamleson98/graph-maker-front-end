@@ -20,6 +20,7 @@ export type ChartType =
     | "Scatter chart"
 
 export type localStateKey =
+    | "chartDrawMutexReleased"
     | "chartType"
     | "barChartState"
     | "lineChartState"
@@ -29,6 +30,7 @@ export type localStateKey =
 
 export interface LocalState extends KeyOfStringInterface {
     chartType: ChartType;
+    chartDrawMutexReleased: boolean;
     barChartState: BarchartState;
     lineChartState: LineChartState;
     pieChartState: PieChartState;
@@ -39,6 +41,7 @@ export interface LocalState extends KeyOfStringInterface {
 // local state
 export const localState = makeVar<LocalState>({
     chartType: "Bar chart",
+    chartDrawMutexReleased: true,
     barChartState: InitBarChartState,
     lineChartState: InitLineChartState,
     pieChartState: InitPieChartState,
@@ -63,7 +66,9 @@ function App() {
     return (
         <ApolloProvider client={client}>
             <Navigator />
-            <Chart />
+            <main className="mt-10 bg-gray-200">
+                <Chart />
+            </main>
         </ApolloProvider>
     );
 }

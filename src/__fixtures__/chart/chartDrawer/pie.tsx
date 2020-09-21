@@ -2,17 +2,18 @@ import { useReactiveVar } from "@apollo/client"
 import React, { memo, useEffect, useState } from "react"
 import { localState } from "../.."
 import StdPieChart, { StdPieChartProps } from "../../standardChart/pie"
+import { updateLocalState } from "../../utils"
 
 
 function PieDrawer() {
 
     // get local chart state
-    const { pieChartState } = useReactiveVar(localState)
+    const { pieChartState, chartDrawMutexReleased } = useReactiveVar(localState)
 
     const [pies, setPies] = useState<StdPieChartProps[]>([])
 
     useEffect(() => {
-        if (!!pieChartState) {
+        if (!!pieChartState && chartDrawMutexReleased) {
             const { chartTitle, pies } = pieChartState
             const newPies: StdPieChartProps[] = pies.map(pie => {
                 const labels: string[] = [],
@@ -34,17 +35,20 @@ function PieDrawer() {
             })
 
             setPies(newPies)
+            updateLocalState("chartDrawMutexReleased", false)
         }
-    }, [pieChartState])
+
+    }, [pieChartState, chartDrawMutexReleased])
 
     return (
         <>
             {pies.map((pie, pieIndex) => (
                 <div
                     key={pieIndex}
-                    className={`${pies.length > 1 ? "w-1/2 sm:w-full" : "w-full"} p-1`}
+                    className={`${pies.length > 1 ? "w-1/2 sm:w-full" : "w-full"}`}
+                    style={{ padding: 2 }}
                 >
-                    <div className="border-solid border rounded border-gray-300">
+                    <div className={`${pies.length > 1 ? "border-solid border rounded border-gray-300" : ""}`}>
                         <StdPieChart
                             key={pieIndex}
                             chartTitle={pie.chartTitle}

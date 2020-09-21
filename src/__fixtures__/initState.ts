@@ -11,10 +11,13 @@ export const InitBarChartState: BarchartState = {
     xData: [""],
     colors: [defaultFieldColor],
     yData: [
-        {
-            error: undefined,
-            data: [""]
-        }
+        [
+            {
+                name: "",
+                value: "",
+                error: undefined
+            }
+        ]
     ]
 }
 
@@ -38,7 +41,7 @@ export const InitPieChartState: PieChartState = {
         [
             {
                 name: "",
-                value: "",
+                value: "1",
                 error: undefined,
                 color: defaultFieldColor
             }

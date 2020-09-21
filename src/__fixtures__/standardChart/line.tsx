@@ -41,7 +41,10 @@ export function lineChartConfig({ xLabels, yDataList, chartTitle, xLabel, yLabel
             legend: {
                 align: "start",
                 position: "bottom",
-                fullWidth: false
+                fullWidth: false,
+                labels: {
+                    boxWidth: 12,
+                }
             },
             animation: {
                 duration: 500,
@@ -52,7 +55,6 @@ export function lineChartConfig({ xLabels, yDataList, chartTitle, xLabel, yLabel
                 text: chartTitle || "Line Chart"
             },
             scales: {
-
                 xAxes: [{
                     ticks: {
                         beginAtZero: true

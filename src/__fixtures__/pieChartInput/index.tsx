@@ -1,7 +1,7 @@
-import React, { memo, useReducer } from "react"
+import React, { memo, useEffect, useReducer } from "react"
 import DelayInput from "../../components/delayinput"
 import Button from "@material-ui/core/Button"
-import { Add, DeleteOutlined } from "@material-ui/icons"
+import { DeleteOutlined } from "@material-ui/icons"
 import Tooltip from "@material-ui/core/Tooltip"
 import {
     PieChartAction,
@@ -12,6 +12,7 @@ import {
 } from "./reducer"
 import ColorSettter from "../colorSetter"
 import { localState } from ".."
+import { noAnyError } from "../utils"
 
 
 function PieChart(): JSX.Element {
@@ -19,6 +20,22 @@ function PieChart(): JSX.Element {
     // component state
     const [state, dispatch] = useReducer<React.Reducer<PieChartState, PieChartAction>>(pieChartReducer, localState().pieChartState)
     let { chartTitle, pies } = state
+
+    useEffect(() => {
+        // to tell current chart drawer to re-draw chart
+        // since React notifies errors if drawer component and input component update simultaneously
+        if (noAnyError(
+            state.pies
+                .map(pie => pie.map(slice => slice.error))
+                .reduce((a, b) => a.concat(b), [])
+        )) {
+            localState({
+                ...localState(),
+                chartDrawMutexReleased: true,
+                pieChartState: state
+            })
+        }
+    }, [state])
 
     return (
         <div className="text-gray-600 bg-white rounded p-2">
@@ -147,27 +164,20 @@ function PieChart(): JSX.Element {
                         </Button>
                     </fieldset>
                 ))}
-                <Tooltip
-                    title={pies.length < MAX_PIE ? "Add another pie" : "At most 4 pies allowed"}
-                    placement="top"
+                <Button
+                    size="small"
+                    color="primary"
+                    disableElevation={true}
+                    variant="contained"
+                    className="focus:outline-none"
+                    fullWidth={true}
+                    onClick={() => dispatch({
+                        type: typeChange.addPie
+                    })}
+                    disabled={pies.length >= MAX_PIE}
                 >
-                    <div>
-                        <Button
-                            size="small"
-                            color="primary"
-                            disableElevation={true}
-                            variant="contained"
-                            className="focus:outline-none"
-                            fullWidth={true}
-                            onClick={() => dispatch({
-                                type: typeChange.addPie
-                            })}
-                            disabled={pies.length >= MAX_PIE}
-                        >
-                            <Add />
-                        </Button>
-                    </div>
-                </Tooltip>
+                    Add pie
+                </Button>
             </div>
         </div>
     )

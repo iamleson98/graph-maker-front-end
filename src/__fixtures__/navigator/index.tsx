@@ -45,12 +45,12 @@ function Navigator() {
     }
 
     return (
-        <div className="flex flex-no-wrap items-center py-1 bg-white px-4 fixed top-0 left-0 w-full z-20 shadow-xs justify-between">
+        <div className="flex flex-no-wrap items-center py-1 bg-white pr-4 pl-10 fixed top-0 left-0 w-full z-20 shadow-xs justify-between">
             <a href="/">
                 <Logo />
             </a>
-            <div className="flex items-center">
-                <div className="mr-5">
+            <div className="flex items-center relative">
+                <div className="mr-5 sm:hidden">
                     {navigators.map((nav, idx) => {
                         return (
                             <a

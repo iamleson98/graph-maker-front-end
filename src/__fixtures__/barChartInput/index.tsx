@@ -1,10 +1,11 @@
-import React, { memo, useReducer } from "react"
+import React, { memo, useEffect, useReducer } from "react"
 import { Add, Remove } from "@material-ui/icons"
 import Tooltip from "@material-ui/core/Tooltip"
 import DelayInput from "../../components/delayinput"
 import { BarchartState, BarchartAction, typeChange, barchartReducer } from "./reducer"
 import ColorSettter from "../colorSetter"
 import { localState } from ".."
+import { noAnyError } from "../utils"
 
 
 function BarChartInput(): JSX.Element {
@@ -29,6 +30,21 @@ function BarChartInput(): JSX.Element {
             value: !!clickedIndex ? clickedIndex : undefined,
         })
     }
+
+    useEffect(() => {
+        if (noAnyError(
+            state.yData
+                .map(block => block.map(bar => bar.error))
+                .reduce((a, b) => a.concat(b), [])
+        )
+        ) {
+            localState({
+                ...localState(),
+                barChartState: state,
+                chartDrawMutexReleased: true
+            })
+        }
+    }, [state])
 
     return (
         <div className="text-gray-600 bg-white rounded p-2">
@@ -119,65 +135,91 @@ function BarChartInput(): JSX.Element {
                     {/* y data */}
                     <fieldset className="rounded p-2 border-2 border-solid border-gray-200">
                         <legend className="text-sm leading-4 text-red-500 font-medium">Data on Oy</legend>
-                        {yData.map((block, index) => (
-                            <fieldset key={index} className="rounded border-solid border-2 border-gray-200 p-2 mb-2">
+                        {yData.map((block, blockIndex) => (
+                            <fieldset key={blockIndex} className="rounded border-solid border-2 border-gray-200 p-2 mb-2">
                                 <legend className="text-xs leading-4 font-normal">
-                                    {`block ${xData[index] || index + 1}`}
+                                    {`block ${xData[blockIndex] || blockIndex + 1}`}
                                 </legend>
-                                {block.data.map((barValue, idx) => (
-                                    <div className="flex items-center mb-1" key={idx}>
-                                        <span className="mr-2 text-xs">{idx + 1}</span>
-                                        <DelayInput
-                                            fullWidth={true}
-                                            type="text"
-                                            className={`rounded mr-2 bg-gray-200 px-2 ${block.error ? "bg-red-300" : ""}`}
-                                            placeholder="Enter data"
-                                            defaultValue={barValue}
-                                            giveValue={(value: string) => {
-                                                dispatch({
-                                                    type: typeChange.yFieldChange,// type of change
-                                                    value: index,                 // index of that block (each block contains 1 or more bars)
-                                                    options: {
-                                                        index: idx,               // index of the bar we need to change value
-                                                        value                     // new value for that bar
-                                                    }
-                                                })
-                                            }}
-                                            endAdornment={index === 0 && (
-                                                <ColorSettter
-                                                    defaultBg={colors[idx]}
-                                                    giveColor={(color: string) => dispatch({
-                                                        type: typeChange.colorChange,
-                                                        value: idx,
-                                                        options: {
-                                                            value: color
-                                                        }
-                                                    })}
+                                {block.map((barValue, barIndex) => (
+                                    <div className="flex items-center mb-1" key={barIndex}>
+                                        <span className="mr-2 text-xs">{barIndex + 1}</span>
+                                        <div className="rounded w-full border-2 border-solid border-gray-200 p-2 mr-2">
+                                            {!blockIndex ? ( // blockIndex === 0
+                                                <DelayInput
+                                                    fullWidth={true}
+                                                    type="text"
+                                                    className={`rounded mb-1 bg-gray-200 px-2`}
+                                                    placeholder="Enter name"
+                                                    defaultValue={barValue.name}
+                                                    giveValue={(value: string) => {
+                                                        dispatch({
+                                                            type: typeChange.yFieldNameChange,          // type of change
+                                                            value: barIndex,                            // index of bar (each block contains 1 or more bars)
+                                                            options: {
+                                                                value                                   // new value for that bar
+                                                            }
+                                                        })
+                                                    }}
+                                                    endAdornment={blockIndex === 0 && (
+                                                        <ColorSettter
+                                                            defaultBg={colors[barIndex]}
+                                                            giveColor={(color: string) => dispatch({
+                                                                type: typeChange.colorChange,
+                                                                value: barIndex,
+                                                                options: {
+                                                                    value: color
+                                                                }
+                                                            })}
+                                                        />
+                                                    )}
                                                 />
-                                            )}
-                                        />
-                                        {!index && (
+                                            ) : (
+                                                    <div className="flex items-center mb-1">
+                                                        <span className="text-xs mr-2">name</span>
+                                                        <span className="text-sm font-medium">{barValue.name}</span>
+                                                    </div>
+                                                )
+                                            }
+                                            <DelayInput
+                                                fullWidth={true}
+                                                type="text"
+                                                className={`rounded bg-gray-200 px-2 ${barValue.error ? "bg-red-300" : ""}`}
+                                                placeholder="Enter value"
+                                                defaultValue={barValue.value}
+                                                giveValue={(value: string) => {
+                                                    dispatch({
+                                                        type: typeChange.yFieldValueChange,         // type of change
+                                                        value: blockIndex,                          // index of that block (each block contains 1 or more bars)
+                                                        options: {
+                                                            index: barIndex,                        // index of the bar we need to change value
+                                                            value                                   // new value for that bar
+                                                        }
+                                                    })
+                                                }}
+                                            />
+                                            {!!barValue.error && <small className="text-red-600">{barValue.error}</small>}
+                                        </div>
+
+                                        {!blockIndex && (
                                             <Tooltip
-                                                title={!idx ? "Add item" : "Remove item"}
+                                                title={!barIndex ? "Add item" : "Remove item"}
                                                 placement="top"
                                             >
                                                 <span
-                                                    onClick={() => handleYItemClick(idx)}
-                                                    className={`flex cursor-pointer items-center flex-shrink-0 justify-center rounded w-8 h-8 hover:${!idx ? "bg-blue-200" : "bg-orange-200"} ${!idx ? "bg-blue-100 text-blue-600" : "bg-orange-100 text-orange-600"}`}
+                                                    onClick={() => handleYItemClick(barIndex)}
+                                                    className={`flex cursor-pointer items-center flex-shrink-0 justify-center rounded w-8 h-8 hover:${!barIndex ? "bg-blue-200" : "bg-orange-200"} ${!barIndex ? "bg-blue-100 text-blue-600" : "bg-orange-100 text-orange-600"}`}
                                                 >
-                                                    {!idx ? <Add fontSize="small" /> : <Remove fontSize="small" />}
+                                                    {!barIndex ? <Add fontSize="small" /> : <Remove fontSize="small" />}
                                                 </span>
                                             </Tooltip>
                                         )}
                                     </div>
                                 ))}
-                                {/* error */}
-                                {!!block.error && <small className="text-red-600">{block.error}</small>}
                             </fieldset>
                         ))}
                     </fieldset>
                 </div>
-            </div>
+            </div >
         </div >
     )
 }

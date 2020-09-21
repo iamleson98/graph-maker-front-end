@@ -23,7 +23,8 @@ function barChartConfig({ xLabels, yDataList, chartTitle, xLabel, yLabel }: BarC
             label: label || `Bar ${idx + 1}`,
             backgroundColor: color || defaultColors[idx % defaultColors.length],
             borderWidth: 0,
-            data
+            data,
+            // maxBarThickness: 20
         }
     })
 
@@ -38,7 +39,10 @@ function barChartConfig({ xLabels, yDataList, chartTitle, xLabel, yLabel }: BarC
             legend: {
                 align: "start",
                 position: "bottom",
-                fullWidth: false
+                fullWidth: false,
+                labels: {
+                    boxWidth: 12,
+                }
             },
             animation: {
                 duration: 500,

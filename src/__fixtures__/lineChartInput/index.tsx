@@ -1,4 +1,4 @@
-import React, { memo, useReducer } from "react"
+import React, { memo, useEffect, useReducer } from "react"
 import DelayInput from "../../components/delayinput"
 import { Add, Remove } from "@material-ui/icons"
 import Tooltip from "@material-ui/core/Tooltip"
@@ -9,6 +9,7 @@ import {
 } from "./reducer"
 import ColorSetter from "../colorSetter"
 import { localState } from ".."
+import { noAnyError } from "../utils"
 
 
 function LineChart(): JSX.Element {
@@ -16,6 +17,16 @@ function LineChart(): JSX.Element {
     // component state
     const [state, dispatch] = useReducer<React.Reducer<LineChartState, LineChartAction>>(lineChartReducer, localState().lineChartState)
     const { chartTitle, xData, yData, xLabel, yLabel } = state
+
+    useEffect(() => {
+        if (noAnyError(state.yData.map(line => line.error))) {
+            localState({
+                ...localState(),
+                lineChartState: state,
+                chartDrawMutexReleased: true
+            })
+        }
+    }, [state])
 
     return (
         <div className="rounded bg-white p-2 text-gray-600">
@@ -207,27 +218,20 @@ function LineChart(): JSX.Element {
                                 )}
                             </fieldset>
                         ))}
-                        <Tooltip
-                            title={yData.length < MAX_LINES ? "Add another line" : `At most ${MAX_LINES} lines allowed`}
-                            placement="top"
+                        <Button
+                            size="small"
+                            color="primary"
+                            disabled={yData.length >= MAX_LINES}
+                            disableElevation={true}
+                            fullWidth={true}
+                            variant="contained"
+                            className="focus:outline-none"
+                            onClick={() => dispatch({
+                                type: typeChange.addLine
+                            })}
                         >
-                            <div>
-                                <Button
-                                    size="small"
-                                    color="primary"
-                                    disabled={yData.length >= MAX_LINES}
-                                    disableElevation={true}
-                                    fullWidth={true}
-                                    variant="contained"
-                                    className="focus:outline-none"
-                                    onClick={() => dispatch({
-                                        type: typeChange.addLine
-                                    })}
-                                >
-                                    Add line
-                            </Button>
-                            </div>
-                        </Tooltip>
+                            Add line
+                        </Button>
                     </fieldset>
                 </div>
             </div>

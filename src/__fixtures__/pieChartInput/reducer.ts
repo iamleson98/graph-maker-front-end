@@ -1,5 +1,5 @@
 import { isRealNumber, defaultFieldColor } from "../../constants"
-import { noAnyError, updateLocalState } from "../utils"
+// import { noAnyError, updateLocalState } from "../utils"
 
 
 export enum typeChange {
@@ -23,19 +23,19 @@ export interface PieChartState {
     }[][];
 }
 
-export const InitPieChartState: PieChartState = {
-    chartTitle: "",
-    pies: [
-        [
-            {
-                name: "",
-                value: "",
-                error: undefined,
-                color: defaultFieldColor
-            }
-        ]
-    ]
-}
+// export const InitPieChartState: PieChartState = {
+//     chartTitle: "",
+//     pies: [
+//         [
+//             {
+//                 name: "",
+//                 value: "",
+//                 error: undefined,
+//                 color: defaultFieldColor
+//             }
+//         ]
+//     ]
+// }
 
 export interface PieChartAction {
     type: typeChange;
@@ -147,13 +147,13 @@ export function pieChartReducer(state: PieChartState, action: PieChartAction): P
             break
     }
 
-    if (noAnyError(
-        clonePies
-            .map(pie => pie.map(slice => slice.error))
-            .reduce((a, b) => a.concat(b), [])
-    )) {
-        updateLocalState("pieChartState", state)
-    }
+    // if (noAnyError(
+    //     clonePies
+    //         .map(pie => pie.map(slice => slice.error))
+    //         .reduce((a, b) => a.concat(b), [])
+    // )) {
+    //     updateLocalState("pieChartState", state)
+    // }
 
     return state
 }

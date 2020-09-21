@@ -1,5 +1,5 @@
 import { isRealNumber, defaultFieldColor } from "../../constants"
-import { noAnyError, updateLocalState } from "../utils"
+// import { noAnyError, updateLocalState } from "../utils"
 
 
 export interface LineChartState {
@@ -189,9 +189,9 @@ export function lineChartReducer(state: LineChartState, action: LineChartAction)
     }
 
     // check if there is no error, update local state
-    if (noAnyError(state.yData.map(line => line.error))) {
-        updateLocalState("lineChartState", state)
-    }
+    // if (noAnyError(state.yData.map(line => line.error))) {
+    //     updateLocalState("lineChartState", state)
+    // }
 
     return state
 }

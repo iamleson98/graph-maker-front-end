@@ -25,13 +25,14 @@ function Chart() {
         tailwindActiveBg: string;
         inputComponent: React.MemoExoticComponent<() => JSX.Element>;
         drawerComponent: React.MemoExoticComponent<() => JSX.Element>;
+        afterBg: string;
     }[]>(() => {
         return [
-            { name: "Bar chart", icon: ChartBar, tailwindColor: "text-green-500", tailwindActiveBg: "bg-green-200", inputComponent: BarChartInput, drawerComponent: BarChartDrawer },
-            { name: "Pie chart", icon: PieChart, tailwindColor: "text-red-500", tailwindActiveBg: "bg-red-200", inputComponent: PieChartInput, drawerComponent: PieChartDrawer },
-            { name: "Line chart", icon: Timeline, tailwindColor: "text-orange-500", tailwindActiveBg: "bg-orange-200", inputComponent: LineChartInput, drawerComponent: LineChartDrawer },
-            { name: "Area chart", icon: AreaChart, tailwindColor: "text-purple-500", tailwindActiveBg: "bg-purple-200", inputComponent: DummyChartInput, drawerComponent: AreaChartDrawer },
-            { name: "Scatter chart", icon: Scatter, tailwindColor: "text-blue-500", tailwindActiveBg: "bg-blue-200", inputComponent: DummyChartInput, drawerComponent: ScatterChartDrawer },
+            { name: "Bar chart", icon: ChartBar, tailwindColor: "text-green-500", tailwindActiveBg: "bg-green-200", inputComponent: BarChartInput, drawerComponent: BarChartDrawer, afterBg: "border-green-200" },
+            { name: "Pie chart", icon: PieChart, tailwindColor: "text-red-500", tailwindActiveBg: "bg-red-200", inputComponent: PieChartInput, drawerComponent: PieChartDrawer, afterBg: "border-red-200" },
+            { name: "Line chart", icon: Timeline, tailwindColor: "text-orange-500", tailwindActiveBg: "bg-orange-200", inputComponent: LineChartInput, drawerComponent: LineChartDrawer, afterBg: "border-orange-200" },
+            { name: "Area chart", icon: AreaChart, tailwindColor: "text-purple-500", tailwindActiveBg: "bg-purple-200", inputComponent: DummyChartInput, drawerComponent: AreaChartDrawer, afterBg: "border-purple-200" },
+            { name: "Scatter chart", icon: Scatter, tailwindColor: "text-blue-500", tailwindActiveBg: "bg-blue-200", inputComponent: DummyChartInput, drawerComponent: ScatterChartDrawer, afterBg: "border-blue-200" },
         ]
     }, [])
 
@@ -54,17 +55,15 @@ function Chart() {
     const CurrentDrawer = chartRoutes[activeIndex].drawerComponent
 
     return (
-        <div className="rounded p-2 flex flex-wrap">
+        <div className="rounded p-2 flex flex-wrap text-gray-600">
             {/* chart result */}
             <div className="sm:w-full w-8/12">
-                <div className="p-1">
-                    <div className="rounded bg-white font-medium p-2 text-gray-700">
-                        {/* display type of chart */}
-                        {chartRoutes[activeIndex].name}
-                    </div>
+                <div className="p-1 text-sm font-medium">
+                    {/* display type of chart */}
+                    {chartRoutes[activeIndex].name}
                 </div>
                 <div className="p-1">
-                    <div className="rounded bg-white flex flex-wrap justify-center">
+                    <div className="rounded p-1 bg-white flex flex-wrap justify-center">
                         {/* chart display area */}
                         <CurrentDrawer />
                     </div>
@@ -73,13 +72,11 @@ function Chart() {
 
             {/* chart input field */}
             <div className="w-4/12 sm:w-full m-auto">
-                <div className="p-1">
-                    <div className="rounded bg-white font-medium p-2 text-gray-700">
-                        Input data
-                    </div>
+                <div className="p-1 text-sm font-medium">
+                    Input data
                 </div>
                 <div className="p-1">
-                    <div className="bg-white rounded">
+                    <div className="bg-white rounded p-1">
                         {/* chart input type switcher */}
                         <div className="flex items-center p-2 justify-around">
                             {chartRoutes.map((item, idx) => (
@@ -90,9 +87,10 @@ function Chart() {
                                 >
                                     <div
                                         onClick={changeChart(idx)}
-                                        className={`rounded h-8 flex flex-1 mr-1 items-center justify-center cursor-pointer transition-colors duration-200 ease-out hover:${item.tailwindActiveBg} ${activeIndex === idx ? item.tailwindActiveBg : ""}`}
+                                        className={`relative rounded h-8 flex flex-1 mr-1 items-center justify-center cursor-pointer transition-colors duration-200 ease-out hover:${item.tailwindActiveBg} ${activeIndex === idx ? item.tailwindActiveBg : ""}`}
                                     >
                                         <item.icon fontSize="small" className={item.tailwindColor} />
+                                        {activeIndex === idx && <nav className={`absolute chart_nav_btn transform -translate-x-1/2 border-4 ${item.afterBg}`}></nav>}
                                     </div>
                                 </Tooltip>
                             ))}
