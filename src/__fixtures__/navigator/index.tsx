@@ -13,7 +13,7 @@ import { useTranslation } from "react-i18next"
 
 function Navigator() {
 
-    // reanslation
+    // translation
     const { t, i18n } = useTranslation()
 
     const changeLanguage = (lng: string) => {
@@ -31,10 +31,10 @@ function Navigator() {
 
     const menuValues = [
         {
-            display: "Signout"
+            display: t("signout")
         },
         {
-            display: "My Profile"
+            display: t("my profile")
         }
     ]
 
