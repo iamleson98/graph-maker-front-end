@@ -1,4 +1,4 @@
-import React, { memo, useMemo, useRef, useState } from "react"
+import React, { memo, useEffect, useMemo, useRef, useState } from "react"
 import { PieChart, Timeline, Save, Image, CloudUploadOutlined } from "@material-ui/icons"
 import { ChartBar, Scatter, AreaChart } from "../icons"
 import Tooltip from "@material-ui/core/Tooltip"
@@ -16,7 +16,7 @@ import { BarChartDrawer, LineChartDrawer, PieChartDrawer, ScatterChartDrawer, Ar
 import html2canvas from "html2canvas"
 import "simplebar/dist/simplebar.min.css"
 import dayjs from "dayjs"
-import { timer } from "rxjs"
+import { Subscription, timer } from "rxjs"
 import { useTranslation } from "react-i18next"
 
 
@@ -32,6 +32,7 @@ function Chart() {
     // refs
     const menuRef = useRef<any>()
     const chartDrawRef = useRef<any>()
+    const timerSub = useRef<Subscription>()
 
     // memoized values
     const chartRoutes = useMemo<{
@@ -103,7 +104,7 @@ function Chart() {
                         link.href = url
                         document.body.appendChild(link)
                         link.click()
-                        timer(200).subscribe(() => {
+                        timerSub.current = timer(200).subscribe(() => {
                             document.body.removeChild(link);
                             (URL || webkitURL).revokeObjectURL(url)
                         })
@@ -114,6 +115,12 @@ function Chart() {
             })
             .catch(console.error)
     }
+
+    useEffect(() => {
+        return () => {
+            timerSub.current?.unsubscribe()
+        }
+    }, [])
 
     const CurrentDrawer = chartRoutes[activeIndex].drawerComponent
 

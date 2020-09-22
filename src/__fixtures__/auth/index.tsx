@@ -23,7 +23,7 @@ const Twitter = (props: any) => (
     </SvgIcon>
 )
 
-const staticUrl = "http://localhost:3000/static"
+const staticUrl = "/static"
 
 function Auth() {
 
@@ -54,7 +54,7 @@ function Auth() {
     return (
         <div className="h-full w-full relative bg-white bg-no-repeat bg-auto xs:bg-contain"
             style={{
-                backgroundImage: `url(${staticUrl}/image/vn.jpg)`,
+                backgroundImage: `url(/static/image/vn.jpg)`,
                 backgroundPosition: "20% 50%"
             }}
         >

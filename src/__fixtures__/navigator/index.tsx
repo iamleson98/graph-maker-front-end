@@ -33,7 +33,6 @@ function Navigator() {
     const [curLang, setLang] = useState<lang>("Tiếng Việt")
 
     useEffect(() => {
-        console.log(curLang)
         i18n.changeLanguage(langMap[curLang])
     }, [curLang, i18n])
 
@@ -127,9 +126,10 @@ function Navigator() {
                 <div className="relative" onClick={() => toggleMenu(langMenuRef, "open")}>
                     <ClickAwayListener onClickAway={() => toggleMenu(langMenuRef, "close")}>
                         <div
-                            className="p-2 cursor-pointer text-gray-600 text-xs"
+                            className="p-2 cursor-pointer text-gray-600 text-xs flex items-center"
                         >
-                            {curLang}
+                            <img className="w-4 h-auto mr-1" src={curLang === "Tiếng Việt" ? "/static/image/vietnam.svg" : "/static/image/united-kingdom.svg"} alt="flag"/>
+                            <p>{curLang}</p>
                         </div>
                     </ClickAwayListener>
                     <Menu
