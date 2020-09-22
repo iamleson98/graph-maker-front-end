@@ -2,6 +2,7 @@ import React, { memo, useState } from "react"
 import { CompactPicker, ColorResult } from "react-color"
 import Popover from "@material-ui/core/Popover"
 import { Tooltip } from "@material-ui/core"
+import { useTranslation } from "react-i18next"
 
 
 export interface ColorSetterProps {
@@ -10,6 +11,8 @@ export interface ColorSetterProps {
 }
 
 function ColorSetter({ giveColor, defaultBg }: ColorSetterProps) {
+
+    const { t } = useTranslation()
 
     const [state, setState] = useState<{
         anchor: HTMLElement | null;
@@ -32,7 +35,7 @@ function ColorSetter({ giveColor, defaultBg }: ColorSetterProps) {
 
     return (
         <>
-            <Tooltip title="Set color" placement="top">
+            <Tooltip title={`${t("setColor")}`} placement="top">
                 <div
                     className={`w-5 h-5 rounded cursor-pointer`}
                     onClick={(evt: React.MouseEvent<HTMLDivElement, MouseEvent>) => setState({

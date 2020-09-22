@@ -13,9 +13,13 @@ import {
 import ColorSettter from "../colorSetter"
 import { localState } from ".."
 import { noAnyError } from "../utils"
+import { useTranslation } from "react-i18next"
 
 
 function PieChart(): JSX.Element {
+
+    // trans
+    const { t } = useTranslation()
 
     // component state
     const [state, dispatch] = useReducer<React.Reducer<PieChartState, PieChartAction>>(pieChartReducer, localState().pieChartState)
@@ -41,10 +45,10 @@ function PieChart(): JSX.Element {
         <div className="text-gray-600 bg-white rounded p-2">
             {/* title */}
             <div className="mb-4">
-                <label htmlFor="piechart-title" className="mr-2 text-sm font-medium">Chart title</label>
+                <label htmlFor="piechart-title" className="mr-2 text-sm font-medium">{t("chartInput.title")}</label>
                 <DelayInput
                     type="text"
-                    placeholder="Chart title"
+                    placeholder={`${t("chartInput.title")}`}
                     className="rounded bg-gray-200 px-2"
                     giveValue={(value: string) => dispatch({
                         type: typeChange.titleChange,
@@ -61,20 +65,20 @@ function PieChart(): JSX.Element {
                         className="rounded border-2 border-solid border-gray-200 p-2 mb-3"
                     >
                         <legend className="text-sm text-red-500 font-medium">
-                            Pie {pieIndex + 1}
+                            {t("chartInput.pie.pie")} {pieIndex + 1}
                         </legend>
                         {pie.map((slice, sliceIndex) => (
                             <div className="flex items-center mb-2" key={sliceIndex}>
                                 <fieldset className="p-2 rounded w-full border-2 mr-2 border-solid border-gray-200">
                                     <legend className="text-sm">
-                                        Slice {sliceIndex + 1}
+                                        {t("chartInput.pie.slice")} {sliceIndex + 1}
                                     </legend>
                                     {!pieIndex ? (
                                         <div className="mb-1 flex items-center">
-                                            <span className="mr-2 text-xs">name</span>
+                                            <span className="mr-2 text-xs whitespace-no-wrap">{t("chartInput.pie.sliceName")}</span>
                                             <DelayInput
                                                 fullWidth={true}
-                                                placeholder="slice name"
+                                                placeholder={`${t("chartInput.pie.sliceName")}`}
                                                 defaultValue={slice.name}
                                                 className={`rounded bg-gray-200 px-2`}
                                                 classes={{
@@ -104,15 +108,15 @@ function PieChart(): JSX.Element {
                                         </div>
                                     ) : (
                                             <div className="mb-1 flex items-center">
-                                                <span className="mr-2 text-xs">name</span>
+                                                <span className="mr-2 text-xs whitespace-no-wrap">{t("chartInput.pie.sliceName")}</span>
                                                 <span className="text-sm font-medium">{slice.name}</span>
                                             </div>
                                         )}
                                     <div className="flex items-center">
-                                        <span className="mr-2 text-xs">value</span>
+                                        <span className="mr-2 text-xs whitespace-no-wrap">{t("chartInput.pie.value")}</span>
                                         <DelayInput
                                             fullWidth={true}
-                                            placeholder="value"
+                                            placeholder={t("chartInput.pie.value")}
                                             className={`rounded ${slice.error ? "bg-red-300" : "bg-gray-200"} px-2`}
                                             giveValue={(value: string) => dispatch({
                                                 type: typeChange.sliceValueChange,
@@ -131,7 +135,7 @@ function PieChart(): JSX.Element {
                                     // only display this button in fields that has pieIndex greater than 0
                                     <div className="text-right">
                                         <Tooltip
-                                            title="Delete this slice"
+                                            title={`${t("chartInput.pie.removeSlice")} ${!!slice.name ? slice.name : sliceIndex + 1}`}
                                             placement="top"
                                         >
                                             <span
@@ -160,7 +164,7 @@ function PieChart(): JSX.Element {
                                 value: pieIndex
                             })}
                         >
-                            {!pieIndex ? "Add a slice" : `Remove pie ${pieIndex + 1}`}
+                            {!pieIndex ? `${t("chartInput.pie.addSlice")}` : `${t("chartInput.pie.removePie")} ${pieIndex + 1}`}
                         </Button>
                     </fieldset>
                 ))}
@@ -176,7 +180,7 @@ function PieChart(): JSX.Element {
                     })}
                     disabled={pies.length >= MAX_PIE}
                 >
-                    Add pie
+                    {t("chartInput.pie.addPie")}
                 </Button>
             </div>
         </div>

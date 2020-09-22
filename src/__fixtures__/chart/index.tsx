@@ -1,5 +1,5 @@
 import React, { memo, useMemo, useRef, useState } from "react"
-import { PieChart, Timeline, Save, Image, CloudDownloadOutlined } from "@material-ui/icons"
+import { PieChart, Timeline, Save, Image, CloudUploadOutlined } from "@material-ui/icons"
 import { ChartBar, Scatter, AreaChart } from "../icons"
 import Tooltip from "@material-ui/core/Tooltip"
 import Button from "@material-ui/core/Button"
@@ -12,15 +12,22 @@ import { DelayChartRender } from "./delayInputRender"
 import { ClickAwayListener, SvgIconTypeMap } from "@material-ui/core"
 import { OverridableComponent } from "@material-ui/core/OverridableComponent"
 import DummyChartInput from "../dummyInput/dummy"
-import { ChartType } from "../index"
 import { BarChartDrawer, LineChartDrawer, PieChartDrawer, ScatterChartDrawer, AreaChartDrawer } from "./chartDrawer"
 import html2canvas from "html2canvas"
 import "simplebar/dist/simplebar.min.css"
 import dayjs from "dayjs"
 import { timer } from "rxjs"
+import { useTranslation } from "react-i18next"
 
+
+type saveType =
+    | "image"
+    | "cloud"
 
 function Chart() {
+
+    // trans
+    const { t } = useTranslation()
 
     // refs
     const menuRef = useRef<any>()
@@ -28,7 +35,7 @@ function Chart() {
 
     // memoized values
     const chartRoutes = useMemo<{
-        name: ChartType;
+        name: string;
         icon: OverridableComponent<SvgIconTypeMap<{}, "svg">>;
         tailwindColor: string;
         tailwindActiveBg: string;
@@ -37,37 +44,37 @@ function Chart() {
         afterBg: string;
     }[]>(() => {
         return [
-            { name: "Bar chart", icon: ChartBar, tailwindColor: "text-green-500", tailwindActiveBg: "bg-green-200", inputComponent: BarChartInput, drawerComponent: BarChartDrawer, afterBg: "border-green-200" },
-            { name: "Pie chart", icon: PieChart, tailwindColor: "text-red-500", tailwindActiveBg: "bg-red-200", inputComponent: PieChartInput, drawerComponent: PieChartDrawer, afterBg: "border-red-200" },
-            { name: "Line chart", icon: Timeline, tailwindColor: "text-orange-500", tailwindActiveBg: "bg-orange-200", inputComponent: LineChartInput, drawerComponent: LineChartDrawer, afterBg: "border-orange-200" },
-            { name: "Area chart", icon: AreaChart, tailwindColor: "text-purple-500", tailwindActiveBg: "bg-purple-200", inputComponent: DummyChartInput, drawerComponent: AreaChartDrawer, afterBg: "border-purple-200" },
-            { name: "Scatter chart", icon: Scatter, tailwindColor: "text-blue-500", tailwindActiveBg: "bg-blue-200", inputComponent: DummyChartInput, drawerComponent: ScatterChartDrawer, afterBg: "border-blue-200" },
+            { name: "chartType.bar", icon: ChartBar, tailwindColor: "text-green-500", tailwindActiveBg: "bg-green-200", inputComponent: BarChartInput, drawerComponent: BarChartDrawer, afterBg: "border-green-200" },
+            { name: "chartType.pie", icon: PieChart, tailwindColor: "text-red-500", tailwindActiveBg: "bg-red-200", inputComponent: PieChartInput, drawerComponent: PieChartDrawer, afterBg: "border-red-200" },
+            { name: "chartType.line", icon: Timeline, tailwindColor: "text-orange-500", tailwindActiveBg: "bg-orange-200", inputComponent: LineChartInput, drawerComponent: LineChartDrawer, afterBg: "border-orange-200" },
+            { name: "chartType.area", icon: AreaChart, tailwindColor: "text-purple-500", tailwindActiveBg: "bg-purple-200", inputComponent: DummyChartInput, drawerComponent: AreaChartDrawer, afterBg: "border-purple-200" },
+            { name: "chartType.scatter", icon: Scatter, tailwindColor: "text-blue-500", tailwindActiveBg: "bg-blue-200", inputComponent: DummyChartInput, drawerComponent: ScatterChartDrawer, afterBg: "border-blue-200" },
         ]
     }, [])
 
-    const saveMenu = useMemo<{
+    const saveChartMenuValues = useMemo<{
         display: React.ReactNode,
-        returnVal?: string;
+        returnVal?: saveType;
     }[]>(() => [
         {
             display: (
-                <div className="flex items-center text-gray-600">
+                <div className="flex items-center font-normal text-gray-600">
                     <Image fontSize="small" className="mr-1" />
-                    <span>image</span>
+                    <span>{t("saveChart.type.image")}</span>
                 </div>
             ),
             returnVal: "image"
         },
         {
             display: (
-                <div className="flex items-center text-gray-600">
-                    <CloudDownloadOutlined fontSize="small" className="mr-1" />
-                    <span>cloud</span>
+                <div className="flex items-center font-normal text-gray-600">
+                    <CloudUploadOutlined fontSize="small" className="mr-1" />
+                    <span>{t("saveChart.type.cloud")}</span>
                 </div>
             ),
             returnVal: "cloud"
         }
-    ], [])
+    ], [t])
 
     // component state
     const [state, setState] = useState({
@@ -85,7 +92,7 @@ function Chart() {
         }
     }
 
-    const saveChartHandler = (type: "image" | "cloud") => {
+    const saveChartHandler = (type: saveType) => {
         html2canvas(chartDrawRef.current as HTMLDivElement)
             .then(canvas => {
                 canvas.toBlob(
@@ -116,7 +123,7 @@ function Chart() {
             <div className="sm:w-full w-8/12">
                 <div className="p-1 text-sm font-medium flex items-center">
                     {/* display type of chart */}
-                    <p className="mr-2">{chartRoutes[activeIndex].name}</p>
+                    <p className="mr-2">{t(chartRoutes[activeIndex].name)}</p>
                     <ClickAwayListener
                         onClickAway={() => {
                             (menuRef.current as HTMLElement).classList.add("hidden")
@@ -134,11 +141,11 @@ function Chart() {
                                     <Save />
                                 )}
                             >
-                                Save as
+                                {t("saveChart.name")}
                             </Button>
                             <Menu
                                 addClass="w-full left-0 hidden"
-                                values={saveMenu}
+                                values={saveChartMenuValues}
                                 refer={menuRef}
                                 giveValue={saveChartHandler}
                             />
@@ -156,7 +163,7 @@ function Chart() {
             {/* chart input field */}
             <div className="w-4/12 sm:w-full m-auto">
                 <div className="p-1 text-sm font-medium">
-                    Input data
+                    {t("chartInput.headName")}
                 </div>
                 <div className="p-1">
                     <div className="bg-white rounded p-1">
@@ -164,7 +171,7 @@ function Chart() {
                         <div className="flex items-center p-2 justify-around">
                             {chartRoutes.map((item, idx) => (
                                 <Tooltip
-                                    title={item.name}
+                                    title={`${t(item.name)}`}
                                     placement="top"
                                     key={idx}
                                 >

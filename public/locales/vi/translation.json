@@ -1,13 +1,62 @@
 {
-    "title": "Chao mung toi voi i18n",
-    "description": {
-        "part1": "de bat dau thi ban phai hoc",
-        "part2": "Chuyen giua tieng anh va tieng viet"
+    "weather": "Thời tiết",
+    "chart": "Biểu đồ",
+    "about": "Về chúng tôi",
+    "qa": "Hỏi đáp",
+    "signout": "Đăng xuất",
+    "my profile": "Trang cá nhân",
+    "login": "Đăng nhập",
+    "setColor": "Thay màu",
+    "chartType": {
+        "bar": "Biểu đồ cột",
+        "line": "Biểu đồ đường",
+        "pie": "Biểu đồ quạt",
+        "area": "Biểu đồ miền",
+        "scatter": "Biểu đồ phân bổ"
     },
-    "weather": "Thoi tiet",
-    "chart": "Bieu do",
-    "about": "Ve chung toi",
-    "qa": "Hoi dap",
-    "signout": "Dang xuat",
-    "my profile": "Trang ca nhan"
+    "saveChart": {
+        "name": "Lưu biểu đồ",
+        "type": {
+            "image": "hình ảnh",
+            "cloud": "đám mây"
+        }
+    },
+    "chartInput": {
+        "headName": "Dữ liệu vào",
+        "addItem": "Thêm mục",
+        "removeItem": "Xoá mục",
+        "title": "Tên biểu đồ",
+        "xLabel": "Tên trục Ox",
+        "yLabel": "Tên trục Oy",
+        "dataOnOx": "Dữ liệu trên Ox",
+        "dataOnOy": "Dữ liệu trên Oy",
+        "bar": {
+            "block": "Khối",
+            "placeholder": {
+                "enterName": "Nhập tên cột",
+                "enterValue": "Nhập giá trị cột",
+                "enterBlockName": "Nhập tên khối"
+            },
+            "barName": "tên cột"
+        },
+        "line": {
+            "addLine": "Thêm đường",
+            "deleteLine": "Xoá đường",
+            "placeholder": {
+                "enterValue": "Nhập giá trị",
+                "lineName": "Tên đường"
+            }
+        },
+        "pie": {
+            "pie": "Bánh",
+            "slice": "Lát",
+            "sliceName": "tên lát",
+            "enterValue": "Nhập giá trị",
+            "addPie": "Thêm bánh",
+            "addSlice": "Thêm lát",
+            "removePie": "Xoá bánh",
+            "removeSlice": "Xoá lát",
+            "value": "giá trị"
+        }
+    }
 }

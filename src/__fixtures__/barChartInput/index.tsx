@@ -6,9 +6,13 @@ import { BarchartState, BarchartAction, typeChange, barchartReducer } from "./re
 import ColorSettter from "../colorSetter"
 import { localState } from ".."
 import { noAnyError } from "../utils"
+import { useTranslation } from "react-i18next"
 
 
 function BarChartInput(): JSX.Element {
+
+    // trans
+    const { t } = useTranslation()
 
     // component state
     const [state, dispatch] = useReducer<React.Reducer<BarchartState, BarchartAction>>(barchartReducer, localState().barChartState)
@@ -32,11 +36,12 @@ function BarChartInput(): JSX.Element {
     }
 
     useEffect(() => {
-        if (noAnyError(
-            state.yData
-                .map(block => block.map(bar => bar.error))
-                .reduce((a, b) => a.concat(b), [])
-        )
+        if (
+            noAnyError(
+                state.yData
+                    .map(block => block.map(bar => bar.error))
+                    .reduce((a, b) => a.concat(b), [])
+            )
         ) {
             localState({
                 ...localState(),
@@ -50,12 +55,12 @@ function BarChartInput(): JSX.Element {
         <div className="text-gray-600 bg-white rounded p-2">
             {/* title */}
             <div className="mb-4">
-                <label htmlFor="barchart-title" className="mr-2 text-sm font-medium">Chart title</label>
+                <label htmlFor="barchart-title" className="mr-2 text-sm font-medium">{t("chartInput.title")}</label>
                 <DelayInput
                     type="text"
                     id="barchart-title"
                     className="rounded bg-gray-200 px-2"
-                    placeholder="Chart title"
+                    placeholder={t("chartInput.title")}
                     defaultValue={chartTitle}
                     giveValue={(value: string) => dispatch({
                         type: typeChange.chartTitleChange,
@@ -68,12 +73,12 @@ function BarChartInput(): JSX.Element {
                 <div className="mb-4">
                     {/* x title */}
                     <div className="mb-2">
-                        <label htmlFor="x-title" className="mr-2 text-sm">Ox label</label>
+                        <label htmlFor="x-title" className="mr-2 text-sm">{t("chartInput.xLabel")}</label>
                         <DelayInput
                             type="text"
                             id="x-title"
                             className="rounded bg-gray-200 px-2"
-                            placeholder="Ox label"
+                            placeholder={t("chartInput.xLabel")}
                             defaultValue={xLabel}
                             giveValue={(value: string) => dispatch({
                                 type: typeChange.xLabelChange,
@@ -83,7 +88,7 @@ function BarChartInput(): JSX.Element {
                     </div>
                     {/* x data */}
                     <fieldset className="rounded p-2 border-2 border-solid border-gray-200">
-                        <legend className="text-sm leading-4 font-medium text-red-500">Data on Ox</legend>
+                        <legend className="text-sm leading-4 font-medium text-red-500">{t("chartInput.dataOnOx")}</legend>
                         {xData.map((value, idx) => (
                             <div className="flex items-center mb-1" key={idx}>
                                 <span className="mr-2 text-sm">{idx + 1}</span>
@@ -91,7 +96,7 @@ function BarChartInput(): JSX.Element {
                                     fullWidth={true}
                                     type="text"
                                     className="rounded mr-2 bg-gray-200 px-2"
-                                    placeholder="Enter data"
+                                    placeholder={`${t("chartInput.bar.placeholder.enterBlockName")}`}
                                     defaultValue={value}
                                     giveValue={(value: string) => {
                                         dispatch({
@@ -103,7 +108,7 @@ function BarChartInput(): JSX.Element {
                                         })
                                     }}
                                 />
-                                <Tooltip title={!idx ? "Add item" : "Remove item"} placement="top">
+                                <Tooltip title={!idx ? `${t("chartInput.addItem")}` : `${t("chartInput.removeItem")}`} placement="top">
                                     <span
                                         onClick={manipulateAnXField(idx)}
                                         className={`flex cursor-pointer items-center flex-shrink-0 justify-center rounded ${!idx ? "bg-blue-100 text-blue-600" : "bg-orange-100 text-orange-600"} w-8 h-8 hover:${!idx ? "bg-blue-200" : "bg-orange-200"}`}
@@ -119,12 +124,12 @@ function BarChartInput(): JSX.Element {
                 <div className="mb-4">
                     {/* y title */}
                     <div className="mb-2">
-                        <label htmlFor="y-title" className="mr-2 text-sm">Oy label</label>
+                        <label htmlFor="y-title" className="mr-2 text-sm">{t("chartInput.yLabel")}</label>
                         <DelayInput
                             type="text"
                             id="y-title"
                             className="rounded bg-gray-200 px-2"
-                            placeholder="Oy label"
+                            placeholder={t("chartInput.yLabel")}
                             defaultValue={yLabel}
                             giveValue={(value: string) => dispatch({
                                 type: typeChange.yLabelChange, // type of change
@@ -134,11 +139,11 @@ function BarChartInput(): JSX.Element {
                     </div>
                     {/* y data */}
                     <fieldset className="rounded p-2 border-2 border-solid border-gray-200">
-                        <legend className="text-sm leading-4 text-red-500 font-medium">Data on Oy</legend>
+                        <legend className="text-sm leading-4 text-red-500 font-medium">{t("chartInput.dataOnOy")}</legend>
                         {yData.map((block, blockIndex) => (
                             <fieldset key={blockIndex} className="rounded border-solid border-2 border-gray-200 p-2 mb-2">
                                 <legend className="text-xs leading-4 font-normal">
-                                    {`block ${xData[blockIndex] || blockIndex + 1}`}
+                                    {`${t("chartInput.bar.block")} ${xData[blockIndex] || blockIndex + 1}`}
                                 </legend>
                                 {block.map((barValue, barIndex) => (
                                     <div className="flex items-center mb-1" key={barIndex}>
@@ -149,7 +154,7 @@ function BarChartInput(): JSX.Element {
                                                     fullWidth={true}
                                                     type="text"
                                                     className={`rounded mb-1 bg-gray-200 px-2`}
-                                                    placeholder="Enter name"
+                                                    placeholder={`${t("chartInput.bar.placeholder.enterName")}`}
                                                     defaultValue={barValue.name}
                                                     giveValue={(value: string) => {
                                                         dispatch({
@@ -175,7 +180,7 @@ function BarChartInput(): JSX.Element {
                                                 />
                                             ) : (
                                                     <div className="flex items-center mb-1">
-                                                        <span className="text-xs mr-2">name</span>
+                                                        <span className="text-xs mr-2">{t("chartInput.bar.barName")}</span>
                                                         <span className="text-sm font-medium">{barValue.name}</span>
                                                     </div>
                                                 )
@@ -184,7 +189,7 @@ function BarChartInput(): JSX.Element {
                                                 fullWidth={true}
                                                 type="text"
                                                 className={`rounded bg-gray-200 px-2 ${barValue.error ? "bg-red-300" : ""}`}
-                                                placeholder="Enter value"
+                                                placeholder={`${t("chartInput.bar.placeholder.enterValue")}`}
                                                 defaultValue={barValue.value}
                                                 giveValue={(value: string) => {
                                                     dispatch({
@@ -202,7 +207,7 @@ function BarChartInput(): JSX.Element {
 
                                         {!blockIndex && (
                                             <Tooltip
-                                                title={!barIndex ? "Add item" : "Remove item"}
+                                                title={!barIndex ? `${t("chartInput.addItem")}` : `${t("chartInput.removeItem")}`}
                                                 placement="top"
                                             >
                                                 <span

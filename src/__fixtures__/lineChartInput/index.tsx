@@ -10,9 +10,13 @@ import {
 import ColorSetter from "../colorSetter"
 import { localState } from ".."
 import { noAnyError } from "../utils"
+import { useTranslation } from "react-i18next"
 
 
 function LineChart(): JSX.Element {
+
+    // trans
+    const { t } = useTranslation()
 
     // component state
     const [state, dispatch] = useReducer<React.Reducer<LineChartState, LineChartAction>>(lineChartReducer, localState().lineChartState)
@@ -32,13 +36,13 @@ function LineChart(): JSX.Element {
         <div className="rounded bg-white p-2 text-gray-600">
             {/* chart title */}
             <div className="mb-4">
-                <label htmlFor="linechart-title" className="mr-2 text-sm font-medium">Chart Title</label>
+                <label htmlFor="linechart-title" className="mr-2 text-sm font-medium">{t("chartInput.title")}</label>
                 <DelayInput
                     type="text"
                     id="linechart-title"
                     className="bg-gray-200 rounded px-2"
                     defaultValue={chartTitle}
-                    placeholder="Chart title"
+                    placeholder={`${t("chartInput.title")}`}
                     giveValue={(value: string) => dispatch({
                         type: typeChange.titleChange,
                         value
@@ -50,12 +54,12 @@ function LineChart(): JSX.Element {
                 <div className="mb-4">
                     {/* title on Ox */}
                     <div className="mb-2">
-                        <label htmlFor="x-label" className="mr-2 text-sm">Ox label</label>
+                        <label htmlFor="x-label" className="mr-2 text-sm">{t("chartInput.xLabel")}</label>
                         <DelayInput
                             type="text"
                             id="x-label"
                             className="rounded bg-gray-200 px-2"
-                            placeholder="Ox label"
+                            placeholder={`${t("chartInput.xLabel")}`}
                             defaultValue={xLabel}
                             giveValue={(value: string) => {
                                 dispatch({
@@ -69,7 +73,7 @@ function LineChart(): JSX.Element {
                     {/* x data */}
                     <fieldset className="rounded border-2 border-gray-200 border-solid mb-4 p-2">
                         <legend className="text-sm font-medium text-red-500">
-                            Data on Ox
+                            {t("chartInput.dataOnOx")}
                         </legend>
                         {xData.map((item, idx) => (
                             <div className="flex items-center justify-around mb-1" key={idx}>
@@ -77,7 +81,7 @@ function LineChart(): JSX.Element {
                                 <DelayInput
                                     fullWidth={true}
                                     type="text"
-                                    placeholder="value"
+                                    placeholder={`${t("chartInput.line.placeholder.enterValue")}`}
                                     className="rounded bg-gray-200 mr-2 px-2"
                                     defaultValue={item}
                                     giveValue={(value: string) => dispatch({
@@ -89,7 +93,7 @@ function LineChart(): JSX.Element {
                                     })}
                                 />
                                 <Tooltip
-                                    title={!idx ? "Add x field" : "Remove this field"}
+                                    title={!idx ? `${t("chartInput.addItem")}` : `${t("chartInput.removeItem")}`}
                                     placement="top"
                                 >
                                     <div
@@ -113,12 +117,12 @@ function LineChart(): JSX.Element {
                     {/* title on oy */}
                     <div className="mb-2">
                         <div className="mb-2">
-                            <label htmlFor="y-label" className="mr-2 text-sm">Oy label</label>
+                            <label htmlFor="y-label" className="mr-2 text-sm">{t("chartInput.yLabel")}</label>
                             <DelayInput
                                 type="text"
                                 id="y-label"
                                 className="rounded bg-gray-200 px-2"
-                                placeholder="Oy label"
+                                placeholder={`${t("chartInput.yLabel")}`}
                                 defaultValue={yLabel}
                                 giveValue={(value: string) => {
                                     dispatch({
@@ -133,7 +137,7 @@ function LineChart(): JSX.Element {
                     {/* Data on Oy */}
                     <fieldset className="mb-4 rounded border-2 border-solid border-gray-200 p-2">
                         <legend className="font-medium text-red-500 text-sm">
-                            Data on Oy
+                            {t("chartInput.dataOnOy")}
                         </legend>
                         {yData.map((item, index) => (
                             <fieldset
@@ -153,7 +157,7 @@ function LineChart(): JSX.Element {
                                             }
                                         })}
                                         defaultValue={item.name}
-                                        placeholder={`line ${index + 1} name`}
+                                        placeholder={`${t("chartInput.line.placeholder.lineName")}`}
                                         endAdornment={(
                                             <ColorSetter
                                                 giveColor={(color: string) => {
@@ -181,7 +185,7 @@ function LineChart(): JSX.Element {
                                         <DelayInput
                                             fullWidth={true}
                                             type="text"
-                                            placeholder="value"
+                                            placeholder={`${t("chartInput.line.placeholder.enterValue")}`}
                                             className={`rounded ${item.error ? "bg-red-300" : "bg-gray-200"} px-2 mr-2`}
                                             giveValue={(value: string) => dispatch({
                                                 type: typeChange.yFieldChange,
@@ -212,7 +216,7 @@ function LineChart(): JSX.Element {
                                                 })
                                             }}
                                         >
-                                            delete {!!item.name ? item.name : `line ${index + 1}`}
+                                            {t("chartInput.line.deleteLine")} {!!item.name ? item.name : index + 1}
                                         </Button>
                                     </div>
                                 )}
@@ -230,7 +234,7 @@ function LineChart(): JSX.Element {
                                 type: typeChange.addLine
                             })}
                         >
-                            Add line
+                            {t("chartInput.line.addLine")}
                         </Button>
                     </fieldset>
                 </div>

@@ -1,13 +1,62 @@
 {
-    "title": "Welcome to react using react-i18next",
-    "description": {
-        "part1": "To get started, edit <1>src/App.js</1> and save to reload.",
-        "part2": "Switch language between english and german using buttons above."
-    },
     "weather": "Weather",
     "chart": "Chart",
     "about": "About us",
     "qa": "Q & A",
     "signout": "Sign out",
-    "my profile": "my profile"
+    "my profile": "my profile",
+    "login": "login",
+    "setColor": "Set color",
+    "chartType": {
+        "bar": "Bar chart",
+        "line": "Line chart",
+        "pie": "Pie chart",
+        "area": "Area chart",
+        "scatter": "Scatter chart"
+    },
+    "saveChart": {
+        "name": "Save chart",
+        "type": {
+            "image": "image",
+            "cloud": "cloud"
+        }
+    },
+    "chartInput": {
+        "headName": "Input data",
+        "addItem": "Add item",
+        "removeItem": "remove item",
+        "title": "Chart title",
+        "xLabel": "Ox Label",
+        "yLabel": "Oy Label",
+        "dataOnOx": "Data on Ox",
+        "dataOnOy": "Data on Oy",
+        "bar": {
+            "block": "block",
+            "placeholder": {
+                "enterName": "Enter bar name",
+                "enterValue": "Enter bar value",
+                "enterBlockName": "Enter block name"
+            },
+            "barName": "bar name"
+        },
+        "line": {
+            "addLine": "Add line",
+            "deleteLine": "Delete line",
+            "placeholder": {
+                "enterValue": "Enter value",
+                "lineName": "Line name"
+            }
+        },
+        "pie": {
+            "pie": "Pie",
+            "slice": "Slice",
+            "sliceName": "slice name",
+            "enterValue": "Enter value",
+            "addPie": "Add pie",
+            "addSlice": "Add slice",
+            "removePie": "Remove pie",
+            "removeSlice": "Delete slice",
+            "value": "value"
+        }
+    }
 }

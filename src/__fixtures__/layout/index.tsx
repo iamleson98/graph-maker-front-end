@@ -6,7 +6,6 @@ import { authRoute, routes } from "./routeConfig"
 
 function Layout() {
 
-
     return (
         <div className="m-auto w-screen h-screen bg-gray-100">
             <Navigator />

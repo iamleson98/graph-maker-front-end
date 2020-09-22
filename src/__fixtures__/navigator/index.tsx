@@ -1,4 +1,4 @@
-import React, { memo, useRef } from "react"
+import React, { memo, useEffect, useRef, useState } from "react"
 import { ArrowDropDown } from "@material-ui/icons"
 import ClickAwayListener from "@material-ui/core/ClickAwayListener"
 import Button from "@material-ui/core/Button"
@@ -9,27 +9,41 @@ import { routes, authRoute } from "../layout/routeConfig"
 import "./style.css"
 import { localState } from ".."
 import { useTranslation } from "react-i18next"
+import { useReactiveVar } from "@apollo/client"
 
+
+type lang = "Tiếng Việt" | "English"
+type LangMap = {
+    [key in lang]: "vi" | "en"
+}
+const langMap: LangMap = {
+    "English": "en",
+    "Tiếng Việt": "vi"
+}
 
 function Navigator() {
+
+    // refs
+    const userMenuRef = useRef<any>()
+    const langMenuRef = useRef<any>()
 
     // translation
     const { t, i18n } = useTranslation()
 
-    const changeLanguage = (lng: string) => {
-        i18n.changeLanguage(lng);
-    };
+    const [curLang, setLang] = useState<lang>("Tiếng Việt")
 
-    // ref
-    const menuRef = useRef<any>()
+    useEffect(() => {
+        console.log(curLang)
+        i18n.changeLanguage(langMap[curLang])
+    }, [curLang, i18n])
 
-    const { isSignedIn } = localState()
+    const { isSignedIn } = useReactiveVar(localState)
 
-    function toggleMenu(type: "open" | "close") {
-        (menuRef.current as HTMLElement).classList[type === "open" ? "remove" : "add"]("hidden")
+    function toggleMenu(which: React.MutableRefObject<any>, type: "open" | "close") {
+        (which.current as HTMLElement).classList[type === "open" ? "remove" : "add"]("hidden")
     }
 
-    const menuValues = [
+    const userMenuVales = [
         {
             display: t("signout")
         },
@@ -37,6 +51,20 @@ function Navigator() {
             display: t("my profile")
         }
     ]
+
+    const langValues: {
+        display: React.ReactNode;
+        returnVal: lang;
+    }[] = [
+            {
+                display: <p className="text-xs">Tiếng Việt</p>,
+                returnVal: "Tiếng Việt"
+            },
+            {
+                display: <p className="text-xs">English</p>,
+                returnVal: "English"
+            }
+        ]
 
     return (
         <div className="flex flex-no-wrap items-center py-1 bg-white pr-4 pl-10 fixed top-0 left-0 w-full z-20 shadow-xs justify-between">
@@ -59,30 +87,31 @@ function Navigator() {
                         )
                     })}
                 </div>
-                {isSignedIn ? (
-                    <div className="relative">
-                        <ClickAwayListener onClickAway={() => toggleMenu("close")}>
-                            <div className="flex items-center cursor-pointer" onClick={() => toggleMenu("open")}>
-                                <div className="border-2 border-solid rounded-full border-gray-200 flex-shrink-0 overflow-hidden w-8 h-8 text-center mr-2">
+                {!isSignedIn ? (
+                    <div className="relative mr-2">
+                        <ClickAwayListener onClickAway={() => toggleMenu(userMenuRef, "close")}>
+                            <div className="flex items-center cursor-pointer" onClick={() => toggleMenu(userMenuRef, "open")}>
+                                <div className="border-2 border-solid rounded-full border-gray-200 flex-shrink-0 overflow-hidden w-8 h-8 text-center mr-1">
                                     <img src="https://upload.wikimedia.org/wikipedia/vi/thumb/b/b0/Avatar-Teaser-Poster.jpg/220px-Avatar-Teaser-Poster.jpg" alt="Phuc nguyen" />
                                 </div>
                                 <div className="flex items-center text-gray-600">
-                                    <span className="mr-2 text-sm leading-5">Nguyen Van Phuc</span>
+                                    <span className="mr-1 text-sm leading-5">Nguyen Van Phuc</span>
                                     <ArrowDropDown fontSize="small" />
                                 </div>
                             </div>
                         </ClickAwayListener>
                         <Menu
                             addClass="hidden w-full top-full"
-                            values={menuValues}
+                            values={userMenuVales}
                             giveValue={console.log}
-                            refer={menuRef}
+                            refer={userMenuRef}
                         />
                     </div>
                 ) : (
                         <NavLink
                             to={authRoute.path}
                             exact={true}
+                            className="mr-2"
                         >
                             <Button
                                 color="primary"
@@ -90,14 +119,25 @@ function Navigator() {
                                 variant="contained"
                                 disableElevation={true}
                             >
-                                Login
+                                {t("login")}
                             </Button>
                         </NavLink>
-
-                    )}
-                <div>
-                    <button onClick={() => changeLanguage('vi')}>vi</button>
-                    <button onClick={() => changeLanguage('en')}>en</button>
+                    )
+                }
+                <div className="relative" onClick={() => toggleMenu(langMenuRef, "open")}>
+                    <ClickAwayListener onClickAway={() => toggleMenu(langMenuRef, "close")}>
+                        <div
+                            className="p-2 cursor-pointer text-gray-600 text-xs"
+                        >
+                            {curLang}
+                        </div>
+                    </ClickAwayListener>
+                    <Menu
+                        addClass="hidden right-0"
+                        values={langValues}
+                        refer={langMenuRef}
+                        giveValue={setLang}
+                    />
                 </div>
             </div>
         </div>
