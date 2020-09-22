@@ -60,14 +60,34 @@ function History() {
         {
             placeholder: "create date",
             value: dateFilter,
-            menuList: ["older first", "latest first"],
+            menuList: [
+                {
+                    display: "older first"
+                },
+                {
+                    display: "latest first"
+                }
+            ],
             ref: dateFilterRef,
             stateKey: "dateFilter"
         },
         {
             placeholder: "chart type",
             value: chartFilter,
-            menuList: ["Pie chart", "Line chart", "Area chart", "Bar chart"],
+            menuList: [
+                {
+                    display: "Pie chart"
+                },
+                {
+                    display: "Line chart"
+                },
+                {
+                    display: "Area chart"
+                },
+                {
+                    display: "Bar chart"
+                }
+            ],
             ref: chartFilterRef,
             stateKey: "chartFilter"
         }

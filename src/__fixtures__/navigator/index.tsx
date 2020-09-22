@@ -8,7 +8,6 @@ import { NavLink } from "react-router-dom"
 import { routes, authRoute } from "../layout/routeConfig"
 import "./style.css"
 import { localState } from ".."
-import auth from "../auth"
 
 
 function Navigator() {
@@ -21,6 +20,15 @@ function Navigator() {
     function toggleMenu(type: "open" | "close") {
         (menuRef.current as HTMLElement).classList[type === "open" ? "remove" : "add"]("hidden")
     }
+
+    const menuValues = [
+        {
+            display: "Signout"
+        },
+        {
+            display: "My Profile"
+        }
+    ]
 
     return (
         <div className="flex flex-no-wrap items-center py-1 bg-white pr-4 pl-10 fixed top-0 left-0 w-full z-20 shadow-xs justify-between">
@@ -58,7 +66,7 @@ function Navigator() {
                         </ClickAwayListener>
                         <Menu
                             addClass="hidden w-full top-full"
-                            values={["Sign out", "My profile"]}
+                            values={menuValues}
                             giveValue={console.log}
                             refer={menuRef}
                         />

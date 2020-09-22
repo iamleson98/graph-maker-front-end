@@ -3,7 +3,10 @@ import React, { memo } from "react"
 
 export interface MenuProps {
     addClass?: string;
-    values: React.ReactNode[];
+    values: {
+        display: React.ReactNode,
+        returnVal?: any;
+    }[];
     giveValue: (value: any) => void;
     refer: React.MutableRefObject<any>;
 }
@@ -15,9 +18,9 @@ function Menu({ addClass, values, giveValue, refer }: MenuProps) {
                 <div
                     key={idx}
                     className="py-1 px-2 text-sm hover:bg-gray-200 cursor-pointer overflow-hidden"
-                    onClick={() => giveValue(value)}
+                    onClick={() => giveValue(value.returnVal || value.display)}
                 >
-                    {value}
+                    {value.display}
                 </div>
             ))}
         </div>

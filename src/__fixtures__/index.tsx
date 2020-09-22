@@ -49,7 +49,7 @@ export const localState = makeVar<LocalState>({
     pieChartState: InitPieChartState,
     areaChartState: null,
     scatterChartState: null,
-    isSignedIn: false
+    isSignedIn: true
 })
 
 const client = new ApolloClient({

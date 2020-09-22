@@ -21,6 +21,7 @@
     "croppie": "^2.6.5",
     "dayjs": "^1.8.36",
     "graphql": "^15.3.0",
+    "html2canvas": "^1.0.0-rc.7",
     "react": "^16.13.1",
     "react-color": "^2.18.1",
     "react-dom": "^16.13.1",

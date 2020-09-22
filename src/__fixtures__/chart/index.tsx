@@ -1,21 +1,30 @@
-import React, { memo, useMemo, useState } from "react"
-import { PieChart, Timeline } from "@material-ui/icons"
+import React, { memo, useMemo, useRef, useState } from "react"
+import { PieChart, Timeline, Save, Image, CloudDownloadOutlined } from "@material-ui/icons"
 import { ChartBar, Scatter, AreaChart } from "../../components/icons"
 import Tooltip from "@material-ui/core/Tooltip"
+import Button from "@material-ui/core/Button"
+import Menu from "../menu"
 import LineChartInput from "../lineChartInput"
 import BarChartInput from "../barChartInput"
 import PieChartInput from "../pieChartInput"
 import SimpleBar from "simplebar-react"
 import { DelayChartRender } from "./delayInputRender"
-import { SvgIconTypeMap } from "@material-ui/core"
+import { ClickAwayListener, SvgIconTypeMap } from "@material-ui/core"
 import { OverridableComponent } from "@material-ui/core/OverridableComponent"
 import DummyChartInput from "../dummyInput/dummy"
 import { ChartType } from "../index"
 import { BarChartDrawer, LineChartDrawer, PieChartDrawer, ScatterChartDrawer, AreaChartDrawer } from "./chartDrawer"
+import html2canvas from "html2canvas"
 import "simplebar/dist/simplebar.min.css"
+import dayjs from "dayjs"
+import { timer } from "rxjs"
 
 
 function Chart() {
+
+    // refs
+    const menuRef = useRef<any>()
+    const chartDrawRef = useRef<any>()
 
     // memoized values
     const chartRoutes = useMemo<{
@@ -36,6 +45,30 @@ function Chart() {
         ]
     }, [])
 
+    const saveMenu = useMemo<{
+        display: React.ReactNode,
+        returnVal?: string;
+    }[]>(() => [
+        {
+            display: (
+                <div className="flex items-center text-gray-600">
+                    <Image fontSize="small" className="mr-1" />
+                    <span>image</span>
+                </div>
+            ),
+            returnVal: "image"
+        },
+        {
+            display: (
+                <div className="flex items-center text-gray-600">
+                    <CloudDownloadOutlined fontSize="small" className="mr-1" />
+                    <span>cloud</span>
+                </div>
+            ),
+            returnVal: "cloud"
+        }
+    ], [])
+
     // component state
     const [state, setState] = useState({
         activeIndex: 0,
@@ -52,18 +85,68 @@ function Chart() {
         }
     }
 
+    const saveChartHandler = (type: "image" | "cloud") => {
+        html2canvas(chartDrawRef.current as HTMLDivElement)
+            .then(canvas => {
+                canvas.toBlob(
+                    (blob) => {
+                        const link = document.createElement("a")
+                        link.download = `chart_${dayjs().format("MM_DD_YYYY")}.png`
+                        const url = (URL || webkitURL).createObjectURL(blob)
+                        link.href = url
+                        document.body.appendChild(link)
+                        link.click()
+                        timer(200).subscribe(() => {
+                            document.body.removeChild(link);
+                            (URL || webkitURL).revokeObjectURL(url)
+                        })
+                    },
+                    "image/png",
+                    1
+                )
+            })
+            .catch(console.error)
+    }
+
     const CurrentDrawer = chartRoutes[activeIndex].drawerComponent
 
     return (
         <div className="rounded p-2 flex flex-wrap text-gray-600">
             {/* chart result */}
             <div className="sm:w-full w-8/12">
-                <div className="p-1 text-sm font-medium">
+                <div className="p-1 text-sm font-medium flex items-center">
                     {/* display type of chart */}
-                    {chartRoutes[activeIndex].name}
+                    <p className="mr-2">{chartRoutes[activeIndex].name}</p>
+                    <ClickAwayListener
+                        onClickAway={() => {
+                            (menuRef.current as HTMLElement).classList.add("hidden")
+                        }}
+                    >
+                        <div className="relative">
+                            <Button
+                                size="small"
+                                color="primary"
+                                className="mr-2"
+                                onClick={() => {
+                                    (menuRef.current as HTMLElement).classList.remove("hidden")
+                                }}
+                                endIcon={(
+                                    <Save />
+                                )}
+                            >
+                                Save as
+                            </Button>
+                            <Menu
+                                addClass="w-full left-0 hidden"
+                                values={saveMenu}
+                                refer={menuRef}
+                                giveValue={saveChartHandler}
+                            />
+                        </div>
+                    </ClickAwayListener>
                 </div>
                 <div className="p-1">
-                    <div className="rounded p-1 bg-white flex flex-wrap justify-center">
+                    <div ref={chartDrawRef} className="rounded p-1 bg-white flex flex-wrap justify-center">
                         {/* chart display area */}
                         <CurrentDrawer />
                     </div>
