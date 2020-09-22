@@ -3,14 +3,22 @@ import { ArrowDropDown } from "@material-ui/icons"
 import ClickAwayListener from "@material-ui/core/ClickAwayListener"
 import Button from "@material-ui/core/Button"
 import Menu from "../menu"
-import Logo from "../../components/logo"
+import Logo from "../logo"
 import { NavLink } from "react-router-dom"
 import { routes, authRoute } from "../layout/routeConfig"
 import "./style.css"
 import { localState } from ".."
+import { useTranslation } from "react-i18next"
 
 
 function Navigator() {
+
+    // reanslation
+    const { t, i18n } = useTranslation()
+
+    const changeLanguage = (lng: string) => {
+        i18n.changeLanguage(lng);
+    };
 
     // ref
     const menuRef = useRef<any>()
@@ -46,7 +54,7 @@ function Navigator() {
                                 className={`text-gray-700 inline cursor-pointer text-sm font-medium leading-5 float-left px-2 py-2 hover:text-gray-600 transition-colors duration-200`}
                                 activeClassName="text_blue_700"
                             >
-                                {nav.name}
+                                {t(nav.i18Name)}
                             </NavLink>
                         )
                     })}
@@ -87,7 +95,10 @@ function Navigator() {
                         </NavLink>
 
                     )}
-
+                <div>
+                    <button onClick={() => changeLanguage('vi')}>vi</button>
+                    <button onClick={() => changeLanguage('en')}>en</button>
+                </div>
             </div>
         </div>
     )

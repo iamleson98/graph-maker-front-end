@@ -1,7 +1,7 @@
 import React, { lazy, memo, Suspense, useState } from "react"
 import { Button, Tooltip } from "@material-ui/core"
 import { Camera } from "@material-ui/icons"
-import DelayInput from "../../components/delayinput"
+import DelayInput from "../delayinput"
 import Dialog from "@material-ui/core/Dialog"
 import Slide from "@material-ui/core/Slide"
 import { TransitionProps } from "@material-ui/core/transitions/transition"

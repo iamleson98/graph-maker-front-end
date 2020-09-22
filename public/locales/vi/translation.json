@@ -1,0 +1,11 @@
+{
+    "title": "Chao mung toi voi i18n",
+    "description": {
+        "part1": "de bat dau thi ban phai hoc",
+        "part2": "Chuyen giua tieng anh va tieng viet"
+    },
+    "weather": "Thoi tiet",
+    "chart": "Bieu do",
+    "about": "Ve chung toi",
+    "qa": "Hoi dap"
+}

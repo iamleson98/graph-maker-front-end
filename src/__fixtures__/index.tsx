@@ -8,8 +8,8 @@ import { PieChartState } from "./pieChartInput/reducer";
 import { InitBarChartState, InitLineChartState, InitPieChartState } from "./initState";
 import { BrowserRouter } from "react-router-dom"
 import Layout from "./layout"
-import "../tailwind/out.css"
-import "../index.css"
+// import "../tailwind/out.css"
+// import "../index.css"
 
 
 export type ChartType =

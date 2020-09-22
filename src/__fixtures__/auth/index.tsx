@@ -1,5 +1,5 @@
 import React, { memo, useMemo, useState } from "react"
-import DelayInput from "../../components/delayinput"
+import DelayInput from "../delayinput"
 import { Button, FormHelperText, SvgIcon, Tooltip } from "@material-ui/core"
 import { Email, Visibility, VisibilityOff } from "@material-ui/icons"
 // import Logo from "../../components/logo"

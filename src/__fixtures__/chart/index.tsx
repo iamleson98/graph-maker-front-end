@@ -1,6 +1,6 @@
 import React, { memo, useMemo, useRef, useState } from "react"
 import { PieChart, Timeline, Save, Image, CloudDownloadOutlined } from "@material-ui/icons"
-import { ChartBar, Scatter, AreaChart } from "../../components/icons"
+import { ChartBar, Scatter, AreaChart } from "../icons"
 import Tooltip from "@material-ui/core/Tooltip"
 import Button from "@material-ui/core/Button"
 import Menu from "../menu"
@@ -173,7 +173,7 @@ function Chart() {
                                         className={`relative rounded h-8 flex flex-1 mr-1 items-center justify-center cursor-pointer transition-colors duration-200 ease-out hover:${item.tailwindActiveBg} ${activeIndex === idx ? item.tailwindActiveBg : ""}`}
                                     >
                                         <item.icon fontSize="small" className={item.tailwindColor} />
-                                        {activeIndex === idx && <nav className={`absolute chart_nav_btn transform -translate-x-1/2 border-4 ${item.afterBg}`}></nav>}
+                                        {activeIndex === idx && <span className={`absolute chart_nav_btn transform -translate-x-1/2 border-4 ${item.afterBg}`}></span>}
                                     </div>
                                 </Tooltip>
                             ))}

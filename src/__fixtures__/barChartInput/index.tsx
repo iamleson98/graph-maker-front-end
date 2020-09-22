@@ -1,7 +1,7 @@
 import React, { memo, useEffect, useReducer } from "react"
 import { Add, Remove } from "@material-ui/icons"
 import Tooltip from "@material-ui/core/Tooltip"
-import DelayInput from "../../components/delayinput"
+import DelayInput from "../delayinput"
 import { BarchartState, BarchartAction, typeChange, barchartReducer } from "./reducer"
 import ColorSettter from "../colorSetter"
 import { localState } from ".."

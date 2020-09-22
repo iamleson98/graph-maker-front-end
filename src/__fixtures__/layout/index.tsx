@@ -1,10 +1,12 @@
-import React, { memo } from "react"
+import React, { memo, Suspense } from "react"
 import Navigator from "../navigator"
 import { Route } from "react-router-dom"
 import { authRoute, routes } from "./routeConfig"
 
 
 function Layout() {
+
+
     return (
         <div className="m-auto w-screen h-screen bg-gray-100">
             <Navigator />
@@ -29,5 +31,11 @@ function Layout() {
     )
 }
 
-export default memo(Layout)
+export default memo(function () {
+    return (
+        <Suspense fallback={<p>loading...</p>}>
+            <Layout />
+        </Suspense>
+    )
+})
 

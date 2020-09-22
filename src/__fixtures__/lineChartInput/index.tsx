@@ -1,5 +1,5 @@
 import React, { memo, useEffect, useReducer } from "react"
-import DelayInput from "../../components/delayinput"
+import DelayInput from "../delayinput"
 import { Add, Remove } from "@material-ui/icons"
 import Tooltip from "@material-ui/core/Tooltip"
 import { Button } from "@material-ui/core"

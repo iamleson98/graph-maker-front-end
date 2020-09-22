@@ -17,26 +17,26 @@ export const routes = {
     user: {
         path: "/username",
         component: Pages.UserPage,
-        name: ""
+        i18Name: ""
     },
     chart: {
         path: "/chart",
         component: Pages.ChartPage,
-        name: "Chart"
+        i18Name: "chart"
     },
     weather: {
         path: "/weather",
         component: Dummy,
-        name: "Weather"
+        i18Name: "weather"
     },
     about: {
         path: "/about",
         component: Dummy,
-        name: "About"
+        i18Name: "about"
     },
     qna: {
         path: "/qa",
         component: Dummy,
-        name: "Q & A"
+        i18Name: "qa"
     }
 }
