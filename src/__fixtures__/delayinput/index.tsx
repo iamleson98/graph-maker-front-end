@@ -29,13 +29,16 @@ function DelayInput({
         subscriptionRef.current = fromEvent(current, "keyup")
             .pipe(debounceTime(delay))
             .subscribe((evt: any) => {
-                giveValue(evt.target.value);
+                const { value } = evt.target
+                giveValue(
+                    typeof value === "string" ?
+                        value.trim() :
+                        value
+                );
             });
 
         return () => {
-            const { current } = subscriptionRef
-            if (current instanceof Subscription)
-                current.unsubscribe()
+            subscriptionRef.current?.unsubscribe()
         }
     }, [giveValue, delay]);
 

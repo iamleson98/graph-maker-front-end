@@ -23,7 +23,7 @@ const Twitter = (props: any) => (
     </SvgIcon>
 )
 
-const staticUrl = "/static"
+// const staticUrl = "/static"
 
 function Auth() {
 

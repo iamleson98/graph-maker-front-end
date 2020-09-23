@@ -1,6 +1,6 @@
 {
     "weather": "Thời tiết",
-    "chart": "Biểu đồ",
+    "chart": "Biểu đồ ",
     "about": "Về chúng tôi",
     "qa": "Hỏi đáp",
     "signout": "Đăng xuất",
@@ -12,10 +12,10 @@
         "line": "Biểu đồ đường",
         "pie": "Biểu đồ quạt",
         "area": "Biểu đồ miền",
-        "scatter": "Biểu đồ phân bổ"
+        "scatter": "Biểu đồ phân bổ "
     },
     "saveChart": {
-        "name": "Lưu biểu đồ",
+        "name": "Lưu biểu đồ ",
         "type": {
             "image": "hình ảnh",
             "cloud": "đám mây"
@@ -25,7 +25,7 @@
         "headName": "Dữ liệu vào",
         "addItem": "Thêm mục",
         "removeItem": "Xoá mục",
-        "title": "Tên biểu đồ",
+        "title": "Tên biểu đồ ",
         "xLabel": "Tên trục Ox",
         "yLabel": "Tên trục Oy",
         "dataOnOx": "Dữ liệu trên Ox",
