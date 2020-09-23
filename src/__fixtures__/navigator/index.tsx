@@ -68,13 +68,14 @@ function Navigator() {
     useEffect(() => {
         i18n.changeLanguage(langMap[currentLang])
 
-        return () => {
-            const langFromLocal = localStorage.getItem("lang")
-            if (langFromLocal !== currentLang) {
-                localStorage.setItem("lang", currentLang)
-            }
-        }
-    }, [currentLang, i18n, langMap])
+        // return () => {
+        //     const langFromLocal = localStorage.getItem("lang")
+        //     if (langFromLocal !== currentLang) {
+        //         localStorage.setItem("lang", currentLang)
+        //     }
+        // }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [currentLang, i18n])
 
     // reactive variable to know whether user is authenticated or not
     const { isSignedIn } = useReactiveVar(localState)

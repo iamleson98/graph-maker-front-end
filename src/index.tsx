@@ -8,9 +8,9 @@ import App from "./__fixtures__"
 import "./i18n"
 
 ReactDOM.render(
-  <React.StrictMode>
+  <>
     <App />
-  </React.StrictMode>,
+  </>,
   document.getElementById('root')
 );
 

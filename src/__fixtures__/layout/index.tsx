@@ -7,7 +7,7 @@ import { authRoute, routes } from "./routeConfig"
 function Layout() {
 
     return (
-        <div className="m-auto w-screen h-screen bg-gray-100">
+        <div className="m-auto w-full h-full bg-gray-100">
             <Navigator />
             <main className="pt-12 h-full m-auto" style={{ maxWidth: 1366 }}>
                 {Object.values(routes).map((route, idx) => (
