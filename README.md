@@ -1,6 +1,11 @@
 
 <p align="center"><a href="#" target="_blank" rel="noopener noreferrer"><img width="900" src="https://raw.githubusercontent.com/leminhson2398/graph-maker-front-end/master/public/static/image/snapshot.png" alt="chart demo"></a></p>
 
+### Features
+1) Two languges support
+2) Draw charts quickly as user fill in the chart data form
+3) Save chart data, snapshot on NoSql, or as png images so users can view them later
+
 ### `npm start`
 
 Runs the app in the development mode.<br />
