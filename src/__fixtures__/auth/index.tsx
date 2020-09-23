@@ -52,7 +52,7 @@ function Auth() {
     }
 
     return (
-        <div className="h-full w-full relative bg-white bg-no-repeat bg-auto xs:bg-contain"
+        <div className="h-screen w-full relative bg-white bg-no-repeat bg-auto xs:bg-contain"
             style={{
                 backgroundImage: `url(/static/image/vn.jpg)`,
                 backgroundPosition: "20% 50%"
