@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useRef, useState } from "react"
+import React, { memo, useEffect, useMemo, useRef, useState } from "react"
 import { ArrowDropDown } from "@material-ui/icons"
 import ClickAwayListener from "@material-ui/core/ClickAwayListener"
 import Button from "@material-ui/core/Button"
@@ -16,10 +16,6 @@ type lang = "Tiếng Việt" | "English"
 type LangMap = {
     [key in lang]: "vi" | "en"
 }
-const langMap: LangMap = {
-    "English": "en",
-    "Tiếng Việt": "vi"
-}
 
 function Navigator() {
 
@@ -30,40 +26,62 @@ function Navigator() {
     // translation
     const { t, i18n } = useTranslation()
 
-    const [curLang, setLang] = useState<lang>("Tiếng Việt")
+    const [currentLang, setLang] = useState<lang>("English")
 
+    const { userMenuVales, langValues, langMap } = useMemo<{
+        userMenuVales: {
+            display: any;
+        }[];
+        langValues: {
+            display: React.ReactNode;
+            returnVal: lang;
+        }[];
+        langMap: LangMap;
+    }>(() => {
+        return {
+            userMenuVales: [
+                {
+                    display: t("signout")
+                },
+                {
+                    display: t("myProfile")
+                }
+            ],
+            langValues: [
+                {
+                    display: <p className="text-xs">Tiếng Việt</p>,
+                    returnVal: "Tiếng Việt"
+                },
+                {
+                    display: <p className="text-xs">English</p>,
+                    returnVal: "English"
+                }
+            ],
+            langMap: {
+                "English": "en",
+                "Tiếng Việt": "vi"
+            }
+        }
+    }, [t])
+
+    // run everytime user change display language
     useEffect(() => {
-        i18n.changeLanguage(langMap[curLang])
-    }, [curLang, i18n])
+        i18n.changeLanguage(langMap[currentLang])
 
+        return () => {
+            const langFromLocal = localStorage.getItem("lang")
+            if (langFromLocal !== currentLang) {
+                localStorage.setItem("lang", currentLang)
+            }
+        }
+    }, [currentLang, i18n, langMap])
+
+    // reactive variable to know whether user is authenticated or not
     const { isSignedIn } = useReactiveVar(localState)
 
-    function toggleMenu(which: React.MutableRefObject<any>, type: "open" | "close") {
-        (which.current as HTMLElement).classList[type === "open" ? "remove" : "add"]("hidden")
+    function toggleMenu(whichRef: React.MutableRefObject<any>, type: "open" | "close") {
+        (whichRef.current as HTMLElement).classList[type === "open" ? "remove" : "add"]("hidden")
     }
-
-    const userMenuVales = [
-        {
-            display: t("signout")
-        },
-        {
-            display: t("my profile")
-        }
-    ]
-
-    const langValues: {
-        display: React.ReactNode;
-        returnVal: lang;
-    }[] = [
-            {
-                display: <p className="text-xs">Tiếng Việt</p>,
-                returnVal: "Tiếng Việt"
-            },
-            {
-                display: <p className="text-xs">English</p>,
-                returnVal: "English"
-            }
-        ]
 
     return (
         <div className="flex flex-no-wrap items-center py-1 bg-white pr-4 pl-10 fixed top-0 left-0 w-full z-20 shadow-xs justify-between">
@@ -128,8 +146,8 @@ function Navigator() {
                         <div
                             className="p-2 cursor-pointer text-gray-600 text-xs flex items-center"
                         >
-                            <img className="w-4 h-auto mr-1" src={curLang === "Tiếng Việt" ? "/static/image/vietnam.svg" : "/static/image/united-kingdom.svg"} alt="flag"/>
-                            <p>{curLang}</p>
+                            <img className="w-4 h-auto mr-1" src={currentLang === "Tiếng Việt" ? "/static/image/vietnam.svg" : "/static/image/united-kingdom.svg"} alt="flag" />
+                            <p>{currentLang}</p>
                         </div>
                     </ClickAwayListener>
                     <Menu
