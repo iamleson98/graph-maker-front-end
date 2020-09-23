@@ -7,6 +7,8 @@ import ColorSettter from "../colorSetter"
 import { localState } from ".."
 import { noAnyError } from "../utils"
 import { useTranslation } from "react-i18next"
+import { CSSTransition, TransitionGroup } from "react-transition-group"
+import "./style.css"
 
 
 function BarChartInput(): JSX.Element {
@@ -89,35 +91,44 @@ function BarChartInput(): JSX.Element {
                     {/* x data */}
                     <fieldset className="rounded p-2 border-2 border-solid border-gray-200">
                         <legend className="text-sm leading-4 font-medium text-red-500">{t("chartInput.dataOnOx")}</legend>
-                        {xData.map((value, idx) => (
-                            <div className="flex items-center mb-1" key={idx}>
-                                <span className="mr-2 text-sm">{idx + 1}</span>
-                                <DelayInput
-                                    fullWidth={true}
-                                    type="text"
-                                    className="rounded mr-2 bg-gray-200 px-2"
-                                    placeholder={`${t("chartInput.bar.placeholder.enterBlockName")}`}
-                                    defaultValue={value}
-                                    giveValue={(value: string) => {
-                                        dispatch({
-                                            type: typeChange.xFieldChange, // type of change
-                                            value: idx,                    // index of that field
-                                            options: {
-                                                value                      // new value for that field
-                                            }
-                                        })
-                                    }}
-                                />
-                                <Tooltip title={!idx ? `${t("chartInput.addItem")}` : `${t("chartInput.removeItem")}`} placement="top">
-                                    <span
-                                        onClick={manipulateAnXField(idx)}
-                                        className={`flex cursor-pointer items-center flex-shrink-0 justify-center rounded ${!idx ? "bg-blue-100 text-blue-600" : "bg-orange-100 text-orange-600"} w-8 h-8 hover:${!idx ? "bg-blue-200" : "bg-orange-200"}`}
-                                    >
-                                        {!idx ? <Add fontSize="small" /> : <Remove fontSize="small" />}
-                                    </span>
-                                </Tooltip>
-                            </div>
-                        ))}
+                        <TransitionGroup>
+                            {xData.map((value, idx) => (
+                                <CSSTransition
+                                    key={`${value}${idx}`}
+                                    timeout={400}
+                                    classNames="transiFade"
+                                    unmountOnExit={true}
+                                >
+                                    <div className="flex items-center mb-1">
+                                        <span className="mr-2 text-sm">{idx + 1}</span>
+                                        <DelayInput
+                                            fullWidth={true}
+                                            type="text"
+                                            className="rounded mr-2 bg-gray-200 px-2"
+                                            placeholder={`${t("chartInput.bar.placeholder.enterBlockName")}`}
+                                            defaultValue={value}
+                                            giveValue={(value: string) => {
+                                                dispatch({
+                                                    type: typeChange.xFieldChange, // type of change
+                                                    value: idx,                    // index of that field
+                                                    options: {
+                                                        value                      // new value for that field
+                                                    }
+                                                })
+                                            }}
+                                        />
+                                        <Tooltip title={!idx ? `${t("chartInput.addItem")}` : `${t("chartInput.removeItem")}`} placement="top">
+                                            <span
+                                                onClick={manipulateAnXField(idx)}
+                                                className={`flex cursor-pointer items-center flex-shrink-0 justify-center rounded ${!idx ? "bg-blue-100 text-blue-600" : "bg-orange-100 text-orange-600"} w-8 h-8 hover:${!idx ? "bg-blue-200" : "bg-orange-200"}`}
+                                            >
+                                                {!idx ? <Add fontSize="small" /> : <Remove fontSize="small" />}
+                                            </span>
+                                        </Tooltip>
+                                    </div>
+                                </CSSTransition>
+                            ))}
+                        </TransitionGroup>
                     </fieldset>
                 </div>
 
@@ -145,81 +156,90 @@ function BarChartInput(): JSX.Element {
                                 <legend className="text-xs leading-4 font-normal">
                                     {`${t("chartInput.bar.block")} ${xData[blockIndex] || blockIndex + 1}`}
                                 </legend>
-                                {block.map((barValue, barIndex) => (
-                                    <div className="flex items-center mb-1" key={barIndex}>
-                                        <span className="mr-2 text-xs">{barIndex + 1}</span>
-                                        <div className="rounded w-full border-2 border-solid border-gray-200 p-2 mr-2">
-                                            {!blockIndex ? ( // blockIndex === 0
-                                                <DelayInput
-                                                    fullWidth={true}
-                                                    type="text"
-                                                    className={`rounded mb-1 bg-gray-200 px-2`}
-                                                    placeholder={`${t("chartInput.bar.placeholder.enterName")}`}
-                                                    defaultValue={barValue.name}
-                                                    giveValue={(value: string) => {
-                                                        dispatch({
-                                                            type: typeChange.yFieldNameChange,          // type of change
-                                                            value: barIndex,                            // index of bar (each block contains 1 or more bars)
-                                                            options: {
-                                                                value                                   // new value for that bar
-                                                            }
-                                                        })
-                                                    }}
-                                                    endAdornment={blockIndex === 0 && (
-                                                        <ColorSettter
-                                                            defaultBg={colors[barIndex]}
-                                                            giveColor={(color: string) => dispatch({
-                                                                type: typeChange.colorChange,
-                                                                value: barIndex,
-                                                                options: {
-                                                                    value: color
-                                                                }
-                                                            })}
+                                <TransitionGroup>
+                                    {block.map((barValue, barIndex) => (
+                                        <CSSTransition
+                                            key={`${barValue.name}${barIndex}`}
+                                            timeout={400}
+                                            classNames="transiFade"
+                                            unmountOnExit={true}
+                                        >
+                                            <div className="flex items-center mb-1">
+                                                <span className="mr-2 text-xs">{barIndex + 1}</span>
+                                                <div className="rounded w-full border-2 border-solid border-gray-200 p-2 mr-2">
+                                                    {!blockIndex ? ( // blockIndex === 0
+                                                        <DelayInput
+                                                            fullWidth={true}
+                                                            type="text"
+                                                            className={`rounded mb-1 bg-gray-200 px-2`}
+                                                            placeholder={`${t("chartInput.bar.placeholder.enterName")}`}
+                                                            defaultValue={barValue.name}
+                                                            giveValue={(value: string) => {
+                                                                dispatch({
+                                                                    type: typeChange.yFieldNameChange,          // type of change
+                                                                    value: barIndex,                            // index of bar (each block contains 1 or more bars)
+                                                                    options: {
+                                                                        value                                   // new value for that bar
+                                                                    }
+                                                                })
+                                                            }}
+                                                            endAdornment={blockIndex === 0 && (
+                                                                <ColorSettter
+                                                                    defaultBg={colors[barIndex]}
+                                                                    giveColor={(color: string) => dispatch({
+                                                                        type: typeChange.colorChange,
+                                                                        value: barIndex,
+                                                                        options: {
+                                                                            value: color
+                                                                        }
+                                                                    })}
+                                                                />
+                                                            )}
                                                         />
-                                                    )}
-                                                />
-                                            ) : (
-                                                    <div className="flex items-center mb-1">
-                                                        <span className="text-xs mr-2">{t("chartInput.bar.barName")}</span>
-                                                        <span className="text-sm font-medium">{barValue.name}</span>
-                                                    </div>
-                                                )
-                                            }
-                                            <DelayInput
-                                                fullWidth={true}
-                                                type="text"
-                                                className={`rounded bg-gray-200 px-2 ${barValue.error ? "bg-red-300" : ""}`}
-                                                placeholder={`${t("chartInput.bar.placeholder.enterValue")}`}
-                                                defaultValue={barValue.value}
-                                                giveValue={(value: string) => {
-                                                    dispatch({
-                                                        type: typeChange.yFieldValueChange,         // type of change
-                                                        value: blockIndex,                          // index of that block (each block contains 1 or more bars)
-                                                        options: {
-                                                            index: barIndex,                        // index of the bar we need to change value
-                                                            value                                   // new value for that bar
-                                                        }
-                                                    })
-                                                }}
-                                            />
-                                            {!!barValue.error && <small className="text-red-600">{barValue.error}</small>}
-                                        </div>
+                                                    ) : (
+                                                            <div className="flex items-center mb-1">
+                                                                <span className="text-xs mr-2">{t("chartInput.bar.barName")}</span>
+                                                                <span className="text-sm font-medium">{barValue.name}</span>
+                                                            </div>
+                                                        )
+                                                    }
+                                                    <DelayInput
+                                                        fullWidth={true}
+                                                        type="text"
+                                                        className={`rounded bg-gray-200 px-2 ${barValue.error ? "bg-red-300" : ""}`}
+                                                        placeholder={`${t("chartInput.bar.placeholder.enterValue")}`}
+                                                        defaultValue={barValue.value}
+                                                        giveValue={(value: string) => {
+                                                            dispatch({
+                                                                type: typeChange.yFieldValueChange,         // type of change
+                                                                value: blockIndex,                          // index of that block (each block contains 1 or more bars)
+                                                                options: {
+                                                                    index: barIndex,                        // index of the bar we need to change value
+                                                                    value                                   // new value for that bar
+                                                                }
+                                                            })
+                                                        }}
+                                                    />
+                                                    {!!barValue.error && <small className="text-red-600">{barValue.error}</small>}
+                                                </div>
 
-                                        {!blockIndex && (
-                                            <Tooltip
-                                                title={!barIndex ? `${t("chartInput.addItem")}` : `${t("chartInput.removeItem")}`}
-                                                placement="top"
-                                            >
-                                                <span
-                                                    onClick={() => handleYItemClick(barIndex)}
-                                                    className={`flex cursor-pointer items-center flex-shrink-0 justify-center rounded w-8 h-8 hover:${!barIndex ? "bg-blue-200" : "bg-orange-200"} ${!barIndex ? "bg-blue-100 text-blue-600" : "bg-orange-100 text-orange-600"}`}
-                                                >
-                                                    {!barIndex ? <Add fontSize="small" /> : <Remove fontSize="small" />}
-                                                </span>
-                                            </Tooltip>
-                                        )}
-                                    </div>
-                                ))}
+                                                {!blockIndex && (
+                                                    <Tooltip
+                                                        title={!barIndex ? `${t("chartInput.addItem")}` : `${t("chartInput.removeItem")}`}
+                                                        placement="top"
+                                                    >
+                                                        <span
+                                                            onClick={() => handleYItemClick(barIndex)}
+                                                            className={`flex cursor-pointer items-center flex-shrink-0 justify-center rounded w-8 h-8 hover:${!barIndex ? "bg-blue-200" : "bg-orange-200"} ${!barIndex ? "bg-blue-100 text-blue-600" : "bg-orange-100 text-orange-600"}`}
+                                                        >
+                                                            {!barIndex ? <Add fontSize="small" /> : <Remove fontSize="small" />}
+                                                        </span>
+                                                    </Tooltip>
+                                                )}
+                                            </div>
+                                        </CSSTransition>
+                                    ))}
+                                </TransitionGroup>
                             </fieldset>
                         ))}
                     </fieldset>
