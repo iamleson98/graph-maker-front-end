@@ -31,7 +31,7 @@ export interface CustomChartRenderProp {
 
 export function DelayChartRender({ children }: CustomChartRenderProp) {
 
-    const loading = useDelay(1000)
+    const loading = useDelay(600)
 
     return (
         <Fragment>
