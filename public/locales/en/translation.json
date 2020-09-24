@@ -1,12 +1,16 @@
 {
     "weather": "Weather",
     "chart": "Chart",
+    "save": "save",
+    "cancel": "cancel",
     "about": "About us",
     "qa": "Q & A",
     "signout": "Sign out",
-    "my profile": "my profile",
+    "myProfile": "my profile",
     "login": "login",
     "setColor": "Set color",
+    "delete": "Delete",
+    "update": "Update",
     "chartType": {
         "bar": "Bar chart",
         "line": "Line chart",
@@ -58,5 +62,25 @@
             "removeSlice": "Delete slice",
             "value": "value"
         }
+    },
+    "collection": {
+        "collection": "Collection",
+        "filter": "Filter",
+        "filterDate": {
+            "olderFirst": "older first",
+            "latestFirst": "latest first",
+            "placeholder": "create date"
+        },
+        "filterChartType": {
+            "placeholder": "chart type"
+        }
+    },
+    "aboutUser": {
+        "about": "About",
+        "name": "name",
+        "email": "email",
+        "thoughtAboutGeo": "Your thought about gepgraphy ?",
+        "changeAva": "Change avatar",
+        "chooseNewAva": "Choose new image"
     }
 }

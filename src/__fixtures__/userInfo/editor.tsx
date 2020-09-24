@@ -7,6 +7,7 @@ import Button from "@material-ui/core/Button"
 import { CameraAlt } from "@material-ui/icons"
 import Croppie from "croppie"
 import "./croppie.css"
+import { useTranslation } from "react-i18next"
 
 
 export interface AvatarDialogProps {
@@ -14,6 +15,9 @@ export interface AvatarDialogProps {
 }
 
 function AvatarDialog({ onClose }: AvatarDialogProps) {
+
+    // trans
+    const { t } = useTranslation()
 
     // references
     const crpRef = useRef<any>()
@@ -82,7 +86,7 @@ function AvatarDialog({ onClose }: AvatarDialogProps) {
                     <IconButton color="primary" size="medium" component="span">
                         <CameraAlt fontSize="inherit" />
                     </IconButton>
-                    Choose new image
+                    {t("aboutUser.chooseNewAva")}
                 </label>
             </DialogTitle>
             <DialogContent>
@@ -95,14 +99,14 @@ function AvatarDialog({ onClose }: AvatarDialogProps) {
                     onClick={handleSave}
                     disabled={!canSave}
                 >
-                    save
+                    {t("save")}
                 </Button>
                 <Button
                     size="small"
                     color="secondary"
                     onClick={onClose}
                 >
-                    cancel
+                    {t("cancel")}
                 </Button>
             </DialogActions>
         </>

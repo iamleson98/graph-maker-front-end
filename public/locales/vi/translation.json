@@ -1,12 +1,16 @@
 {
     "weather": "Thời tiết",
     "chart": "Biểu đồ ",
+    "save": "Lưu",
+    "cancel": "huỷ",
     "about": "Về chúng tôi",
     "qa": "Hỏi đáp",
     "signout": "Đăng xuất",
-    "my profile": "Trang cá nhân",
+    "myProfile": "Trang cá nhân",
     "login": "Đăng nhập",
     "setColor": "Thay màu",
+    "delete": "Xoá",
+    "update": "Cập nhật",
     "chartType": {
         "bar": "Biểu đồ cột",
         "line": "Biểu đồ đường",
@@ -58,5 +62,25 @@
             "removeSlice": "Xoá lát",
             "value": "giá trị"
         }
+    },
+    "collection": {
+        "collection": "Bộ sưu tập",
+        "filter": "Bộ lọc",
+        "filterDate": {
+            "olderFirst": "cũ trước",
+            "latestFirst": "mới trước",
+            "placeholder": "ngày tạo"
+        },
+        "filterChartType": {
+            "placeholder": "kiểu biểu đồ"
+        }
+    },
+    "aboutUser": {
+        "about": "Về bạn",
+        "name": "tên",
+        "email": "email",
+        "thoughtAboutGeo": "Tình yêu của bạn cho địa lý ?",
+        "changeAva": "Thay ảnh đại diện",
+        "chooseNewAva": "Chọn ảnh mới"
     }
 }

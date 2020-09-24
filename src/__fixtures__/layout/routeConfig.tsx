@@ -17,7 +17,7 @@ export const routes = {
     user: {
         path: "/username",
         component: Pages.UserPage,
-        i18Name: ""
+        i18Name: "myProfile"
     },
     chart: {
         path: "/chart",

@@ -2,6 +2,7 @@ import { DeleteOutlined, MoreHoriz, Schedule } from "@material-ui/icons"
 import React, { memo, useRef } from "react"
 import dayjs from "dayjs"
 import { ClickAwayListener } from "@material-ui/core"
+import { useTranslation } from "react-i18next"
 
 
 export interface ChartCardProps {
@@ -11,6 +12,9 @@ export interface ChartCardProps {
 }
 
 function ChartCard({ img, title, timestamp }: ChartCardProps) {
+
+    // trans
+    const { t } = useTranslation()
 
     const deleteRef = useRef<any>()
 
@@ -52,7 +56,9 @@ function ChartCard({ img, title, timestamp }: ChartCardProps) {
                             className="absolute cursor-pointer hidden hover:bg-red-200 transition-colors duration-200 transform -translate-y-full shadow py-1 px-2 items-center justify-center bg-red-100 rounded z-10 text-red-500 text-xs"
                         >
                             <DeleteOutlined className="mr-1" />
-                            <span>Delete</span>
+                            <span>
+                                {t("delete")}
+                            </span>
                         </div>
                     </div>
                 </ClickAwayListener>

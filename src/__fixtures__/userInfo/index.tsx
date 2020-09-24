@@ -7,6 +7,7 @@ import Slide from "@material-ui/core/Slide"
 import { TransitionProps } from "@material-ui/core/transitions/transition"
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useTheme } from "@material-ui/core/styles"
+import { useTranslation } from "react-i18next"
 
 
 const AvatarDialog = lazy(() => import("./editor"))
@@ -24,6 +25,9 @@ function UserInfo() {
 
     const theme = useTheme()
     const fullScreen = useMediaQuery(theme.breakpoints.down("xs"))
+
+    // trans
+    const { t } = useTranslation()
 
     // component state
     const [state, setState] = useState({
@@ -52,7 +56,9 @@ function UserInfo() {
 
     return (
         <div className="p-4 rounded bg-white text-gray-700">
-            <p className="text-base font-medium mb-2">About</p>
+            <p className="text-base font-medium mb-2">
+                {t("aboutUser.about")}
+            </p>
 
             {/* avatar */}
             <div className="rounded-full mb-4 group relative overflow-hidden border-solid border-4 border-gray-200 m-auto w-40 h-40">
@@ -64,7 +70,7 @@ function UserInfo() {
                         open: true
                     })}
                 >
-                    <Tooltip title="Change Avatar" placement="top">
+                    <Tooltip title={`${t("aboutUser.changeAva")}`} placement="top">
                         <Camera />
                     </Tooltip>
                 </div>
@@ -76,14 +82,14 @@ function UserInfo() {
                     className="flex flex-no-wrap group items-center mb-3"
                 >
                     <div className="w-1/6 text-xs">
-                        {item.name}
+                        {t(`aboutUser.${item.name}`)}
                     </div>
                     <div className="w-5/6 overflow-hidden text-sm mr-2 font-medium">
                         {!edit ? (
                             <>{item.value}</>
                         ) : (
                                 <DelayInput
-                                    placeholder={item.name}
+                                    placeholder={t(`aboutUser.${item.name}`)}
                                     defaultValue={item.value}
                                     fullWidth={true}
                                     className="bg-gray-200 px-2 rounded"
@@ -100,7 +106,7 @@ function UserInfo() {
             ))}
 
             <div className="text-xs mb-2 group">
-                Your thought about geography ?
+                {t("aboutUser.thoughtAboutGeo")}
             </div>
             {edit ? (
                 <DelayInput
@@ -128,10 +134,10 @@ function UserInfo() {
             {edit ? (
                 <div className="text-right">
                     <Button color="primary" size="small">
-                        save
+                        {t("save")}
                     </Button>
                     <Button color="secondary" size="small">
-                        cancel
+                        {t("cancel")}
                     </Button>
                 </div>
             ) : (
@@ -142,7 +148,7 @@ function UserInfo() {
                         fullWidth={true}
                         onClick={editClickHandler}
                     >
-                        Update
+                        {t("update")}
                     </Button>
                 )
             }

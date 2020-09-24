@@ -3,6 +3,7 @@ import { FilterList, KeyboardArrowDown } from "@material-ui/icons"
 import Menu from "../menu"
 import ClickAwayListener from "@material-ui/core/ClickAwayListener"
 import ChartCard from "../chartCard"
+import { useTranslation } from "react-i18next"
 
 
 const fakes = [
@@ -31,23 +32,18 @@ const fakes = [
         img: "https://docs.mongodb.com/charts/master/_images/stacked-bar-chart-reference-small.png",
         title: "This is the chart and do you like ?",
         timestamp: new Date().toString()
-    }, {
-        img: "https://docs.mongodb.com/charts/master/_images/stacked-bar-chart-reference-small.png",
-        title: "This is the chart and do you like ?",
-        timestamp: new Date().toString()
-    }, {
-        img: "https://docs.mongodb.com/charts/master/_images/stacked-bar-chart-reference-small.png",
-        title: "This is the chart and do you like ?",
-        timestamp: new Date().toString()
-    },
+    }
 ]
 
 
 function History() {
 
     // references
-    const dateFilterRef = useRef()
-    const chartFilterRef = useRef()
+    const dateFilterMenuRef = useRef()
+    const chartFilterMenuRef = useRef()
+
+    // trans
+    const { t } = useTranslation()
 
     // component state
     const [state, setState] = useState({
@@ -58,37 +54,47 @@ function History() {
 
     const filters = [
         {
-            placeholder: "create date",
+            placeholder: t("collection.filterDate.placeholder"),
             value: dateFilter,
             menuList: [
                 {
-                    display: "older first"
+                    display: t("collection.filterDate.olderFirst"),
+                    returnVal: "older_first"
                 },
                 {
-                    display: "latest first"
+                    display: t("collection.filterDate.latestFirst"),
+                    returnVal: "latest_first"
                 }
             ],
-            ref: dateFilterRef,
+            ref: dateFilterMenuRef,
             stateKey: "dateFilter"
         },
         {
-            placeholder: "chart type",
+            placeholder: t("collection.filterChartType.placeholder"),
             value: chartFilter,
             menuList: [
                 {
-                    display: "Pie chart"
+                    display: t("chartType.pie"),
+                    returnVal: "pie"
                 },
                 {
-                    display: "Line chart"
+                    display: t("chartType.line"),
+                    returnVal: "line"
                 },
                 {
-                    display: "Area chart"
+                    display: t("chartType.area"),
+                    returnVal: "area"
                 },
                 {
-                    display: "Bar chart"
+                    display: t("chartType.bar"),
+                    returnVal: "bar"
+                },
+                {
+                    display: t("chartType.scatter"),
+                    returnVal: "scatter"
                 }
             ],
-            ref: chartFilterRef,
+            ref: chartFilterMenuRef,
             stateKey: "chartFilter"
         }
     ]
@@ -107,13 +113,15 @@ function History() {
 
     return (
         <div className="p-4 rounded bg-white text-gray-700">
-            <p className="text-base font-medium mb-4">Collection</p>
+            <p className="text-base font-medium mb-4">
+                {t("collection.collection")}
+            </p>
 
             {/* filter */}
             <div className="flex items-center text-gray-600 mb-3">
                 <div className="mr-3 text-sm xs:text-xs flex items-center text-red-500 font-medium">
                     <FilterList fontSize="small" />
-                    <span>Filter</span>
+                    <span>{t("collection.filter")}</span>
                 </div>
                 {filters.map((filter, idx) => (
                     <div
