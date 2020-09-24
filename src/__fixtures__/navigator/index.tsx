@@ -66,6 +66,7 @@ function Navigator() {
         }
     }, [t])
 
+    
     // run everytime user change display language
     useEffect(() => {
         i18n.changeLanguage(langMap[currentLang])
