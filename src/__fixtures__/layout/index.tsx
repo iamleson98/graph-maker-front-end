@@ -2,6 +2,7 @@ import React, { memo, Suspense } from "react"
 import Navigator from "../navigator"
 import { Route } from "react-router-dom"
 import { authRoute, routes } from "./routeConfig"
+import Gears from "../loading/Gears"
 
 
 function Layout() {
@@ -32,7 +33,11 @@ function Layout() {
 
 export default memo(function () {
     return (
-        <Suspense fallback={<p>loading...</p>}>
+        <Suspense fallback={(
+            <div className="w-screen h-screen flex items-center justify-center">
+                <Gears />
+            </div>
+        )}>
             <Layout />
         </Suspense>
     )
