@@ -16,6 +16,10 @@ type lang = "Tiếng Việt" | "English"
 type LangMap = {
     [key in lang]: "vi" | "en"
 }
+const langMap: LangMap = {
+    "English": "en",
+    "Tiếng Việt": "vi"
+}
 
 function Navigator() {
 
@@ -30,7 +34,7 @@ function Navigator() {
         localStorage.getItem("lang") as lang || "English"
     )
 
-    const { userMenuVales, langValues, langMap } = useMemo<{
+    const { userMenuVales, langValues } = useMemo<{
         userMenuVales: {
             display: any;
         }[];
@@ -38,7 +42,6 @@ function Navigator() {
             display: React.ReactNode;
             returnVal: lang;
         }[];
-        langMap: LangMap;
     }>(() => {
         return {
             userMenuVales: [
@@ -59,20 +62,16 @@ function Navigator() {
                     returnVal: "English"
                 }
             ],
-            langMap: {
-                "English": "en",
-                "Tiếng Việt": "vi"
-            }
         }
     }, [t])
 
-    
+
     // run everytime user change display language
     useEffect(() => {
         i18n.changeLanguage(langMap[currentLang])
 
         localStorage.setItem("lang", currentLang)
-    }, [currentLang])
+    }, [currentLang, i18n])
 
     // reactive variable to know whether user is authenticated or not
     const { isSignedIn } = useReactiveVar(localState)
