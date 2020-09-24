@@ -8,7 +8,7 @@ import LineChartInput from "../lineChartInput"
 import BarChartInput from "../barChartInput"
 import PieChartInput from "../pieChartInput"
 import SimpleBar from "simplebar-react"
-import { DelayChartRender } from "./delayInputRender"
+// import { DelayChartRender } from "./delayInputRender"
 import { ClickAwayListener, SvgIconTypeMap } from "@material-ui/core"
 import { OverridableComponent } from "@material-ui/core/OverridableComponent"
 import DummyChartInput from "../dummyInput/dummy"
@@ -18,6 +18,7 @@ import "simplebar/dist/simplebar.min.css"
 import dayjs from "dayjs"
 import { Subscription, timer } from "rxjs"
 import { useTranslation } from "react-i18next"
+import { CSSTransition } from "react-transition-group"
 
 
 type saveType =
@@ -199,13 +200,15 @@ function Chart() {
                             className="p-1"
                         >
                             {chartRoutes.map((item, idx) => (
-                                <React.Fragment key={idx}>
-                                    {activeIndex === idx && (
-                                        <DelayChartRender>
-                                            <item.inputComponent />
-                                        </DelayChartRender>
-                                    )}
-                                </React.Fragment>
+                                <CSSTransition
+                                    key={idx}
+                                    in={activeIndex === idx}
+                                    classNames="transiFade"
+                                    unmountOnExit={true}
+                                    timeout={600}
+                                >
+                                    <item.inputComponent />
+                                </CSSTransition>
                             ))}
                         </SimpleBar>
                     </div>

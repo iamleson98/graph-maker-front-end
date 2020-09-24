@@ -23,3 +23,22 @@ code {
   border-bottom-color: transparent !important;
   border-left-color: transparent !important;
 }
+
+/* for animation */
+.transiFade-enter {
+  opacity: 0;
+}
+
+.transiFade-enter-active {
+  opacity: 1;
+  transition: opacity 0.6s ease-in;
+}
+
+.transiFade-exit {
+  opacity: 1;
+}
+
+.transiFade-exit-active {
+  opacity: 0;
+  transition: opacity 0.6s ease-out;
+}

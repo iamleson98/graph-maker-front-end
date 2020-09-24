@@ -26,7 +26,9 @@ function Navigator() {
     // translation
     const { t, i18n } = useTranslation()
 
-    const [currentLang, setLang] = useState<lang>("English")
+    const [currentLang, setLang] = useState<lang>(
+        localStorage.getItem("lang") as lang || "English"
+    )
 
     const { userMenuVales, langValues, langMap } = useMemo<{
         userMenuVales: {
@@ -68,14 +70,8 @@ function Navigator() {
     useEffect(() => {
         i18n.changeLanguage(langMap[currentLang])
 
-        // return () => {
-        //     const langFromLocal = localStorage.getItem("lang")
-        //     if (langFromLocal !== currentLang) {
-        //         localStorage.setItem("lang", currentLang)
-        //     }
-        // }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [currentLang, i18n])
+        localStorage.setItem("lang", currentLang)
+    }, [currentLang])
 
     // reactive variable to know whether user is authenticated or not
     const { isSignedIn } = useReactiveVar(localState)
