@@ -7,7 +7,7 @@
 3) Save chart data, snapshot on NoSql, or as png images so users can view them later
 
 ### Design file
-<a href="https://www.figma.com/file/TNuavhoDDgXtgYomqoS2Qs/charting?node-id=0%3A1" target="_blank" rel="noopener noreferrer">Chart</a>
+<a href="https://www.figma.com/file/TNuavhoDDgXtgYomqoS2Qs/charting?node-id=0%3A1" target="_blank" rel="noopener noreferrer">Figma link</a>
 
 ### `npm start`
 
