@@ -76,10 +76,10 @@
         }
     },
     "aboutUser": {
-        "about": "Về bạn",
+        "about": "Thông tin",
         "name": "tên",
         "email": "email",
-        "thoughtAboutGeo": "Tình yêu của bạn cho địa lý ?",
+        "thoughtAboutGeo": "Tình yêu của bạn dành cho địa lý ?",
         "changeAva": "Thay ảnh đại diện",
         "chooseNewAva": "Chọn ảnh mới"
     }

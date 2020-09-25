@@ -76,10 +76,10 @@
         }
     },
     "aboutUser": {
-        "about": "About",
+        "about": "Information",
         "name": "name",
         "email": "email",
-        "thoughtAboutGeo": "Your thought about gepgraphy ?",
+        "thoughtAboutGeo": "Your love for gepgraphy ?",
         "changeAva": "Change avatar",
         "chooseNewAva": "Choose new image"
     }
