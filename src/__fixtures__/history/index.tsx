@@ -54,21 +54,19 @@ function History() {
         curDateFilterDispl: "",
         curChartTypeFilterDispl: ""
     })
-    const { dateFilter, chartFilter, curChartTypeFilterDispl, curDateFilterDispl } = state
-
-    console.log(dateFilter, chartFilter)
+    const { curChartTypeFilterDispl, curDateFilterDispl } = state
 
     const dateFilterMap: KeyOfStringInterface = {
-        [t("collection.filterDate.olderFirst")]: "older_first",
-        [t("collection.filterDate.latestFirst")]: "latest_first"
+        "collection.filterDate.olderFirst": "older_first",
+        "collection.filterDate.latestFirst": "latest_first"
     }
 
     const chartTypeMap: KeyOfStringInterface = {
-        [t("chartType.pie")]: "pie",
-        [t("chartType.line")]: "line",
-        [t("chartType.bar")]: "bar",
-        [t("chartType.scatter")]: "scatter",
-        [t("chartType.area")]: "area",
+        "chartType.pie": "pie",
+        "chartType.line": "line",
+        "chartType.bar": "bar",
+        "chartType.scatter": "scatter",
+        "chartType.area": "area",
     }
 
     const menuFilters = [
@@ -77,7 +75,8 @@ function History() {
             curDisplay: curDateFilterDispl,
             menuList: Object.keys(dateFilterMap).map(item => {
                 return {
-                    display: item
+                    display: t(item),
+                    returnVal: item
                 }
             }),
             ref: dateFilterMenuRef,
@@ -88,7 +87,8 @@ function History() {
             curDisplay: curChartTypeFilterDispl,
             menuList: Object.keys(chartTypeMap).map(item => {
                 return {
-                    display: item
+                    display: t(item),
+                    returnVal: item
                 }
             }),
             ref: chartFilterMenuRef,
@@ -134,7 +134,7 @@ function History() {
                                 onClick={() => toggleMenu(filter.ref, "open")}
                             >
                                 <span className="mr-1">
-                                    {filter.curDisplay || filter.placeholder}
+                                    {t(filter.curDisplay) || filter.placeholder}
                                 </span>
                                 <KeyboardArrowDown fontSize="small" />
                             </div>
