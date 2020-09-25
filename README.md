@@ -6,6 +6,9 @@
 2) Draw charts quickly as user fill in the chart data form
 3) Save chart data, snapshot on NoSql, or as png images so users can view them later
 
+### Design file
+<a href="https://www.figma.com/file/TNuavhoDDgXtgYomqoS2Qs/charting?node-id=0%3A1" target="_blank" rel="noopener noreferrer">Chart</a>
+
 ### `npm start`
 
 Runs the app in the development mode.<br />
