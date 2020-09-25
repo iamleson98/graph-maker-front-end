@@ -3,12 +3,18 @@ import Navigator from "../navigator"
 import { Route } from "react-router-dom"
 import { authRoute, routes } from "./routeConfig"
 import Gears from "../loading/Gears"
+import { Helmet } from "react-helmet"
 
 
 function Layout() {
 
     return (
         <div className="m-auto w-full h-full bg-gray-100">
+            <Helmet>
+                <title>
+                    Schart - Chart drawer for schools
+                </title>
+            </Helmet>
             <Navigator />
             <main className="pt-12 h-full m-auto" style={{ maxWidth: 1366 }}>
                 {Object.values(routes).map((route, idx) => (

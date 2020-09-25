@@ -1,12 +1,6 @@
-import React from "react"
 import Pages from "../pages"
 
 
-function Dummy() {
-    return (
-        <div />
-    )
-}
 
 export const authRoute = {
     path: "/auth",
@@ -26,17 +20,17 @@ export const routes = {
     },
     weather: {
         path: "/weather",
-        component: Dummy,
+        component: Pages.WeatherPage,
         i18Name: "weather"
     },
     about: {
         path: "/about",
-        component: Dummy,
+        component: Pages.AboutPage,
         i18Name: "about"
     },
     qna: {
         path: "/qa",
-        component: Dummy,
+        component: Pages.QaPage,
         i18Name: "qa"
     }
 }

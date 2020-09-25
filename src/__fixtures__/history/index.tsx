@@ -4,6 +4,7 @@ import Menu from "../menu"
 import ClickAwayListener from "@material-ui/core/ClickAwayListener"
 import ChartCard from "../chartCard"
 import { useTranslation } from "react-i18next"
+import { KeyOfStringInterface } from "../../constants"
 
 
 const fakes = [
@@ -47,53 +48,49 @@ function History() {
 
     // component state
     const [state, setState] = useState({
-        dateFilter: "",
+        dateFilter: "latest_first",
         chartFilter: "",
-    })
-    const { dateFilter, chartFilter } = state
 
-    const filters = [
+        curDateFilterDispl: "",
+        curChartTypeFilterDispl: ""
+    })
+    const { dateFilter, chartFilter, curChartTypeFilterDispl, curDateFilterDispl } = state
+
+    console.log(dateFilter, chartFilter)
+
+    const dateFilterMap: KeyOfStringInterface = {
+        [t("collection.filterDate.olderFirst")]: "older_first",
+        [t("collection.filterDate.latestFirst")]: "latest_first"
+    }
+
+    const chartTypeMap: KeyOfStringInterface = {
+        [t("chartType.pie")]: "pie",
+        [t("chartType.line")]: "line",
+        [t("chartType.bar")]: "bar",
+        [t("chartType.scatter")]: "scatter",
+        [t("chartType.area")]: "area",
+    }
+
+    const menuFilters = [
         {
             placeholder: t("collection.filterDate.placeholder"),
-            value: dateFilter,
-            menuList: [
-                {
-                    display: t("collection.filterDate.olderFirst"),
-                    returnVal: "older_first"
-                },
-                {
-                    display: t("collection.filterDate.latestFirst"),
-                    returnVal: "latest_first"
+            curDisplay: curDateFilterDispl,
+            menuList: Object.keys(dateFilterMap).map(item => {
+                return {
+                    display: item
                 }
-            ],
+            }),
             ref: dateFilterMenuRef,
             stateKey: "dateFilter"
         },
         {
             placeholder: t("collection.filterChartType.placeholder"),
-            value: chartFilter,
-            menuList: [
-                {
-                    display: t("chartType.pie"),
-                    returnVal: "pie"
-                },
-                {
-                    display: t("chartType.line"),
-                    returnVal: "line"
-                },
-                {
-                    display: t("chartType.area"),
-                    returnVal: "area"
-                },
-                {
-                    display: t("chartType.bar"),
-                    returnVal: "bar"
-                },
-                {
-                    display: t("chartType.scatter"),
-                    returnVal: "scatter"
+            curDisplay: curChartTypeFilterDispl,
+            menuList: Object.keys(chartTypeMap).map(item => {
+                return {
+                    display: item
                 }
-            ],
+            }),
             ref: chartFilterMenuRef,
             stateKey: "chartFilter"
         }
@@ -107,7 +104,8 @@ function History() {
         // stateKey is either "dateFilter" or "chartFilter"
         setState({
             ...state,
-            [stateKey]: value // stateKey is used as key here, so it must be exactly the same
+            [stateKey]: dateFilterMap[value] || chartTypeMap[value], // stateKey is used as key here, so it must be exactly the same
+            [stateKey === "dateFilter" ? "curDateFilterDispl" : "curChartTypeFilterDispl"]: value
         })
     }
 
@@ -123,7 +121,7 @@ function History() {
                     <FilterList fontSize="small" />
                     <span>{t("collection.filter")}</span>
                 </div>
-                {filters.map((filter, idx) => (
+                {menuFilters.map((filter, idx) => (
                     <div
                         key={idx}
                         className="bg-gray-200 hover:bg-gray-300 transition-colors duration-200 cursor-pointer rounded mr-2 relative"
@@ -136,7 +134,7 @@ function History() {
                                 onClick={() => toggleMenu(filter.ref, "open")}
                             >
                                 <span className="mr-1">
-                                    {filter.value || filter.placeholder}
+                                    {filter.curDisplay || filter.placeholder}
                                 </span>
                                 <KeyboardArrowDown fontSize="small" />
                             </div>
