@@ -2,7 +2,8 @@ import React, { memo, useMemo, useState } from "react"
 import DelayInput from "../delayinput"
 import { Button, FormHelperText, SvgIcon, Tooltip } from "@material-ui/core"
 import { Email, Visibility, VisibilityOff } from "@material-ui/icons"
-// import Logo from "../../components/logo"
+import { Helmet } from "react-helmet"
+// import FacebookLogin from "react-facebook-login"
 
 
 const Google = (props: any) => (
@@ -41,9 +42,9 @@ function Auth() {
     // memoized values:
     const socialButtons = useMemo(() => {
         return [
-            { name: "Facebook", icon: Facebook, bgClass: "bg-blue-700", bgHoverClass: "bg-blue-600" },
-            { name: "Google", icon: Google, bgClass: "bg-red-600", bgHoverClass: "bg-red-500" },
-            { name: "Twitter", icon: Twitter, bgClass: "bg-blue-500", bgHoverClass: "bg-blue-400" },
+            { name: "Facebook", icon: Facebook, bgClass: "bg-blue-700", bgHoverClass: "hover:bg-blue-600" },
+            { name: "Google", icon: Google, bgClass: "bg-red-600", bgHoverClass: "hover:bg-red-500" },
+            { name: "Twitter", icon: Twitter, bgClass: "bg-blue-500", bgHoverClass: "hover:bg-blue-400" },
         ]
     }, [])
 
@@ -58,6 +59,8 @@ function Auth() {
                 backgroundPosition: "20% 50%"
             }}
         >
+            <Helmet>
+            </Helmet>
             <div className="flex absolute sm:flex-wrap sm:flex-col justify-between items-center"
                 style={{
                     top: "50%",
@@ -65,6 +68,7 @@ function Auth() {
                     transform: "translateY(-50%)"
                 }}
             >
+                {/* facebook login */}
                 <div className="mr-3 mb-2">
                     <DelayInput
                         delay={333}
@@ -120,12 +124,24 @@ function Auth() {
                 <div className="m-auto">
                     {socialButtons.map((button, idx) => (
                         <Tooltip key={idx} title={`Continue with ${button.name}`} placement="right">
-                            <div key={idx} className={`${button.bgClass} hover:${button.bgHoverClass} transition-colors duration-200 ease-linear rounded py-2 px-6 mb-2 flex cursor-pointer items-center text-center text-white`}>
+                            <div key={idx} className={`${button.bgClass} ${button.bgHoverClass} transition-colors duration-200 ease-linear rounded py-2 px-6 mb-2 flex cursor-pointer items-center text-center text-white`}>
                                 <button.icon fontSize="small" className="mr-2" />
                                 <span>{button.name}</span>
                             </div>
                         </Tooltip>
                     ))}
+                    {/* <FacebookLogin
+                        appId="785664108920222"
+                        autoLoad={true}
+                        fields="name,email,picture"
+                        cssClass="text-white px-3 py-3 rounded hover:bg-blue-600 flex items-center bg-blue-700"
+                        onClick={console.log}
+                        callback={console.log}
+                        textButton="Continue with facebook"
+                        icon={(
+                            <Facebook className="mr-2" />
+                        )}
+                    /> */}
                 </div>
             </div>
         </div>

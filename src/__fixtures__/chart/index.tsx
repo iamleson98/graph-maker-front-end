@@ -40,16 +40,17 @@ function Chart() {
         icon: OverridableComponent<SvgIconTypeMap<{}, "svg">>;
         tailwindColor: string;
         tailwindActiveBg: string;
+        tailwindHoverBg: string;
         inputComponent: React.MemoExoticComponent<() => JSX.Element>;
         drawerComponent: React.MemoExoticComponent<() => JSX.Element>;
         afterBg: string;
     }[]>(() => {
         return [
-            { name: "chartType.bar", icon: ChartBar, tailwindColor: "text-green-500", tailwindActiveBg: "bg-green-200", inputComponent: BarChartInput, drawerComponent: BarChartDrawer, afterBg: "border-green-200" },
-            { name: "chartType.pie", icon: PieChart, tailwindColor: "text-red-500", tailwindActiveBg: "bg-red-200", inputComponent: PieChartInput, drawerComponent: PieChartDrawer, afterBg: "border-red-200" },
-            { name: "chartType.line", icon: Timeline, tailwindColor: "text-orange-500", tailwindActiveBg: "bg-orange-200", inputComponent: LineChartInput, drawerComponent: LineChartDrawer, afterBg: "border-orange-200" },
-            { name: "chartType.area", icon: AreaChart, tailwindColor: "text-purple-500", tailwindActiveBg: "bg-purple-200", inputComponent: DummyChartInput, drawerComponent: AreaChartDrawer, afterBg: "border-purple-200" },
-            { name: "chartType.scatter", icon: Scatter, tailwindColor: "text-blue-500", tailwindActiveBg: "bg-blue-200", inputComponent: DummyChartInput, drawerComponent: ScatterChartDrawer, afterBg: "border-blue-200" },
+            { name: "chartType.bar", icon: ChartBar, tailwindColor: "text-green-500", tailwindActiveBg: "bg-green-200", tailwindHoverBg: "hover:bg-green-200", inputComponent: BarChartInput, drawerComponent: BarChartDrawer, afterBg: "border-green-200" },
+            { name: "chartType.pie", icon: PieChart, tailwindColor: "text-red-500", tailwindActiveBg: "bg-red-200", tailwindHoverBg: "hover:bg-red-200", inputComponent: PieChartInput, drawerComponent: PieChartDrawer, afterBg: "border-red-200" },
+            { name: "chartType.line", icon: Timeline, tailwindColor: "text-orange-500", tailwindActiveBg: "bg-orange-200", tailwindHoverBg: "hover:bg-orange-200", inputComponent: LineChartInput, drawerComponent: LineChartDrawer, afterBg: "border-orange-200" },
+            { name: "chartType.area", icon: AreaChart, tailwindColor: "text-purple-500", tailwindActiveBg: "bg-purple-200", tailwindHoverBg: "hover:bg-purple-200", inputComponent: DummyChartInput, drawerComponent: AreaChartDrawer, afterBg: "border-purple-200" },
+            { name: "chartType.scatter", icon: Scatter, tailwindColor: "text-blue-500", tailwindActiveBg: "bg-blue-200", tailwindHoverBg: "hover:bg-blue-200", inputComponent: DummyChartInput, drawerComponent: ScatterChartDrawer, afterBg: "border-blue-200" },
         ]
     }, [])
 
@@ -184,7 +185,7 @@ function Chart() {
                                 >
                                     <div
                                         onClick={changeChart(idx)}
-                                        className={`relative rounded h-8 flex flex-1 mr-1 items-center justify-center cursor-pointer transition-colors duration-200 ease-out hover:${item.tailwindActiveBg} ${activeIndex === idx ? item.tailwindActiveBg : ""}`}
+                                        className={`relative rounded h-8 flex flex-1 mr-1 items-center justify-center cursor-pointer transition-colors duration-200 ease-out ${activeIndex === idx ? item.tailwindActiveBg : item.tailwindHoverBg}`}
                                     >
                                         <item.icon fontSize="small" className={item.tailwindColor} />
                                         {activeIndex === idx && <span className={`absolute chart_nav_btn transform -translate-x-1/2 border-4 ${item.afterBg}`}></span>}
