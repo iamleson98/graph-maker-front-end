@@ -18,6 +18,8 @@ import dayjs from "dayjs"
 import { Subscription, timer } from "rxjs"
 import { useTranslation } from "react-i18next"
 import { CSSTransition } from "react-transition-group"
+import "../../tailwind/out.css"
+import "../../index.css"
 
 
 type saveType =

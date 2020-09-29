@@ -1,5 +1,4 @@
 import { isRealNumber, defaultFieldColor } from "../../constants"
-// import { noAnyError, updateLocalState } from "../utils"
 
 
 export enum typeChange {
@@ -22,20 +21,6 @@ export interface PieChartState {
         error?: string;
     }[][];
 }
-
-// export const InitPieChartState: PieChartState = {
-//     chartTitle: "",
-//     pies: [
-//         [
-//             {
-//                 name: "",
-//                 value: "",
-//                 error: undefined,
-//                 color: defaultFieldColor
-//             }
-//         ]
-//     ]
-// }
 
 export interface PieChartAction {
     type: typeChange;
