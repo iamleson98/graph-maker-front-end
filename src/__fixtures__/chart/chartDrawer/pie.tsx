@@ -20,7 +20,7 @@ function PieDrawer() {
                     sliceBackgrounds: string[] = [],
                     data: number[] = []
 
-                pie.forEach(slice => {
+                pie.slices.forEach(slice => {
                     labels.push(slice.name)
                     sliceBackgrounds.push(slice.color)
                     data.push(Number(slice.value))
