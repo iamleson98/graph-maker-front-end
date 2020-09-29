@@ -65,14 +65,21 @@ function PieChart(): JSX.Element {
                         className="rounded border-2 border-solid border-gray-200 p-2 mb-3"
                     >
                         <legend className="text-sm text-red-500 font-medium">
-                            {t("chartInput.pie.pie")} {pieIndex + 1}
+                            {`${t("chartInput.pie.pie")} ${pie.name || pieIndex + 1}`}
                         </legend>
                         {/* pie name */}
                         <div className="mb-2 flex items-center">
-                            <span className="mr-2 text-sm">pie name</span>
+                            <span className="mr-2 text-sm whitespace-no-wrap">{t("chartInput.pie.pieName")}</span>
                             <DelayInput
-                                giveValue={console.log}
-                                placeholder="Enter pie name"
+                                giveValue={(value: string) => dispatch({
+                                    type: typeChange.pieNameChange,
+                                    value: pieIndex,
+                                    options: {
+                                        value
+                                    }
+                                })}
+                                placeholder={`${t("chartInput.pie.placeholder.enterPieName")}`}
+                                defaultValue={pie.name}
                                 className={`rounded bg-gray-200 px-2`}
                             />
                         </div>
@@ -87,12 +94,9 @@ function PieChart(): JSX.Element {
                                             <span className="mr-2 text-xs whitespace-no-wrap">{t("chartInput.pie.sliceName")}</span>
                                             <DelayInput
                                                 fullWidth={true}
-                                                placeholder={`${t("chartInput.pie.sliceName")}`}
+                                                placeholder={`${t("chartInput.pie.placeholder.enterSliceName")}`}
                                                 defaultValue={slice.name}
                                                 className={`rounded bg-gray-200 px-2`}
-                                                classes={{
-                                                    input: !!pieIndex ? "cursor-not-allowed" : "initial"
-                                                }}
                                                 giveValue={(value: string) => dispatch({
                                                     type: typeChange.sliceNameChange,
                                                     value: sliceIndex,
@@ -125,7 +129,7 @@ function PieChart(): JSX.Element {
                                         <span className="mr-2 text-xs whitespace-no-wrap">{t("chartInput.pie.value")}</span>
                                         <DelayInput
                                             fullWidth={true}
-                                            placeholder={t("chartInput.pie.value")}
+                                            placeholder={t("chartInput.pie.placeholder.enterValue")}
                                             className={`rounded ${slice.error ? "bg-red-300" : "bg-gray-200"} px-2`}
                                             giveValue={(value: string) => dispatch({
                                                 type: typeChange.sliceValueChange,
@@ -173,7 +177,7 @@ function PieChart(): JSX.Element {
                                 value: pieIndex
                             })}
                         >
-                            {!pieIndex ? `${t("chartInput.pie.addSlice")}` : `${t("chartInput.pie.removePie")} ${pieIndex + 1}`}
+                            {!pieIndex ? `${t("chartInput.pie.addSlice")}` : `${t("chartInput.pie.removePie")} ${pie.name || pieIndex + 1}`}
                         </Button>
                     </fieldset>
                 ))}

@@ -53,9 +53,14 @@
         },
         "pie": {
             "pie": "Pie",
+            "pieName": "pie name",
             "slice": "Slice",
             "sliceName": "slice name",
-            "enterValue": "Enter value",
+            "placeholder": {
+                "enterValue": "Enter value",
+                "enterPieName": "Enter pie name",
+                "enterSliceName": "Enter slice name"
+            },
             "addPie": "Add pie",
             "addSlice": "Add slice",
             "removePie": "Remove pie",

@@ -53,9 +53,14 @@
         },
         "pie": {
             "pie": "Bánh",
+            "pieName": "tên bánh",
             "slice": "Lát",
             "sliceName": "tên lát",
-            "enterValue": "Nhập giá trị",
+            "placeholder": {
+                "enterValue": "Nhập giá trị",
+                "enterPieName": "Nhập tên bánh",
+                "enterSliceName": "Nhập tên lát"
+            },
             "addPie": "Thêm bánh",
             "addSlice": "Thêm lát",
             "removePie": "Xoá bánh",

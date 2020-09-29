@@ -13,7 +13,7 @@ export interface DelayInputParam {
  * @param {{ delay: Number, giveValue: Function, component?: 'textarea' | undefined }} param
  */
 function DelayInput({
-    delay = 500,
+    delay = 700,
     giveValue,
     component,
     ...rest

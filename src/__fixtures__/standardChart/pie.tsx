@@ -7,10 +7,10 @@ export interface StdPieChartProps {
     labels: string[];
     sliceBackgrounds?: string[];
     data: number[];
-    chartTitle?: string;
+    name?: string;
 }
 
-export function pieChartConfig({ labels, sliceBackgrounds, data, chartTitle }: StdPieChartProps): ChartConfiguration {
+export function pieChartConfig({ labels, sliceBackgrounds, data, name }: StdPieChartProps): ChartConfiguration {
 
     const { length } = defaultColors
 
@@ -45,7 +45,7 @@ export function pieChartConfig({ labels, sliceBackgrounds, data, chartTitle }: S
             },
             title: {
                 display: true,
-                text: chartTitle || "Pie chart",
+                text: name || "Pie chart",
             }
         },
     }

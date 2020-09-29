@@ -36,7 +36,7 @@ export const InitLineChartState: LineChartState = {
 }
 
 export const InitPieChartState: PieChartState = {
-    chartTitle: "",
+    chartTitle: "Chart title",
     pies: [
         {
             slices: [

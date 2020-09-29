@@ -9,7 +9,8 @@ export enum typeChange {
     deleteSlice,
     sliceNameChange,
     sliceValueChange,
-    colorChange
+    colorChange,
+    pieNameChange,
 }
 
 export interface PieChartState {
@@ -46,10 +47,6 @@ export function pieChartReducer(state: PieChartState, action: PieChartAction): P
     switch (type) {
         case typeChange.addPie:
             if (pieChartReducer.length < MAX_PIE) {
-                // const newPie = clonePies[0].map(pie => {
-                //     return { ...pie, value: "", error: undefined }
-                // })
-                // clonePies.push(newPie) // only push can append an array to another array
                 state = {
                     ...state,
                     pies: clonePies.concat({
@@ -154,6 +151,20 @@ export function pieChartReducer(state: PieChartState, action: PieChartAction): P
                         return slice
                     })
                 }
+            })
+            state = { ...state, pies: clonePies }
+            break
+
+        case typeChange.pieNameChange:
+            // value is pie index, options.value is new name for that pie
+            clonePies = clonePies.map((pie, pieIndex) => {
+                if (pieIndex === value) {
+                    return {
+                        ...pie,
+                        name: options?.value
+                    }
+                }
+                return pie
             })
             state = { ...state, pies: clonePies }
             break

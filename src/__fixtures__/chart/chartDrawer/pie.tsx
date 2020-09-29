@@ -10,7 +10,14 @@ function PieDrawer() {
     // get local chart state
     const { pieChartState, chartDrawMutexReleased } = useReactiveVar(localState)
 
-    const [pies, setPies] = useState<StdPieChartProps[]>([])
+    const [state, setState] = useState<{
+        pies: StdPieChartProps[],
+        chartTitle: string;
+    }>({
+        pies: [],
+        chartTitle: "Chart title"
+    })
+    const { pies, chartTitle } = state
 
     useEffect(() => {
         if (!!pieChartState && chartDrawMutexReleased) {
@@ -30,36 +37,44 @@ function PieDrawer() {
                     labels,
                     sliceBackgrounds,
                     data,
-                    chartTitle
+                    name: pie.name
                 }
             })
 
-            setPies(newPies)
+            setState({
+                pies: newPies,
+                chartTitle
+            })
             updateLocalState("chartDrawMutexReleased", false)
         }
 
     }, [pieChartState, chartDrawMutexReleased])
 
     return (
-        <>
-            {pies.map((pie, pieIndex) => (
-                <div
-                    key={pieIndex}
-                    className={`${pies.length > 1 ? "w-1/2 sm:w-full" : "w-full"}`}
-                    style={{ padding: 2 }}
-                >
-                    <div className={`${pies.length > 1 ? "border-solid border rounded border-gray-300" : ""}`}>
-                        <StdPieChart
-                            key={pieIndex}
-                            chartTitle={pie.chartTitle}
-                            data={pie.data}
-                            sliceBackgrounds={pie.sliceBackgrounds}
-                            labels={pie.labels}
-                        />
+        <div className="w-full">
+            <div className="p-1 text-center text-gray-700 font-medium text-sm">
+                {chartTitle}
+            </div>
+            <div className="flex flex-wrap justify-center">
+                {pies.map((pie, pieIndex) => (
+                    <div
+                        key={pieIndex}
+                        className={`${pies.length > 1 ? "w-1/2 sm:w-full" : "w-full"}`}
+                        style={{ padding: 2 }}
+                    >
+                        <div className={`${pies.length > 1 ? "border-solid border rounded border-gray-300" : ""}`}>
+                            <StdPieChart
+                                key={pieIndex}
+                                name={pie.name}
+                                data={pie.data}
+                                sliceBackgrounds={pie.sliceBackgrounds}
+                                labels={pie.labels}
+                            />
+                        </div>
                     </div>
-                </div>
-            ))}
-        </>
+                ))}
+            </div>
+        </div>
     )
 }
 
