@@ -30,7 +30,7 @@ function PieChart(): JSX.Element {
         // since React notifies errors if drawer component and input component update simultaneously
         if (noAnyError(
             state.pies
-                .map(pie => pie.map(slice => slice.error))
+                .map(pie => pie.slices.map(slice => slice.error))
                 .reduce((a, b) => a.concat(b), [])
         )) {
             localState({
@@ -67,7 +67,16 @@ function PieChart(): JSX.Element {
                         <legend className="text-sm text-red-500 font-medium">
                             {t("chartInput.pie.pie")} {pieIndex + 1}
                         </legend>
-                        {pie.map((slice, sliceIndex) => (
+                        {/* pie name */}
+                        <div className="mb-2 flex items-center">
+                            <span className="mr-2 text-sm">pie name</span>
+                            <DelayInput
+                                giveValue={console.log}
+                                placeholder="Enter pie name"
+                                className={`rounded bg-gray-200 px-2`}
+                            />
+                        </div>
+                        {pie.slices.map((slice, sliceIndex) => (
                             <div className="flex items-center mb-2" key={sliceIndex}>
                                 <fieldset className="p-2 rounded w-full border-2 mr-2 border-solid border-gray-200">
                                     <legend className="text-sm">

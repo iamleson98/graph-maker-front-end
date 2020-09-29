@@ -38,13 +38,16 @@ export const InitLineChartState: LineChartState = {
 export const InitPieChartState: PieChartState = {
     chartTitle: "",
     pies: [
-        [
-            {
-                name: "",
-                value: "1",
-                error: undefined,
-                color: defaultFieldColor
-            }
-        ]
+        {
+            slices: [
+                {
+                    name: "",
+                    value: "1",
+                    error: undefined,
+                    color: defaultFieldColor
+                }
+            ],
+            name: ""
+        }
     ]
 }
