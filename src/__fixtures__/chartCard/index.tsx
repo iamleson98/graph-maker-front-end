@@ -56,7 +56,7 @@ function ChartCard({ img, title, timestamp }: ChartCardProps) {
                             className="absolute cursor-pointer hidden hover:bg-red-200 transition-colors duration-200 transform -translate-y-full shadow py-1 px-2 items-center justify-center bg-red-100 rounded z-10 text-red-500 text-xs"
                         >
                             <DeleteOutlined className="mr-1" />
-                            <span>
+                            <span className="whitespace-no-wrap">
                                 {t("delete")}
                             </span>
                         </div>

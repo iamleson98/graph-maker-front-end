@@ -8,6 +8,8 @@ import { CameraAlt } from "@material-ui/icons"
 import Croppie from "croppie"
 import "./croppie.css"
 import { useTranslation } from "react-i18next"
+import { useMutation } from "@apollo/client"
+import { UPLOAD_RESIZE_IMAGE } from "../../graphql/mutations"
 
 
 export interface AvatarDialogProps {
@@ -33,11 +35,13 @@ function AvatarDialog({ onClose }: AvatarDialogProps) {
     const [state, setState] = useState<{
         croppie: Croppie | null;
         canSave: boolean;
+        file: File | null;
     }>({
         croppie: null,
-        canSave: false
+        canSave: false,
+        file: null
     })
-    const { croppie, canSave } = state
+    const { croppie, canSave, file } = state
 
     useEffect(() => {
         if (!state.croppie) {
@@ -60,16 +64,26 @@ function AvatarDialog({ onClose }: AvatarDialogProps) {
                 zoom: 2,
             })
             setState({
+                ...state,
                 croppie,
-                canSave: true
+                canSave: true,
+                file: files[0]
             })
         }
     }
 
+    // mutation
+    const [upFile, { data, loading }] = useMutation(UPLOAD_RESIZE_IMAGE)
+
     const handleSave = () => {
-        console.log(
-            croppie?.get()
-        )
+        upFile({
+            variables: {
+                input: {
+                    file: file,
+                    dimenParam: croppie?.get().points,
+                }
+            }
+        })
     }
 
     return (

@@ -53,7 +53,7 @@ export const localState = makeVar<LocalState>({
 })
 
 const client = new ApolloClient({
-    uri: "https://localhost:6000",
+    uri: "http://localhost:4000/graphql",
     cache: new InMemoryCache({
         typePolicies: {
             Query: {
