@@ -1,0 +1,91 @@
+{
+    "weather": "天气",
+    "chart": "图表",
+    "save": "保存",
+    "cancel": "取消",
+    "about": "关于我们",
+    "qa": "问题与答案",
+    "signout": "退出",
+    "myProfile": "我的简历",
+    "login": "登录",
+    "setColor": "设置颜色",
+    "delete": "删除",
+    "update": "更新",
+    "chartType": {
+        "bar": "柱形图",
+        "line": "折线图",
+        "pie": "圆盘形图表",
+        "area": "区域图",
+        "scatter": "散点图"
+    },
+    "saveChart": {
+        "name": "保存图表",
+        "type": {
+            "image": "图形",
+            "cloud": "云"
+        }
+    },
+    "chartInput": {
+        "headName": "输入值",
+        "addItem": "添加事项",
+        "removeItem": "删除事项",
+        "title": "图表名称",
+        "xLabel": "Ox 标签",
+        "yLabel": "Oy 标签",
+        "dataOnOx": "Ox 上的数据",
+        "dataOnOy": "Oy 上的数据",
+        "bar": {
+            "block": "块",
+            "placeholder": {
+                "enterName": "输入表头",
+                "enterValue": "输入数值",
+                "enterBlockName": "输入模块名"
+            },
+            "barName": "表名"
+        },
+        "line": {
+            "addLine": "添加一行",
+            "deleteLine": "删除一行",
+            "placeholder": {
+                "enterValue": "输入数值",
+                "lineName": "行名"
+            }
+        },
+        "pie": {
+            "pie": "圆盘形图表",
+            "pieName": "餡餅名稱",
+            "slice": "一部分",
+            "sliceName": "一部分名称",
+            "placeholder": {
+                "enterValue": "输入数值",
+                "enterPieName": "輸入餅名",
+                "enterSliceName": "輸入切片名稱"
+            },
+            "addPie": "添加圆盘形图表",
+            "addSlice": "添加一部分",
+            "removePie": "去除一部分",
+            "removeSlice": "删除一部分",
+            "value": "数值"
+        }
+    },
+    "collection": {
+        "collection": "收集",
+        "filter": "过滤",
+        "filterDate": {
+            "olderFirst": "旧数据优先",
+            "latestFirst": "新数据优先",
+            "placeholder": "生成日期"
+        },
+        "filterChartType": {
+            "placeholder": "图表类型"
+        }
+    },
+    "aboutUser": {
+        "about": "数据",
+        "name": "名称",
+        "email": "电子邮件",
+        "thoughtAboutGeo": "你对地理的热爱",
+        "changeAva": "更改头像",
+        "chooseNewAva": "选择新图片"
+    }
+}

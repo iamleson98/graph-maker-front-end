@@ -12,13 +12,14 @@ import { useTranslation } from "react-i18next"
 import { useReactiveVar } from "@apollo/client"
 
 
-type lang = "Tiếng Việt" | "English"
+type lang = "Tiếng Việt" | "English" | "中文"
 type LangMap = {
-    [key in lang]: "vi" | "en"
+    [key in lang]: "vi" | "en" | "cn"
 }
 const langMap: LangMap = {
     "English": "en",
-    "Tiếng Việt": "vi"
+    "Tiếng Việt": "vi",
+    "中文": "cn"
 }
 
 function Navigator() {
@@ -40,7 +41,7 @@ function Navigator() {
         }[];
         langValues: {
             display: React.ReactNode;
-            returnVal: lang;
+            returnVal: lang | string;
         }[];
     }>(() => {
         return {
@@ -52,16 +53,12 @@ function Navigator() {
                     display: t("myProfile")
                 }
             ],
-            langValues: [
-                {
-                    display: <p className="text-xs">Tiếng Việt</p>,
-                    returnVal: "Tiếng Việt"
-                },
-                {
-                    display: <p className="text-xs">English</p>,
-                    returnVal: "English"
+            langValues: Object.keys(langMap).map(item => {
+                return {
+                    display: <p className="text-xs whitespace-no-wrap">{item}</p>,
+                    returnVal: item
                 }
-            ],
+            })
         }
     }, [t])
 
@@ -79,6 +76,16 @@ function Navigator() {
     function toggleMenu(whichRef: React.MutableRefObject<any>, type: "open" | "close") {
         (whichRef.current as HTMLElement).classList[type === "open" ? "remove" : "add"]("hidden")
     }
+
+    const langImgSrc = (() => {
+        let flagName;
+        switch (currentLang) {
+            case "English": flagName = "united-kingdom.svg"; break;
+            case "Tiếng Việt": flagName = "vietnam.svg"; break;
+            case "中文": flagName = "china.svg"; break;
+        }
+        return `/static/image/${flagName}`
+    })()
 
     return (
         <div className="flex flex-no-wrap items-center py-1 bg-white pr-4 pl-10 fixed top-0 left-0 w-full z-20 shadow-xs justify-between">
@@ -143,7 +150,7 @@ function Navigator() {
                         <div
                             className="p-2 cursor-pointer text-gray-600 text-xs flex items-center"
                         >
-                            <img className="w-4 h-auto mr-1" src={currentLang === "Tiếng Việt" ? "/static/image/vietnam.svg" : "/static/image/united-kingdom.svg"} alt="flag" />
+                            <img className="w-4 h-auto mr-1" src={langImgSrc} alt="flag" />
                             <p>{currentLang}</p>
                         </div>
                     </ClickAwayListener>
