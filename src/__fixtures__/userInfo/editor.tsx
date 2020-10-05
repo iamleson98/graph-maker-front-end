@@ -73,7 +73,10 @@ function AvatarDialog({ onClose }: AvatarDialogProps) {
     }
 
     // mutation
-    const [upFile, { data, loading }] = useMutation(UPLOAD_RESIZE_IMAGE)
+    const [
+        upFile,
+        // { data, loading }
+    ] = useMutation(UPLOAD_RESIZE_IMAGE)
 
     const handleSave = () => {
         upFile({
