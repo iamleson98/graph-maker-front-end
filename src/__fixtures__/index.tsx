@@ -8,8 +8,7 @@ import { PieChartState } from "./pieChartInput/reducer";
 import { InitBarChartState, InitLineChartState, InitPieChartState } from "./initState";
 import { BrowserRouter } from "react-router-dom"
 import Layout from "./layout"
-// import "../tailwind/out.css"
-// import "../index.css"
+import { createUploadLink } from "apollo-upload-client"
 
 
 export type ChartType =
@@ -52,8 +51,12 @@ export const localState = makeVar<LocalState>({
     isSignedIn: true
 })
 
-const client = new ApolloClient({
+const apolloUploadLink = createUploadLink({
     uri: "http://localhost:4000/graphql",
+})
+
+const client = new ApolloClient({
+    link: apolloUploadLink,
     cache: new InMemoryCache({
         typePolicies: {
             Query: {
