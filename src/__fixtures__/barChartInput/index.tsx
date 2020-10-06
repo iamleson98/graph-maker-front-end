@@ -28,7 +28,7 @@ function BarChartInput(): JSX.Element {
     }
 
     const handleYItemClick = (clickedIndex: number) => {
-        // add button(+) is at index 0, delete button(-) is at greater than 0 indexes.
+        // add button(+) is at index 0, delete button(-) are at positions other than 0.
         dispatch({
             type: typeChange[!clickedIndex ? "addYFieldChange" : "removeYFieldChange"],
             value: !!clickedIndex ? clickedIndex : undefined,
@@ -90,7 +90,7 @@ function BarChartInput(): JSX.Element {
                     <fieldset className="rounded p-2 border-2 border-solid border-gray-200">
                         <legend className="text-sm leading-4 font-medium text-red-500">{t("chartInput.dataOnOx")}</legend>
                         {xData.map((value, idx) => (
-                            <div className="flex items-center mb-1" key={`${value}${idx}`}>
+                            <div className="flex items-center mb-1" key={idx}>
                                 <span className="mr-2 text-sm">{idx + 1}</span>
                                 <DelayInput
                                     fullWidth={true}
@@ -100,10 +100,10 @@ function BarChartInput(): JSX.Element {
                                     defaultValue={value}
                                     giveValue={(value: string) => {
                                         dispatch({
-                                            type: typeChange.xFieldChange, // type of change
-                                            value: idx,                    // index of that field
+                                            type: typeChange.xFieldChange,              // type of change
+                                            value: idx,                                 // index of that field
                                             options: {
-                                                value                      // new value for that field
+                                                value                                   // new value for that field
                                             }
                                         })
                                     }}
@@ -132,8 +132,8 @@ function BarChartInput(): JSX.Element {
                             placeholder={t("chartInput.yLabel")}
                             defaultValue={yLabel}
                             giveValue={(value: string) => dispatch({
-                                type: typeChange.yLabelChange, // type of change
-                                value                          // value for that field
+                                type: typeChange.yLabelChange,          // type of change
+                                value                                   // value for that field
                             })}
                         />
                     </div>
@@ -146,7 +146,7 @@ function BarChartInput(): JSX.Element {
                                     {`${t("chartInput.bar.block")} ${xData[blockIndex] || blockIndex + 1}`}
                                 </legend>
                                 {block.map((barValue, barIndex) => (
-                                    <div className="flex items-center mb-1" key={`${barValue.name}${barIndex}`}>
+                                    <div className="flex items-center mb-1" key={barIndex}>
                                         <span className="mr-2 text-xs">{barIndex + 1}</span>
                                         <div className="rounded w-full border-2 border-solid border-gray-200 p-2 mr-2">
                                             {!blockIndex ? ( // blockIndex === 0

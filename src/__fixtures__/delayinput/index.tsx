@@ -44,7 +44,7 @@ function DelayInput({
 
     return (
         <>
-            {component === 'textarea' ? (
+            {component === "textarea" ? (
                 <TextareaAutosize
                     ref={inputRef}
                     {...rest}
@@ -54,7 +54,8 @@ function DelayInput({
                         ref={inputRef}
                         {...rest}
                     />
-                )}
+                )
+            }
         </>
     );
 }
