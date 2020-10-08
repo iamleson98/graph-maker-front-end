@@ -3,7 +3,7 @@ import DelayInput from "../delayinput"
 import { Button, FormHelperText, SvgIcon, Tooltip } from "@material-ui/core"
 import { Email, Visibility, VisibilityOff } from "@material-ui/icons"
 import { Helmet } from "react-helmet"
-// import FacebookLogin from "react-facebook-login"
+import AuthPrvd from "./AuthProvider"
 
 
 const Google = (props: any) => (
@@ -68,7 +68,7 @@ function Auth() {
                     transform: "translateY(-50%)"
                 }}
             >
-                {/* facebook login */}
+
                 <div className="mr-3 mb-2">
                     <DelayInput
                         delay={333}
@@ -124,24 +124,19 @@ function Auth() {
                 <div className="m-auto">
                     {socialButtons.map((button, idx) => (
                         <Tooltip key={idx} title={`Continue with ${button.name}`} placement="right">
-                            <div key={idx} className={`${button.bgClass} ${button.bgHoverClass} transition-colors duration-200 ease-linear rounded py-2 px-6 mb-2 flex cursor-pointer items-center text-center text-white`}>
-                                <button.icon fontSize="small" className="mr-2" />
-                                <span>{button.name}</span>
-                            </div>
+                            <AuthPrvd
+                                key={idx}
+                                children={(
+                                    <div className={`${button.bgClass} ${button.bgHoverClass} transition-colors duration-200 ease-linear rounded py-2 px-6 mb-2 flex cursor-pointer items-center text-center text-white`}>
+                                        <button.icon fontSize="small" className="mr-2" />
+                                        <span>{button.name}</span>
+                                    </div>
+                                )}
+                                provider={button.name.toLowerCase()}
+                            />
                         </Tooltip>
                     ))}
-                    {/* <FacebookLogin
-                        appId="785664108920222"
-                        autoLoad={true}
-                        fields="name,email,picture"
-                        cssClass="text-white px-3 py-3 rounded hover:bg-blue-600 flex items-center bg-blue-700"
-                        onClick={console.log}
-                        callback={console.log}
-                        textButton="Continue with facebook"
-                        icon={(
-                            <Facebook className="mr-2" />
-                        )}
-                    /> */}
+
                 </div>
             </div>
         </div>
