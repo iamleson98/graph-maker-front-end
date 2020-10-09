@@ -3,6 +3,7 @@ import DelayInput from "../delayinput"
 import { Button, FormHelperText, SvgIcon, Tooltip } from "@material-ui/core"
 import { Email, Visibility, VisibilityOff } from "@material-ui/icons"
 import { Helmet } from "react-helmet"
+import io from "socket.io-client"
 import AuthPrvd from "./AuthProvider"
 
 
@@ -27,6 +28,8 @@ const Twitter = (props: any) => (
 // const staticUrl = "/static"
 
 function Auth() {
+
+    const { REACT_APP_DEVELOPMENT_API_URL, REACT_APP_PRODUCTION_API_URL, NODE_ENV } = process.env
 
     // state
     const [state, setState] = useState({
@@ -68,7 +71,6 @@ function Auth() {
                     transform: "translateY(-50%)"
                 }}
             >
-
                 <div className="mr-3 mb-2">
                     <DelayInput
                         delay={333}
@@ -124,16 +126,19 @@ function Auth() {
                 <div className="m-auto">
                     {socialButtons.map((button, idx) => (
                         <Tooltip key={idx} title={`Continue with ${button.name}`} placement="right">
-                            <AuthPrvd
-                                key={idx}
-                                children={(
-                                    <div className={`${button.bgClass} ${button.bgHoverClass} transition-colors duration-200 ease-linear rounded py-2 px-6 mb-2 flex cursor-pointer items-center text-center text-white`}>
-                                        <button.icon fontSize="small" className="mr-2" />
-                                        <span>{button.name}</span>
-                                    </div>
-                                )}
-                                provider={button.name.toLowerCase()}
-                            />
+                            <div>
+                                <AuthPrvd
+                                    key={idx}
+                                    children={(
+                                        <div className={`${button.bgClass} ${button.bgHoverClass} transition-colors duration-200 ease-linear rounded py-2 px-6 mb-2 flex cursor-pointer items-center text-center text-white`}>
+                                            <button.icon fontSize="small" className="mr-2" />
+                                            <span>{button.name}</span>
+                                        </div>
+                                    )}
+                                    provider={button.name.toLowerCase()}
+                                    socket={io(NODE_ENV === "development" ? REACT_APP_DEVELOPMENT_API_URL as string : REACT_APP_PRODUCTION_API_URL as string)}
+                                />
+                            </div>
                         </Tooltip>
                     ))}
 

@@ -52,7 +52,8 @@ export const localState = makeVar<LocalState>({
 })
 
 const apolloUploadLink = createUploadLink({
-    uri: "http://localhost:4000/graphql",
+    uri: "https://localhost:4000/graphql",
+    // credentials: "include"
 })
 
 const client = new ApolloClient({
@@ -63,7 +64,8 @@ const client = new ApolloClient({
                 fields: {}
             }
         }
-    })
+    }),
+    credentials: "include"
 })
 
 function App() {
