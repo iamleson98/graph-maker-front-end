@@ -1,4 +1,5 @@
 import React, { memo, useEffect, useMemo, useRef, useState } from "react"
+import { interval, Subscription } from "rxjs"
 
 
 interface AuthPrvdProps {
@@ -14,16 +15,26 @@ function AuthPrvd({ children, provider, socket }: AuthPrvdProps) {
     const [state, setState] = useState({
         user: null,
     })
-    // const { user } = state
+    const { user } = state
 
     // ref
     const popupRef = useRef<Window>()
+    const $subRef = useRef<Subscription>()
 
     const AUTH_URL = useMemo(() => {
         return NODE_ENV === "development" ?
             REACT_APP_DEVELOPMENT_API_URL as string :
             REACT_APP_PRODUCTION_API_URL as string
     }, [])
+
+    const performAuthen = () => {
+        $subRef.current = interval(500).subscribe(() => {
+            if (!!user && !!popupRef.current && !popupRef.current.closed) { // authenticated successfull, popup still not closed yet
+                popupRef.current.close()
+            }
+        })
+        openPopup()
+    }
 
     const openPopup = () => {
         const width = 600, height = 600
@@ -41,17 +52,22 @@ function AuthPrvd({ children, provider, socket }: AuthPrvdProps) {
     useEffect(() => {
         socket.on(provider, (user: any) => {
             // close popup first
+            console.log(user)
             popupRef.current?.close()
             setState({
                 ...state,
                 user
             })
         })
+
+        return () => {
+            $subRef.current?.unsubscribe()
+        }
     }, [provider, state, socket])
 
     return (
         <div
-            onClick={openPopup}
+            onClick={performAuthen}
         >
             {children}
         </div>

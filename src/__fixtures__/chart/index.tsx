@@ -100,7 +100,7 @@ function Chart() {
                 canvas.toBlob(
                     (blob) => {
                         const link = document.createElement("a")
-                        link.download = `chart_${dayjs().format("MM_DD_YYYY")}.png`
+                        link.download = `chart-${dayjs().format("MM-DD-YYYY")}.png`
                         const url = (URL || webkitURL).createObjectURL(blob)
                         link.href = url
                         document.body.appendChild(link)
