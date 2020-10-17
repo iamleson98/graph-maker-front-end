@@ -6,11 +6,13 @@
 2) Draw charts quickly as user fill in the chart data form
 3) Save chart data in database or as png files so users can view them later
 4) 5 chart popular chart types supported
-    -> area
-    -> scatter
-    -> line
-    -> bar
-    -> bar (doughnut)
+    <ol>
+        <li>area</li>
+        <li>scatter</li>
+        <li>line</li>
+        <li>bar</li>
+        <li>pie (doughnut)</li>
+    </ol>
 
 ### Design file
 <a href="https://www.figma.com/file/TNuavhoDDgXtgYomqoS2Qs/charting?node-id=0%3A1" target="_blank" rel="noopener noreferrer">Figma link</a>
