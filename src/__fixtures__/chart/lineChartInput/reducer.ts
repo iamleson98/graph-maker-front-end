@@ -1,5 +1,4 @@
-import { isRealNumber, defaultFieldColor } from "../../constants"
-// import { noAnyError, updateLocalState } from "../utils"
+import { isRealNumber, defaultFieldColor } from "../../../constants"
 
 
 export interface LineChartState {
@@ -12,22 +11,8 @@ export interface LineChartState {
         name: string;
         data: string[];
         error?: string;
-    }[],
+    }[];
 }
-
-// export const InitLineChartState: LineChartState = {
-//     chartTitle: "",
-//     xLabel: "",
-//     yLabel: "",
-//     xData: [""],
-//     yData: [
-//         {
-//             name: "",
-//             data: [""],
-//             color: defaultFieldColor
-//         }
-//     ]
-// }
 
 export enum typeChange {
     titleChange,
@@ -86,13 +71,20 @@ export function lineChartReducer(state: LineChartState, action: LineChartAction)
             // value hold index of to be deleted field
             state = {
                 ...state,
-                xData: xData.filter((_, idx) => idx !== value),
+                xData: [
+                    ...xData.slice(0, value),
+                    ...xData.slice(value + 1)
+                ],
                 yData: yData.map(item => {
-                    let data = item.data.filter((_, id) => id !== value)
+                    const { data } = item
+                    const newData = [
+                        ...data.slice(0, value),
+                        ...data.slice(value + 1)
+                    ]
                     return {
                         ...item,
-                        data,
-                        error: lineChartErrorChecker(data)
+                        data: newData,
+                        error: lineChartErrorChecker(newData)
                     }
                 })
             }
@@ -109,7 +101,13 @@ export function lineChartReducer(state: LineChartState, action: LineChartAction)
             break
         case typeChange.deleteLine:
             // value is index of line to be deleted
-            state = { ...state, yData: yData.filter((_, idx) => idx !== value) }
+            state = {
+                ...state,
+                yData: [
+                    ...yData.slice(0, value),
+                    ...yData.slice(value + 1)
+                ]
+            }
             break
         case typeChange.xFieldChange:
             // value is index of the x field, options.value is value for it
@@ -187,11 +185,6 @@ export function lineChartReducer(state: LineChartState, action: LineChartAction)
         default:
             break
     }
-
-    // check if there is no error, update local state
-    // if (noAnyError(state.yData.map(line => line.error))) {
-    //     updateLocalState("lineChartState", state)
-    // }
 
     return state
 }

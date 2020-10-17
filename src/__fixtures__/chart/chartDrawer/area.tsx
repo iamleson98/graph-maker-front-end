@@ -1,21 +1,56 @@
-import { useQuery } from "@apollo/client"
-import React, { memo } from "react"
-import { GET_CURRENT_CHART_STATE } from "../../../graphql/queries"
+import { useReactiveVar } from "@apollo/client"
+import React, { memo, useEffect, useState } from "react"
+import { localState } from "../.."
+import { updateLocalState } from "../../utils"
+import StdAreaChart, { AreaChartProps } from "../standardChart/area"
 
 
 function Area() {
 
     // get local chart state
-    const { data, loading } = useQuery(GET_CURRENT_CHART_STATE)
+    const { areaChartState, chartDrawMutexReleased } = useReactiveVar(localState)
 
-    if (loading) {
-        return <p>Loading...</p>
-    }
+    const [state, setState] = useState<AreaChartProps>({
+        xLabels: [],
+        xLabel: "",
+        yLabel: "",
+        chartTitle: "",
+        yDataList: []
+    })
+    const { xLabels, yLabel, xLabel, chartTitle, yDataList } = state
 
-    console.log(data)
+    useEffect(() => {
+        if (!!areaChartState && chartDrawMutexReleased) {
+            const { xData, xLabel, yLabel, chartTitle, yData } = areaChartState
+            const newAreaChartProps: AreaChartProps = {
+                xLabels: xData,
+                chartTitle,
+                xLabel,
+                yLabel,
+                yDataList: yData.map(item => {
+                    const numberList = item.data.map(item => Number(item))
+                    return {
+                        color: item.color,
+                        label: item.name,
+                        data: numberList
+                    }
+                })
+            }
+            setState(newAreaChartProps)
+            updateLocalState("chartDrawMutexReleased", false)
+        }
+    }, [areaChartState, chartDrawMutexReleased])
 
     return (
-        <div>area</div>
+        <div className="p-1 w-full">
+            <StdAreaChart
+                xLabels={xLabels}
+                xLabel={xLabel}
+                chartTitle={chartTitle}
+                yLabel={yLabel}
+                yDataList={yDataList}
+            />
+        </div>
     )
 }
 

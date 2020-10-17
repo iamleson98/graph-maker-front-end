@@ -1,11 +1,11 @@
 import React, { memo, useEffect, useReducer } from "react"
 import { Add, Remove } from "@material-ui/icons"
 import Tooltip from "@material-ui/core/Tooltip"
-import DelayInput from "../delayinput"
+import DelayInput from "../../delayinput"
 import { BarchartState, BarchartAction, typeChange, barchartReducer } from "./reducer"
-import ColorSettter from "../colorSetter"
-import { localState } from ".."
-import { noAnyError } from "../utils"
+import ColorSettter from "../../colorSetter"
+import { localState } from "../.."
+import { noAnyError } from "../../utils"
 import { useTranslation } from "react-i18next"
 
 

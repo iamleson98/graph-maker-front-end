@@ -24,13 +24,13 @@ function ColorSetter({ giveColor, defaultBg }: ColorSetterProps) {
     const { anchor, bgColor } = state
 
     const changeColor = (color: ColorResult, evt: any) => {
+        const { rgb: { r, g, b } } = color
+        const cl = `rgb(${r}, ${g}, ${b})`
         setState({
             ...state,
-            bgColor: color.hex,
-            // anchor: null
+            bgColor: cl,
         })
-        // give color's hex value to parent
-        giveColor(color.hex)
+        giveColor(cl)
     }
 
     return (

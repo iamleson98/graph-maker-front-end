@@ -1,7 +1,7 @@
 import { useReactiveVar } from "@apollo/client"
 import React, { memo, useEffect, useState } from "react"
 import { localState } from "../.."
-import StdPieChart, { StdPieChartProps } from "../../standardChart/pie"
+import StdPieChart, { StdPieChartProps } from "../standardChart/pie"
 import { updateLocalState } from "../../utils"
 
 

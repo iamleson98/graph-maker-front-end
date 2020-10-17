@@ -1,5 +1,5 @@
 import React, { memo, useEffect, useReducer } from "react"
-import DelayInput from "../delayinput"
+import DelayInput from "../../delayinput"
 import { Add, Remove } from "@material-ui/icons"
 import Tooltip from "@material-ui/core/Tooltip"
 import { Button } from "@material-ui/core"
@@ -7,9 +7,9 @@ import {
     lineChartReducer, LineChartAction,
     LineChartState, typeChange, MAX_LINES,
 } from "./reducer"
-import ColorSetter from "../colorSetter"
-import { localState } from ".."
-import { noAnyError } from "../utils"
+import ColorSetter from "../../colorSetter"
+import { localState } from "../.."
+import { noAnyError } from "../../utils"
 import { useTranslation } from "react-i18next"
 
 
@@ -64,7 +64,7 @@ function LineChart(): JSX.Element {
                             giveValue={(value: string) => {
                                 dispatch({
                                     type: typeChange.xLabelChange,
-                                    value: value.trim()
+                                    value: value
                                 })
                             }}
                         />

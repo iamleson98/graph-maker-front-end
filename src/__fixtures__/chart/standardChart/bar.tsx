@@ -1,6 +1,7 @@
-import React, { memo, useRef, useEffect } from "react";
-import Chart, { ChartConfiguration, ChartDataSets } from "chart.js";
-import { defaultColors } from "../../constants";
+import React, { memo } from "react";
+import { ChartConfiguration, ChartDataSets } from "chart.js";
+import { defaultColors } from "../../../constants";
+import CommonStdChart from "./CommonStandard"
 
 
 export interface BarChartProps {
@@ -81,19 +82,10 @@ function barChartConfig({ xLabels, yDataList, chartTitle, xLabel, yLabel }: BarC
 
 function StdBarchart(props: BarChartProps) {
 
-    const canvasRef = useRef<any>()
-    const chartRef = useRef<Chart>()
-
-    useEffect(() => {
-        chartRef.current?.destroy()
-        chartRef.current = new Chart(
-            (canvasRef.current as HTMLCanvasElement).getContext("2d") as CanvasRenderingContext2D,
-            barChartConfig(props)
-        )
-    }, [props])
-
     return (
-        <canvas ref={canvasRef}></canvas>
+        <CommonStdChart
+            config={barChartConfig(props)}
+        />
     )
 }
 

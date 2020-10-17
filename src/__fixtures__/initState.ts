@@ -1,7 +1,8 @@
 import { defaultFieldColor } from "../constants";
-import { BarchartState } from "./barChartInput/reducer";
-import { LineChartState } from "./lineChartInput/reducer";
-import { PieChartState } from "./pieChartInput/reducer";
+import { AreaChartState } from "./chart/areaChartInput/reducer";
+import { BarchartState } from "./chart/barChartInput/reducer";
+import { LineChartState } from "./chart/lineChartInput/reducer";
+import { PieChartState } from "./chart/pieChartInput/reducer";
 
 
 export const InitBarChartState: BarchartState = {
@@ -36,7 +37,7 @@ export const InitLineChartState: LineChartState = {
 }
 
 export const InitPieChartState: PieChartState = {
-    chartTitle: "Chart title",
+    chartTitle: "",
     pies: [
         {
             slices: [
@@ -48,6 +49,20 @@ export const InitPieChartState: PieChartState = {
                 }
             ],
             name: ""
+        }
+    ]
+}
+
+export const InitAreaChartState: AreaChartState = {
+    chartTitle: "",
+    xData: [""],
+    xLabel: "",
+    yLabel: "",
+    yData: [
+        {
+            name: "",
+            data: [""],
+            color: defaultFieldColor
         }
     ]
 }

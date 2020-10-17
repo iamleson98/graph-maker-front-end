@@ -15,7 +15,11 @@ export type KeyOfChartType = {
 }
 
 export const defaultColors = [
-    "red", "orange", "yellow", "green", "blue", "brown", "purple"
-],
-
-    defaultFieldColor = "orange"
+    "rgb(244, 78, 59)",
+    "rgb(254, 146, 0)",
+    "rgb(104, 188, 0)",
+    "rgb(250, 40, 255)",
+    "rgb(128, 137, 0)",
+    "rgb(196, 81, 0)",
+    "rgb(0, 156, 224)"
+], defaultFieldColor = defaultColors[0]

@@ -2,8 +2,7 @@ import { useReactiveVar } from "@apollo/client"
 import React, { memo, useEffect, useState } from "react"
 import { LocalState } from "../.."
 import { localState } from "../../"
-// import { isRealNumber } from "../../../constants"
-import StdLineChart, { LineChartProps } from "../../standardChart/line"
+import StdLineChart, { LineChartProps } from "../standardChart/line"
 import { updateLocalState } from "../../utils"
 
 

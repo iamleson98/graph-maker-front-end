@@ -1,4 +1,4 @@
-import { isRealNumber, defaultFieldColor } from "../../constants"
+import { isRealNumber, defaultFieldColor } from "../../../constants"
 
 
 export enum typeChange {

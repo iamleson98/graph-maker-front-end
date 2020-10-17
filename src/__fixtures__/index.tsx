@@ -2,13 +2,14 @@ import React from "react";
 import { ApolloClient, InMemoryCache } from "@apollo/client"
 import { ApolloProvider, makeVar } from "@apollo/client"
 import { KeyOfStringInterface } from "../constants";
-import { BarchartState } from "./barChartInput/reducer";
-import { LineChartState } from "./lineChartInput/reducer";
-import { PieChartState } from "./pieChartInput/reducer";
-import { InitBarChartState, InitLineChartState, InitPieChartState } from "./initState";
+import { BarchartState } from "./chart/barChartInput/reducer";
+import { LineChartState } from "./chart/lineChartInput/reducer";
+import { PieChartState } from "./chart/pieChartInput/reducer";
+import { InitAreaChartState, InitBarChartState, InitLineChartState, InitPieChartState } from "./initState";
 import { BrowserRouter } from "react-router-dom"
 import Layout from "./layout"
 import { createUploadLink } from "apollo-upload-client"
+import { AreaChartState } from "./chart/areaChartInput/reducer";
 
 
 export type ChartType =
@@ -34,7 +35,7 @@ export interface LocalState extends KeyOfStringInterface {
     barChartState: BarchartState;
     lineChartState: LineChartState;
     pieChartState: PieChartState;
-    areaChartState: any;
+    areaChartState: AreaChartState;
     scatterChartState: any;
     isSignedIn: boolean;
 }
@@ -46,7 +47,7 @@ export const localState = makeVar<LocalState>({
     barChartState: InitBarChartState,
     lineChartState: InitLineChartState,
     pieChartState: InitPieChartState,
-    areaChartState: null,
+    areaChartState: InitAreaChartState,
     scatterChartState: null,
     isSignedIn: true
 })

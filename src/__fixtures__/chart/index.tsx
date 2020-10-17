@@ -4,13 +4,14 @@ import { ChartBar, Scatter, AreaChart } from "../icons"
 import Tooltip from "@material-ui/core/Tooltip"
 import Button from "@material-ui/core/Button"
 import Menu from "../menu"
-import LineChartInput from "../lineChartInput"
-import BarChartInput from "../barChartInput"
-import PieChartInput from "../pieChartInput"
+import LineChartInput from "./lineChartInput"
+import BarChartInput from "./barChartInput"
+import PieChartInput from "./pieChartInput"
+import AreaChartInput from "./areaChartInput"
 import SimpleBar from "simplebar-react"
 import { ClickAwayListener, SvgIconTypeMap } from "@material-ui/core"
 import { OverridableComponent } from "@material-ui/core/OverridableComponent"
-import DummyChartInput from "../dummyInput/dummy"
+import DummyChartInput from "./dummyInput/dummy"
 import { BarChartDrawer, LineChartDrawer, PieChartDrawer, ScatterChartDrawer, AreaChartDrawer } from "./chartDrawer"
 import html2canvas from "html2canvas"
 import "simplebar/dist/simplebar.min.css"
@@ -49,7 +50,7 @@ function Chart() {
             { name: "chartType.bar", icon: ChartBar, tailwindColor: "text-green-500", tailwindActiveBg: "bg-green-200", tailwindHoverBg: "hover:bg-green-200", inputComponent: BarChartInput, drawerComponent: BarChartDrawer, afterBg: "border-green-200" },
             { name: "chartType.pie", icon: PieChart, tailwindColor: "text-red-500", tailwindActiveBg: "bg-red-200", tailwindHoverBg: "hover:bg-red-200", inputComponent: PieChartInput, drawerComponent: PieChartDrawer, afterBg: "border-red-200" },
             { name: "chartType.line", icon: Timeline, tailwindColor: "text-orange-500", tailwindActiveBg: "bg-orange-200", tailwindHoverBg: "hover:bg-orange-200", inputComponent: LineChartInput, drawerComponent: LineChartDrawer, afterBg: "border-orange-200" },
-            { name: "chartType.area", icon: AreaChart, tailwindColor: "text-purple-500", tailwindActiveBg: "bg-purple-200", tailwindHoverBg: "hover:bg-purple-200", inputComponent: DummyChartInput, drawerComponent: AreaChartDrawer, afterBg: "border-purple-200" },
+            { name: "chartType.area", icon: AreaChart, tailwindColor: "text-purple-500", tailwindActiveBg: "bg-purple-200", tailwindHoverBg: "hover:bg-purple-200", inputComponent: AreaChartInput, drawerComponent: AreaChartDrawer, afterBg: "border-purple-200" },
             { name: "chartType.scatter", icon: Scatter, tailwindColor: "text-blue-500", tailwindActiveBg: "bg-blue-200", tailwindHoverBg: "hover:bg-blue-200", inputComponent: DummyChartInput, drawerComponent: ScatterChartDrawer, afterBg: "border-blue-200" },
         ]
     }, [])

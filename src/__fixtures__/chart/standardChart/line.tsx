@@ -1,6 +1,7 @@
-import React, { memo, useEffect, useRef } from "react";
-import Chart, { ChartConfiguration, ChartDataSets } from "chart.js"
-import { defaultColors } from "../../constants"
+import React, { memo } from "react";
+import { ChartConfiguration, ChartDataSets } from "chart.js"
+import { defaultColors } from "../../../constants"
+import CommonStdChart from "./CommonStandard"
 
 
 export interface LineChartProps {
@@ -62,12 +63,13 @@ export function lineChartConfig({ xLabels, yDataList, chartTitle, xLabel, yLabel
                     scaleLabel: {
                         display: true,
                         labelString: xLabel || "Label on Ox",
-                    }
+                    },
+                    offset: true
                 }],
                 yAxes: [{
-                    gridLines: {
-                        drawBorder: false
-                    },
+                    // gridLines: {
+                    //     drawBorder: false
+                    // },
                     ticks: {
                         beginAtZero: true
                     },
@@ -87,23 +89,10 @@ export function lineChartConfig({ xLabels, yDataList, chartTitle, xLabel, yLabel
 
 function StdLineChart(props: LineChartProps) {
 
-    // reference
-    const canvasRef = useRef<any>()
-    const chartRef = useRef<Chart>()
-
-    useEffect(() => {
-        // destroy chart to draw new of (if chart exists)
-        chartRef.current?.destroy()
-        chartRef.current = new Chart(
-            (canvasRef.current as HTMLCanvasElement)?.getContext("2d") as CanvasRenderingContext2D,
-            lineChartConfig(props)
-        )
-    }, [props])
-
     return (
-        <>
-            <canvas ref={canvasRef}></canvas>
-        </>
+        <CommonStdChart
+            config={lineChartConfig(props)}
+        />
     )
 }
 

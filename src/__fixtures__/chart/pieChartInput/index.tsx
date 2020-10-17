@@ -1,5 +1,5 @@
 import React, { memo, useEffect, useReducer } from "react"
-import DelayInput from "../delayinput"
+import DelayInput from "../../delayinput"
 import Button from "@material-ui/core/Button"
 import { DeleteOutlined } from "@material-ui/icons"
 import Tooltip from "@material-ui/core/Tooltip"
@@ -10,9 +10,9 @@ import {
     MAX_PIE,
     pieChartReducer,
 } from "./reducer"
-import ColorSettter from "../colorSetter"
-import { localState } from ".."
-import { noAnyError } from "../utils"
+import ColorSettter from "../../colorSetter"
+import { localState } from "../.."
+import { noAnyError } from "../../utils"
 import { useTranslation } from "react-i18next"
 
 
