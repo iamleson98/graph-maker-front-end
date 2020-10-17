@@ -1,4 +1,6 @@
 
+[![Build Status](https://travis-ci.org/leminhson2398/graph-maker-front-end.svg?branch=master)](https://travis-ci.org/leminhson2398/graph-maker-front-end)
+
 <p align="center"><a href="#" target="_blank" rel="noopener noreferrer"><img width="900" src="https://raw.githubusercontent.com/leminhson2398/graph-maker-front-end/master/public/static/image/snapshot.png" alt="chart demo"></a></p>
 
 ### Features
