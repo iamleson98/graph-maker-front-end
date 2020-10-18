@@ -4,6 +4,7 @@ import { Route } from "react-router-dom"
 import { authRoute, routes } from "./routeConfig"
 import Gears from "../loading/Gears"
 import { Helmet } from "react-helmet"
+import dayjs from "dayjs"
 
 
 function Layout() {
@@ -33,6 +34,9 @@ function Layout() {
                     <authRoute.component />
                 </Route>
             </main>
+            <footer className="py-1 text-xs text-center font-normal text-gray-600">
+                &copy; Schart {dayjs().year()}
+            </footer>
         </div>
     )
 }
