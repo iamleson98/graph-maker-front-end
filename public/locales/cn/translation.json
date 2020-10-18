@@ -34,11 +34,13 @@
         "yLabel": "Oy 标签",
         "dataOnOx": "Ox 上的数据",
         "dataOnOy": "Oy 上的数据",
+        "placeholder": {
+            "enterValue": "输入数值"
+        },
         "bar": {
             "block": "块",
             "placeholder": {
                 "enterName": "输入表头",
-                "enterValue": "输入数值",
                 "enterBlockName": "输入模块名"
             },
             "barName": "表名"
@@ -47,7 +49,6 @@
             "addLine": "添加一行",
             "deleteLine": "删除一行",
             "placeholder": {
-                "enterValue": "输入数值",
                 "lineName": "行名"
             }
         },
@@ -57,7 +58,6 @@
             "slice": "一部分",
             "sliceName": "一部分名称",
             "placeholder": {
-                "enterValue": "输入数值",
                 "enterPieName": "輸入餅名",
                 "enterSliceName": "輸入切片名稱"
             },
@@ -66,6 +66,13 @@
             "removePie": "去除一部分",
             "removeSlice": "删除一部分",
             "value": "数值"
+        },
+        "area": {
+            "addArea": "添加区域",
+            "removeArea": "删除区域",
+            "placeholder": {
+                "areaName": "地区名称"
+            }
         }
     },
     "collection": {

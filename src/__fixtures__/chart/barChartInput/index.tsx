@@ -189,7 +189,7 @@ function BarChartInput(): JSX.Element {
                                                 fullWidth={true}
                                                 type="text"
                                                 className={`rounded bg-gray-200 px-2 ${barValue.error ? "bg-red-300" : ""}`}
-                                                placeholder={`${t("chartInput.bar.placeholder.enterValue")}`}
+                                                placeholder={`${t("chartInput.placeholder.enterValue")}`}
                                                 defaultValue={barValue.value}
                                                 giveValue={(value: string) => {
                                                     dispatch({

@@ -83,6 +83,6 @@
     "babel-loader": "^8.1.0",
     "postcss-cli": "^7.1.2",
     "react-is": "^16.13.1",
-    "tailwindcss": "^1.9.3"
+    "tailwindcss": "^1.9.4"
   }
 }

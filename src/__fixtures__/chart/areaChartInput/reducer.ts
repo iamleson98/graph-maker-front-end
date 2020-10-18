@@ -146,22 +146,22 @@ export function areaChartReducer(state: AreaChartState, action: AreaChartAction)
             // value hold index of to be deleted field
             return {
                 ...state,
-                xData: [
-                    ...xData.slice(0, value),
-                    ...xData.slice(value + 1)
-                ],
+                xData: xData.filter((_, idx) => idx !== value),
                 yData: yData.map(item => {
                     const { data } = item
-                    const newData = [
-                        ...data.slice(0, value),
-                        ...data.slice(value + 1)
-                    ]
+                    const newData = data.filter((_, idx) => idx !== value)
                     return {
                         ...item,
                         data: newData,
                         error: areaChartErrorChecker(newData)
                     }
                 })
+            }
+        case typeChange.deleteArea:
+            // value is index of that area
+            return {
+                ...state,
+                yData: yData.filter((_, idx) => idx !== value)
             }
 
         default:

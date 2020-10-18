@@ -53,7 +53,7 @@ function PieDrawer() {
     return (
         <div className="w-full">
             <div className="p-1 text-center text-gray-700 font-medium text-sm">
-                {chartTitle}
+                {chartTitle || "Chart title"}
             </div>
             <div className="flex flex-wrap justify-center">
                 {pies.map((pie, pieIndex) => (

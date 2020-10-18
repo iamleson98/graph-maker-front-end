@@ -81,7 +81,7 @@ function LineChart(): JSX.Element {
                                 <DelayInput
                                     fullWidth={true}
                                     type="text"
-                                    placeholder={`${t("chartInput.line.placeholder.enterValue")}`}
+                                    placeholder={`${t("chartInput.placeholder.enterValue")}`}
                                     className="rounded bg-gray-200 mr-2 px-2"
                                     defaultValue={item}
                                     giveValue={(value: string) => dispatch({
@@ -185,7 +185,7 @@ function LineChart(): JSX.Element {
                                         <DelayInput
                                             fullWidth={true}
                                             type="text"
-                                            placeholder={`${t("chartInput.line.placeholder.enterValue")}`}
+                                            placeholder={`${t("chartInput.placeholder.enterValue")}`}
                                             className={`rounded ${item.error ? "bg-red-300" : "bg-gray-200"} px-2 mr-2`}
                                             giveValue={(value: string) => dispatch({
                                                 type: typeChange.yFieldChange,

@@ -34,11 +34,13 @@
         "yLabel": "Oy Label",
         "dataOnOx": "Data on Ox",
         "dataOnOy": "Data on Oy",
+        "placeholder": {
+            "enterValue": "Enter value"
+        },
         "bar": {
             "block": "block",
             "placeholder": {
                 "enterName": "Enter bar name",
-                "enterValue": "Enter bar value",
                 "enterBlockName": "Enter block name"
             },
             "barName": "bar name"
@@ -47,7 +49,6 @@
             "addLine": "Add line",
             "deleteLine": "Delete line",
             "placeholder": {
-                "enterValue": "Enter value",
                 "lineName": "Line name"
             }
         },
@@ -57,7 +58,6 @@
             "slice": "Slice",
             "sliceName": "slice name",
             "placeholder": {
-                "enterValue": "Enter value",
                 "enterPieName": "Enter pie name",
                 "enterSliceName": "Enter slice name"
             },
@@ -66,6 +66,13 @@
             "removePie": "Remove pie",
             "removeSlice": "Delete slice",
             "value": "value"
+        },
+        "area": {
+            "addArea": "Add area",
+            "removeArea": "Delete area",
+            "placeholder": {
+                "areaName": "Area name"
+            }
         }
     },
     "collection": {

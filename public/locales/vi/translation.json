@@ -34,11 +34,13 @@
         "yLabel": "Tên trục Oy",
         "dataOnOx": "Dữ liệu trên Ox",
         "dataOnOy": "Dữ liệu trên Oy",
+        "placeholder": {
+            "enterValue": "Nhập giá trị"
+        },
         "bar": {
             "block": "Khối",
             "placeholder": {
                 "enterName": "Nhập tên cột",
-                "enterValue": "Nhập giá trị cột",
                 "enterBlockName": "Nhập tên khối"
             },
             "barName": "tên cột"
@@ -47,7 +49,6 @@
             "addLine": "Thêm đường",
             "deleteLine": "Xoá đường",
             "placeholder": {
-                "enterValue": "Nhập giá trị",
                 "lineName": "Tên đường"
             }
         },
@@ -57,7 +58,6 @@
             "slice": "Lát",
             "sliceName": "tên lát",
             "placeholder": {
-                "enterValue": "Nhập giá trị",
                 "enterPieName": "Nhập tên bánh",
                 "enterSliceName": "Nhập tên lát"
             },
@@ -66,6 +66,13 @@
             "removePie": "Xoá bánh",
             "removeSlice": "Xoá lát",
             "value": "giá trị"
+        },
+        "area": {
+            "addArea": "Thêm miền",
+            "removeArea": "Xoá miền",
+            "placeholder": {
+                "areaName": "Tên miền"
+            }
         }
     },
     "collection": {

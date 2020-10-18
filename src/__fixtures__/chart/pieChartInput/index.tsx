@@ -129,7 +129,7 @@ function PieChart(): JSX.Element {
                                         <span className="mr-2 text-xs whitespace-no-wrap">{t("chartInput.pie.value")}</span>
                                         <DelayInput
                                             fullWidth={true}
-                                            placeholder={t("chartInput.pie.placeholder.enterValue")}
+                                            placeholder={t("chartInput.placeholder.enterValue")}
                                             className={`rounded ${slice.error ? "bg-red-300" : "bg-gray-200"} px-2`}
                                             giveValue={(value: string) => dispatch({
                                                 type: typeChange.sliceValueChange,

@@ -19,7 +19,7 @@ export interface AreaChartProps {
 function areaChartConfig({ chartTitle, xLabel, yLabel, xLabels, yDataList }: AreaChartProps): ChartConfiguration {
     const { length } = defaultColors
     const dtSets: ChartDataSets[] = yDataList.map((area, idx) => {
-        const { color, label, data } = area
+        const { color, label, data } = area // color should be rgb
 
         return {
             backgroundColor: (color || defaultColors[idx % length]).replace("rgb(", "rgba(").replace(")", ", 0.3)"),
