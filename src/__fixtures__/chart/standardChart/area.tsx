@@ -22,13 +22,15 @@ function areaChartConfig({ chartTitle, xLabel, yLabel, xLabels, yDataList }: Are
         const { color, label, data } = area // color should be rgb
 
         return {
-            backgroundColor: (color || defaultColors[idx % length]).replace("rgb(", "rgba(").replace(")", ", 0.3)"),
-            borderColor: color || defaultColors[idx % length],
+            backgroundColor: (color || defaultColors[idx % length]),
+                // .replace("rgb(", "rgba(").replace(")", ", 0.3)"),
+            borderColor: "#fff",
             data,
-            borderWidth: 1,
+            borderWidth: 1.5,
+            lineTension: 0.0001,
             label,
             pointRadius: 1.5,
-            fill: idx
+            fill: true
         }
     })
 
