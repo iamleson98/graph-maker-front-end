@@ -13,7 +13,7 @@ function Layout() {
         <div className="m-auto w-full h-full bg-gray-100">
             <Helmet>
                 <title>
-                    Schart - Chart drawer for schools
+                    Schart - Chart drawer for students
                 </title>
             </Helmet>
             <Navigator />
