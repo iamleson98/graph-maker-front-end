@@ -66,6 +66,9 @@ function AboutUs() {
                     </p>
                 </div>
             </div>
+            <div className="text-center text-2xl mb-4 text-gray-600">
+                Các thành viên dự án
+            </div>
             <div className="flex justify-center flex-wrap">
                 {members.map((item, idx) => {
                     const info = [
