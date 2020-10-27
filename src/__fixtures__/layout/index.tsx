@@ -1,7 +1,7 @@
 import React, { memo, Suspense } from "react"
 import Navigator from "../navigator"
 import { Route } from "react-router-dom"
-import { authRoute, routes } from "./routeConfig"
+import { authRoute, routes, homeRoute } from "./routeConfig"
 import Gears from "../loading/Gears"
 import { Helmet } from "react-helmet"
 import dayjs from "dayjs"
@@ -27,6 +27,12 @@ function Layout() {
                         <route.component />
                     </Route>
                 ))}
+                <Route
+                    path={homeRoute.path}
+                    exact={true}
+                >
+                    <homeRoute.component />
+                </Route>
                 <Route
                     path={authRoute.path}
                     exact={true}

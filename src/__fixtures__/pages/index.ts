@@ -4,6 +4,7 @@ import AuthPage from "../auth"
 import WeatherPage from "./Weather"
 import AboutPage from "./About"
 import QaPage from "./QA"
+import HomePage from "./Home"
 
 
 export default {
@@ -12,5 +13,6 @@ export default {
     AuthPage,
     WeatherPage,
     AboutPage,
-    QaPage
+    QaPage,
+    HomePage
 }

@@ -7,22 +7,27 @@ export const authRoute = {
     component: Pages.AuthPage,
 }
 
+export const homeRoute = {
+    path: "/",
+    component: Pages.HomePage,
+}
+
 export const routes = {
-    user: {
-        path: "/username",
-        component: Pages.UserPage,
-        i18Name: "myProfile"
-    },
+    // user: {
+    //     path: "/username",
+    //     component: Pages.UserPage,
+    //     i18Name: "myProfile"
+    // },
     chart: {
         path: "/chart",
         component: Pages.ChartPage,
         i18Name: "chart"
     },
-    weather: {
-        path: "/weather",
-        component: Pages.WeatherPage,
-        i18Name: "weather"
-    },
+    // weather: {
+    //     path: "/weather",
+    //     component: Pages.WeatherPage,
+    //     i18Name: "weather"
+    // },
     about: {
         path: "/about",
         component: Pages.AboutPage,
