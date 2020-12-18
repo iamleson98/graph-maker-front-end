@@ -9,9 +9,9 @@ function AboutUs() {
         return [
             {
                 path: "/static/image/co.png",
-                name: "Phạm Thị Huyền",
-                career: "Giáo viên truờng THPT Cộng Hiền, Vĩnh Bảo, Hải Phòng",
-                role: "Cố vấn về các phuơng pháp vẽ biểu đồ"
+                name: "Bùi Thái Hiển",
+                career: "Phó hiệu truởng trương THPT Nguyễn Bỉnh Khiêm",
+                role: "Giáo viên phụ trách hướng dẫn"
             },
             {
                 path: "/static/image/phuc.JPG",
@@ -31,12 +31,12 @@ function AboutUs() {
                 career: "Học sinh lớp 10c1, truờng THPT Nguyễn Bỉnh Khiêm, Vĩnh Bảo, Hải Phòng",
                 role: "Thành viên phát triển dự án"
             },
-            {
-                path: "/static/image/son.jpg",
-                name: "Lê Văn Sơn",
-                career: "Cựu học sinh truờng THPT Nguyễn Bỉnh Khiêm, Vĩnh Bảo, Hải Phòng",
-                role: "Thành viên phát triển dự án"
-            }
+            // {
+            //     path: "/static/image/son.jpg",
+            //     name: "Lê Văn Sơn",
+            //     career: "Cựu học sinh truờng THPT Nguyễn Bỉnh Khiêm, Vĩnh Bảo, Hải Phòng",
+            //     role: "Thành viên phát triển dự án"
+            // }
         ]
     }, [])
 
